@@ -1,0 +1,16 @@
+{
+  "name": "charen-portfolio",
+  "version": "1.0.0",
+  "description": "Product design portfolio website for Charen",
+  "scripts": {
+    "dev": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
+    "build": "tailwindcss -i ./src/input.css -o ./dist/output.css --minify",
+    "serve": "python3 -m http.server 8000"
+  },
+  "keywords": ["portfolio", "design", "tailwind"],
+  "author": "Charen",
+  "license": "MIT",
+  "devDependencies": {
+    "tailwindcss": "^3.4.1"
+  }
+}

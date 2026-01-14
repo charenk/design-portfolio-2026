@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Charen - Product Designer specializing in AI-powered access management solutions and 0-1 product development">
+    <meta name="author" content="Charen">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Charen - Product Designer Portfolio">
+    <meta property="og:description" content="Product designer building AI-powered access management solutions">
+    
+    <title>Charen - Product Designer</title>
+    
+    <!-- Preconnect to Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Tailwind CSS -->
+    <link href="./dist/output.css" rel="stylesheet">
+</head>
+<body class="antialiased">
+    
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 nav-gradient px-8 md:px-[50px] pt-8 pb-8" role="navigation" aria-label="Main navigation">
+        <div class="max-w-content mx-auto flex items-center justify-between">
+            <!-- Name/Logo -->
+            <a href="#home" class="flex items-center gap-5 cursor-pointer" aria-label="Go to home page">
+                <img src="./assets/54c56fab5e082cbde275ba7c32edb4d1f4b2ae6e.png" 
+                     alt="Charen profile picture" 
+                     class="w-[50px] h-[49.789px] rounded-full shadow-md object-cover"
+                     loading="eager">
+                <h1 class="text-[24px] font-serif leading-[1.52] tracking-[-1.08px]">Charen</h1>
+            </a>
+            
+            <!-- Navigation Links -->
+            <div class="hidden md:flex items-center gap-[10px] font-mono text-caption">
+                <a href="#home" class="link-underline text-accent-magenta">Home</a>
+                <a href="https://www.linkedin.com/in/charenk/" target="_blank" rel="noopener noreferrer" class="link-underline text-black font-medium">LinkedIn</a>
+                <span class="text-accent-purple">Resume</span>
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-black focus:outline-none" aria-label="Toggle mobile menu">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden mt-8 flex flex-col gap-4 font-mono text-caption">
+            <a href="#home" class="link-underline text-accent-magenta">Home</a>
+            <a href="https://www.linkedin.com/in/charenk/" target="_blank" rel="noopener noreferrer" class="link-underline text-black font-medium">LinkedIn</a>
+            <span class="text-accent-purple">Resume</span>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="px-8 md:px-[50px] pt-[200px] md:pt-[200px]">
+        <div class="max-w-main-content mx-auto">
+            
+            <!-- Hero Section -->
+            <header class="pb-[80px] pr-0 md:pr-[100px]" id="home">
+                <p class="text-h1 font-serif font-thin mb-[19px]">Hello 👋</p>
+                
+                <p class="text-body font-serif mb-[19px]">
+                    I design and lead product experiences for complex identity and access systems.
+                </p>
+                
+                <ul class="text-body font-serif list-disc pl-6 space-y-2">
+                    <li>
+                        Currently shaping <span class="gradient-text">AI-powered</span> privileged access workflows for MSPs and enterprise environments
+                    </li>
+                    <li>
+                        8+ years shipping early-stage and scaled products across IAM, PAM, data and security platforms
+                    </li>
+                    <li>
+                        Known for clarifying ambiguity, aligning cross-functional teams, and designing resilient system-level UX
+                    </li>
+                </ul>
+            </header>
+
+            <!-- Section Header -->
+            <h2 class="text-caption-medium font-mono text-accent-blue inline-block" id="projects">
+                Selected projects for Okta team
+            </h2>
+
+            <!-- Project 1: AI Power PAM Solution -->
+            <section class="py-[50px] md:py-[50px] flex flex-col md:flex-row gap-[30px] md:gap-[50px] items-start">
+                <div class="w-full md:w-1/2 flex flex-col gap-[19px]">
+                    <h3 class="text-h1 font-serif font-light text-accent-yellow">
+                        AI power privileged access management solution
+                    </h3>
+                    <a href="./ai-pam-case-study.html" class="btn-primary w-fit" aria-label="Learn more about AI powered privileged access management solution">
+                        Learn more
+                    </a>
+                </div>
+                <div class="w-full md:w-1/2">
+                    <img src="./assets/583655d917b0da26a21126596fb38f729f12d19b.png" 
+                         alt="AI powered privileged access management solution visualization" 
+                         class="w-full h-auto object-cover rounded aspect-[3/2]"
+                         loading="lazy">
+                </div>
+            </section>
+
+            <!-- Project 2: Browser Extension -->
+            <section class="border-t border-accent-magenta py-[50px] md:py-[50px] flex flex-col md:flex-row gap-[30px] md:gap-[50px] items-start">
+                <div class="w-full md:w-1/2 flex flex-col gap-[19px]">
+                    <h3 class="text-h1 font-serif font-light text-accent-magenta">
+                        Browser extension for Just-in-time account access
+                    </h3>
+                    <a href="./browser-extension-case-study.html" class="btn-primary btn-magenta w-fit" aria-label="Learn more about browser extension for Just-in-time account access">
+                        Learn more
+                    </a>
+                </div>
+                <div class="w-full md:w-1/2">
+                    <img src="./assets/fe388b8d4080bd5b2f1ce29ba6b5dd60df7560fe.png" 
+                         alt="Browser extension for Just-in-time account access" 
+                         class="w-full h-auto object-cover rounded aspect-[3/2]"
+                         loading="lazy">
+                </div>
+            </section>
+
+            <!-- Project 3: Tenant Assessment -->
+            <section class="border-t border-accent-yellow py-[50px] md:py-[50px] flex flex-col md:flex-row gap-[30px] md:gap-[50px] items-start">
+                <div class="w-full md:w-1/2 flex flex-col gap-[19px]">
+                    <h3 class="text-h1 font-serif font-light text-accent-yellow">
+                        Tenant assessment for co-pilot readiness
+                    </h3>
+                    <button class="btn-primary w-fit" aria-label="Learn more about tenant assessment for co-pilot readiness">
+                        Learn more
+                    </button>
+                </div>
+                <div class="w-full md:w-1/2">
+                    <img src="./assets/e67312e6a5e4590043ebb458ee83e7ecc1317c2a.png" 
+                         alt="Tenant assessment for co-pilot readiness" 
+                         class="w-full h-auto object-cover rounded aspect-[3/2]"
+                         loading="lazy">
+                </div>
+            </section>
+
+            <!-- Personal Note Section -->
+            <section class="py-[30px] pr-0 md:pr-[120px] pb-[120px]">
+                <p class="text-h1 font-serif font-light">
+                    PS: This portfolio highlights selected work prepared specifically for the Okta team.
+                </p>
+                <p class="text-h1 font-serif font-light mt-[19px]">
+                    I'm happy to walk through the underlying rationale, tradeoffs, and decision-making in more depth during a conversation.
+                </p>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="px-8 md:px-[50px] pb-[80px]">
+        <div class="max-w-content mx-auto">
+            <!-- Footer Links -->
+            <div class="border-t border-divider-grey pt-[30px] pb-[150px] flex gap-[19px] text-h1 font-serif font-light">
+                <a href="mailto:contact@example.com" class="link-underline text-accent-magenta">Email</a>
+                <a href="https://www.linkedin.com/in/charenk/" target="_blank" rel="noopener noreferrer" class="link-underline text-accent-blue">LinkedIn</a>
+            </div>
+            
+            <!-- Copyright -->
+            <p class="text-h1 font-serif font-light">© Charen</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="./src/main.js"></script>
+</body>
+</html>
