@@ -1,5 +1,58 @@
 // Mobile menu toggle
 document.addEventListener('DOMContentLoaded', function() {
+    // Swiss Grid Fade on Scroll
+    const pageBackground = document.querySelector('.pageBackground');
+    
+    function updateGridOpacity() {
+        const scrollY = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight;
+        const viewportHeight = window.innerHeight;
+        const maxScroll = docHeight - viewportHeight;
+        
+        // Calculate scroll progress (0 to 1)
+        const progress = maxScroll > 0 ? scrollY / maxScroll : 0;
+        
+        // Fade out grid from 0% to 30% scroll progress
+        let gridOpacity = 1;
+        
+        if (progress <= 0.30) {
+            // Ease-out interpolation: starts fast, ends slow
+            const fadeProgress = progress / 0.30;
+            const easedProgress = 1 - Math.pow(1 - fadeProgress, 3); // cubic ease-out
+            gridOpacity = 1 - easedProgress;
+        } else {
+            gridOpacity = 0;
+        }
+        
+        // Force grid to be invisible near bottom (after 85% scroll)
+        if (progress > 0.85) {
+            gridOpacity = 0;
+        }
+        
+        // Clamp opacity between 0 and 1
+        gridOpacity = Math.max(0, Math.min(1, gridOpacity));
+        
+        // Apply the opacity to CSS variable
+        if (pageBackground) {
+            pageBackground.style.setProperty('--gridOpacity', gridOpacity);
+        }
+    }
+    
+    // Run on scroll with throttling for performance
+    let ticking = false;
+    window.addEventListener('scroll', function() {
+        if (!ticking) {
+            window.requestAnimationFrame(function() {
+                updateGridOpacity();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+    
+    // Run on initial load
+    updateGridOpacity();
+    
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
     
