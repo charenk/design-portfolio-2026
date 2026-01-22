@@ -53,6 +53,44 @@ document.addEventListener('DOMContentLoaded', function() {
     // Run on initial load
     updateGridOpacity();
     
+    // Apple-style Carousel Enhancement
+    const carouselContainer = document.querySelector('.carousel-container');
+    
+    if (carouselContainer) {
+        // Enable momentum scrolling
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+        
+        carouselContainer.addEventListener('mousedown', (e) => {
+            isDown = true;
+            carouselContainer.style.cursor = 'grabbing';
+            startX = e.pageX - carouselContainer.offsetLeft;
+            scrollLeft = carouselContainer.scrollLeft;
+        });
+        
+        carouselContainer.addEventListener('mouseleave', () => {
+            isDown = false;
+            carouselContainer.style.cursor = 'grab';
+        });
+        
+        carouselContainer.addEventListener('mouseup', () => {
+            isDown = false;
+            carouselContainer.style.cursor = 'grab';
+        });
+        
+        carouselContainer.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - carouselContainer.offsetLeft;
+            const walk = (x - startX) * 2;
+            carouselContainer.scrollLeft = scrollLeft - walk;
+        });
+        
+        // Set initial cursor
+        carouselContainer.style.cursor = 'grab';
+    }
+    
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
     

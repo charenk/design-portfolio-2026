@@ -11,8 +11,8 @@ module.exports = {
         'divider-grey': '#4F4F4F',
       },
       fontFamily: {
-        'serif': ['"Source Serif Pro"', 'serif'],
-        'mono': ['"Source Code Pro"', 'monospace'],
+        'serif': ['Montserrat', 'sans-serif'],
+        'mono': ['Montserrat', 'sans-serif'],
       },
       fontSize: {
         'h1': ['50px', { lineHeight: '1.2', letterSpacing: '-2.25px', fontWeight: '300' }],

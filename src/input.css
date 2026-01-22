@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@300;400&family=Source+Code+Pro:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap');
 
 /* Base styles */
 @layer base {
@@ -75,6 +75,230 @@
 
 /* Custom component styles */
 @layer components {
+  /* Apple-style Carousel */
+  .carousel-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .carousel-container {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    padding-bottom: 20px;
+  }
+  
+  .carousel-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+  }
+  
+  .carousel-card {
+    flex: 0 0 auto;
+    width: 240px;
+    background: linear-gradient(to bottom, #bddcf1 0%, #21aaa6 100%);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0px 4px 4px 0px rgba(174, 174, 174, 0.25);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+    min-height: 454px;
+  }
+  
+  .carousel-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 
+      0px 8px 8px 0px rgba(174, 174, 174, 0.35),
+      0px 4px 4px 0px rgba(174, 174, 174, 0.25);
+  }
+  
+  .card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+    position: relative;
+    min-height: 454px;
+  }
+  
+  .card-illustration {
+    position: absolute;
+    height: 454px;
+    left: 18px;
+    top: 26px;
+    width: 368px;
+    pointer-events: none;
+  }
+  
+  .card-image-main {
+    position: absolute;
+    border: 1px solid #d4d4d4;
+    height: 336px;
+    left: 41px;
+    border-radius: 9px;
+    box-shadow: 0px 4px 4px 0px rgba(143, 143, 143, 0.25);
+    top: 118px;
+    width: 327px;
+    overflow: hidden;
+  }
+  
+  .card-image-main img {
+    width: 106.88%;
+    height: 101.67%;
+    object-fit: cover;
+    position: absolute;
+    left: -6.88%;
+    top: -1.67%;
+  }
+  
+  .card-image-top {
+    position: absolute;
+    height: 80px;
+    left: 84px;
+    top: 0;
+    width: 170px;
+    overflow: hidden;
+  }
+  
+  .card-image-top img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .card-image-side {
+    position: absolute;
+    height: 87px;
+    left: -10px;
+    top: 69px;
+    width: 188px;
+    overflow: hidden;
+  }
+  
+  .card-image-side img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .card-gradient-overlay {
+    position: absolute;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 15.169%, #575353 116.01%);
+    height: 192px;
+    left: 0;
+    top: 168px;
+    width: 300px;
+    pointer-events: none;
+  }
+  
+  .card-content {
+    position: absolute;
+    left: 20px;
+    top: 284px;
+    width: 260px;
+    pointer-events: none;
+  }
+  
+  .card-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 28px;
+    color: #FFFFFF;
+    margin: 0;
+  }
+  
+  /* More Projects Card */
+  .more-card {
+    background: linear-gradient(135deg, #FFE8E0 0%, #FFF5F2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 320px;
+  }
+  
+  .more-card:hover {
+    background: linear-gradient(135deg, #FFD8CE 0%, #FFEBE5 100%);
+  }
+  
+  .more-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .more-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 20px;
+  }
+  
+  .more-text {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: #1D1D1F;
+  }
+  
+  .more-arrow {
+    color: #1D1D1F;
+    transition: transform 0.3s ease;
+  }
+  
+  .more-card:hover .more-arrow {
+    transform: translateX(6px);
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 767px) {
+    .carousel-card {
+      width: 252px;
+      min-height: 380px;
+    }
+    
+    .card-link {
+      min-height: 380px;
+    }
+    
+    .card-illustration {
+      transform: scale(0.85);
+      transform-origin: top left;
+    }
+    
+    .more-card {
+      min-height: 280px;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .carousel-card {
+      width: 240px;
+      min-height: 454px;
+    }
+    
+    .card-link {
+      min-height: 454px;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .carousel-card {
+      width: 240px;
+      min-height: 454px;
+    }
+    
+    .card-link {
+      min-height: 454px;
+    }
+  }
+  
   .nav-gradient {
     background: transparent !important;
     backdrop-filter: blur(0px) !important;
