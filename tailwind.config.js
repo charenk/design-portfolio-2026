@@ -31,7 +31,7 @@ module.exports = {
       },
       maxWidth: {
         'content': '1500px',
-        'main-content': '1000px',
+        'main-content': '1200px',
       },
     },
   },

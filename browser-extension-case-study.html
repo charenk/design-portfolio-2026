@@ -12,10 +12,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
+    <!-- Google Fonts - Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
     <!-- Tailwind CSS -->
-    <link href="./dist/output.css" rel="stylesheet">
+    <link href="./dist/output.css?v=7" rel="stylesheet">
 </head>
 <body class="antialiased">
+    
+    <!-- Page Background Wrapper -->
+    <div class="pageBackground">
     
     <!-- Navigation -->
     <nav class="fixed top-0 left-0 right-0 z-50 nav-gradient px-8 md:px-[50px] pt-8 pb-8" role="navigation" aria-label="Main navigation">
@@ -30,10 +36,20 @@
             </a>
             
             <!-- Navigation Links -->
-            <div class="hidden md:flex items-center gap-[10px] font-mono text-caption">
-                <a href="./index.html#home" class="link-underline text-accent-magenta">Home</a>
-                <a href="https://www.linkedin.com/in/charenk/" target="_blank" rel="noopener noreferrer" class="link-underline text-black font-medium">LinkedIn</a>
-                <span class="text-accent-purple">Resume</span>
+            <div class="hidden md:flex items-center gap-3 font-mono text-caption">
+                <a href="./index.html#home" class="nav-button" aria-label="Go to home">Home</a>
+                <a href="https://www.linkedin.com/in/charenk/" target="_blank" rel="noopener noreferrer" class="nav-button nav-button-linkedin" aria-label="Open LinkedIn profile">
+                    LinkedIn
+                    <svg class="inline-block w-3 h-3 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                    </svg>
+                </a>
+                <a href="#" class="nav-button nav-button-resume" aria-label="Open resume" target="_blank" rel="noopener noreferrer">
+                    Resume
+                    <svg class="inline-block w-3 h-3 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                    </svg>
+                </a>
             </div>
             
             <!-- Mobile Menu Button -->
@@ -45,10 +61,20 @@
         </div>
         
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden mt-8 flex flex-col gap-4 font-mono text-caption">
-            <a href="./index.html#home" class="link-underline text-accent-magenta">Home</a>
-            <a href="https://www.linkedin.com/in/charenk/" target="_blank" rel="noopener noreferrer" class="link-underline text-black font-medium">LinkedIn</a>
-            <span class="text-accent-purple">Resume</span>
+        <div id="mobile-menu" class="hidden md:hidden mt-8 flex flex-col gap-3 font-mono text-caption">
+            <a href="./index.html#home" class="nav-button">Home</a>
+            <a href="https://www.linkedin.com/in/charenk/" target="_blank" rel="noopener noreferrer" class="nav-button nav-button-linkedin">
+                LinkedIn
+                <svg class="inline-block w-3 h-3 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                </svg>
+            </a>
+            <a href="#" class="nav-button nav-button-resume" target="_blank" rel="noopener noreferrer">
+                Resume
+                <svg class="inline-block w-3 h-3 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                </svg>
+            </a>
         </div>
     </nav>
 
@@ -150,5 +176,7 @@
 
     <!-- JavaScript -->
     <script src="./src/main.js"></script>
+    
+    </div><!-- End pageBackground -->
 </body>
 </html>

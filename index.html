@@ -17,8 +17,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
+    <!-- Google Fonts - Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
     <!-- Tailwind CSS -->
-    <link href="./dist/output.css" rel="stylesheet">
+    <link href="./dist/output.css?v=7" rel="stylesheet">
 </head>
 <body class="antialiased">
     
@@ -38,10 +41,20 @@
             </a>
             
             <!-- Navigation Links -->
-            <div class="hidden md:flex items-center gap-[10px] font-mono text-caption">
-                <a href="#home" class="link-underline text-accent-magenta">Home</a>
-                <a href="https://www.linkedin.com/in/charenk/" target="_blank" rel="noopener noreferrer" class="link-underline text-black font-medium">LinkedIn</a>
-                <span class="text-accent-purple">Resume</span>
+            <div class="hidden md:flex items-center gap-3 font-mono text-caption">
+                <a href="#home" class="nav-button nav-button-active" aria-label="Go to home">Home</a>
+                <a href="https://www.linkedin.com/in/charenk/" target="_blank" rel="noopener noreferrer" class="nav-button nav-button-linkedin" aria-label="Open LinkedIn profile">
+                    LinkedIn
+                    <svg class="inline-block w-3 h-3 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                    </svg>
+                </a>
+                <a href="#" class="nav-button nav-button-resume" aria-label="Open resume" target="_blank" rel="noopener noreferrer">
+                    Resume
+                    <svg class="inline-block w-3 h-3 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                    </svg>
+                </a>
             </div>
             
             <!-- Mobile Menu Button -->
@@ -53,10 +66,20 @@
         </div>
         
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden mt-8 flex flex-col gap-4 font-mono text-caption">
-            <a href="#home" class="link-underline text-accent-magenta">Home</a>
-            <a href="https://www.linkedin.com/in/charenk/" target="_blank" rel="noopener noreferrer" class="link-underline text-black font-medium">LinkedIn</a>
-            <span class="text-accent-purple">Resume</span>
+        <div id="mobile-menu" class="hidden md:hidden mt-8 flex flex-col gap-3 font-mono text-caption">
+            <a href="#home" class="nav-button nav-button-active">Home</a>
+            <a href="https://www.linkedin.com/in/charenk/" target="_blank" rel="noopener noreferrer" class="nav-button nav-button-linkedin">
+                LinkedIn
+                <svg class="inline-block w-3 h-3 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                </svg>
+            </a>
+            <a href="#" class="nav-button nav-button-resume" target="_blank" rel="noopener noreferrer">
+                Resume
+                <svg class="inline-block w-3 h-3 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                </svg>
+            </a>
         </div>
     </nav>
 
@@ -66,23 +89,12 @@
             
             <!-- Hero Section -->
             <header class="pb-[80px] pr-0 md:pr-[100px]" id="home">
-                <p class="text-h1 font-serif font-thin mb-[19px]">Hello 👋</p>
-                
                 <p class="text-body font-serif mb-[19px]">
-                    I design and lead product experiences for complex identity and access systems.
+                    I design and lead product experiences for complex identity and access systems, currently working on <span class="gradient-text">AI-powered</span> privileged access workflows for MSPs and enterprise environments.
                 </p>
-                
-                <ul class="text-body font-serif list-disc pl-6 space-y-2">
-                    <li>
-                        Currently shaping <span class="gradient-text">AI-powered</span> privileged access workflows for MSPs and enterprise environments
-                    </li>
-                    <li>
-                        8+ years shipping early-stage and scaled products across IAM, PAM, data and security platforms
-                    </li>
-                    <li>
-                        Known for clarifying ambiguity, aligning cross-functional teams, and designing resilient system-level UX
-                    </li>
-                </ul>
+                <p class="text-body font-serif">
+                    With 8+ years across IAM, PAM, and security platforms, I focus on clarifying ambiguity and designing resilient system-level UX.
+                </p>
             </header>
 
             <!-- Section Header -->
