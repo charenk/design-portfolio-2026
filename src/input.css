@@ -71,6 +71,11 @@
     position: relative;
     z-index: 1;
   }
+  
+  /* Main (Experiments) must stack above footer - override .pageBackground > * for main */
+  .pageBackground > main {
+    z-index: 10;
+  }
 }
 
 /* Custom component styles */
@@ -226,8 +231,10 @@
   
   /* Experiments Section */
   .experiments-section {
+    position: relative;
+    z-index: 10;
     margin-top: 80px;
-    margin-bottom: 80px;
+    margin-bottom: 0;
     width: 100%;
     max-width: 1200px;
   }
@@ -236,7 +243,7 @@
     background: #2d2d2d;
     border-radius: 16px;
     padding: 40px 32px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 12px 32px rgba(0, 0, 0, 0.08);
   }
   
   .experiments-title {
@@ -358,6 +365,124 @@
     }
     .experiments-details-panel {
       max-width: 100%;
+    }
+  }
+  
+  /* Footer - behind Experiments (z-index: 1), starts ~50% up Experiments height */
+  .footer {
+    position: relative;
+    z-index: 1;
+    max-width: calc(100% - 80px);
+    margin: -180px auto 0;
+    padding: 244px 48px 80px;
+    background: #FEDEC3;
+    border-radius: 24px 24px 0 0;
+    overflow: hidden;
+  }
+  
+  .footer-inner {
+    position: relative;
+  }
+  
+  /* Contact section - LEFT-aligned, top of footer, aligned with content grid */
+  .footer-contact {
+    position: relative;
+    z-index: 2;
+    text-align: left;
+    margin-bottom: 60px;
+  }
+  
+  .footer-heading {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: #1D1D1F;
+    margin: 0 0 16px 0;
+    text-align: left;
+  }
+  
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 32px;
+  }
+  
+  .footer-link {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: #D97706;
+    text-decoration: underline;
+    transition: color 0.2s ease;
+  }
+  
+  .footer-link:hover {
+    color: #b45309;
+  }
+  
+  /* Decorative text - LEFT-aligned with content grid, higher contrast, 2s animation delay */
+  .footer-decorative {
+    position: absolute;
+    bottom: 10%;
+    left: 48px;
+    right: auto;
+    width: calc(100% - 48px);
+    pointer-events: none;
+    user-select: none;
+    overflow: hidden;
+  }
+  
+  .footer-decorative-inner {
+    display: inline-block;
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(80px, 12vw, 140px);
+    font-weight: 700;
+    color: rgba(210, 180, 140, 0.15);
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    animation: footer-scroll 60s linear 2s infinite;
+    transform-origin: left center;
+  }
+  
+  @keyframes footer-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  
+  @media (max-width: 768px) {
+    .footer {
+      max-width: calc(100% - 32px);
+      margin-top: -140px;
+      padding: 204px 24px 60px;
+      border-radius: 16px 16px 0 0;
+    }
+    .footer-heading {
+      font-size: 20px;
+    }
+    .footer-links {
+      gap: 24px;
+    }
+    .footer-decorative-inner {
+      font-size: clamp(60px, 10vw, 100px);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .footer {
+      max-width: 100%;
+      margin-top: -120px;
+      padding: 184px 24px 60px;
+      border-radius: 16px 16px 0 0;
+    }
+    .footer-links {
+      flex-direction: column;
+      gap: 16px;
+    }
+    .footer-decorative-inner {
+      font-size: 60px;
     }
   }
   
