@@ -29,54 +29,40 @@
     <div class="pageBackground">
     
     <!-- Navigation -->
-    <nav class="fixed top-0 left-0 right-0 z-50 nav-gradient px-8 md:px-[50px] pt-8 pb-8" role="navigation" aria-label="Main navigation">
-        <div class="max-w-content mx-auto flex items-center justify-between">
-            <!-- Name/Logo -->
-            <a href="#home" class="flex items-center gap-5 cursor-pointer" aria-label="Go to home page">
+    <nav class="fixed top-0 left-0 right-0 z-50 nav-outer px-4 md:px-8 pt-6 pb-6 md:pt-8 md:pb-8" role="navigation" aria-label="Main navigation">
+        <div class="nav-bar">
+            <a href="#home" class="nav-brand" aria-label="Go to home page">
                 <img src="./assets/54c56fab5e082cbde275ba7c32edb4d1f4b2ae6e.png" 
                      alt="Charen profile picture" 
-                     class="w-[50px] h-[49.789px] rounded-full shadow-md object-cover"
+                     class="nav-avatar"
                      loading="eager">
-                <h1 class="text-[24px] font-serif leading-[1.52] tracking-[-1.08px]">Charen</h1>
+                <span class="nav-name">Charen</span>
             </a>
             
-            <!-- Navigation Links -->
-            <div class="hidden md:flex items-center gap-3 font-mono text-caption">
-                <a href="#home" class="nav-button nav-button-active" aria-label="Go to home">Home</a>
-                <a href="https://www.linkedin.com/in/charenk/" target="_blank" rel="noopener noreferrer" class="nav-button nav-button-linkedin" aria-label="Open LinkedIn profile">
+            <div class="hidden md:flex nav-links">
+                <a href="#home" class="nav-pill nav-pill-active" aria-label="Go to home">Home</a>
+                <a href="#projects" class="nav-pill" aria-label="Go to works">Works</a>
+                <a href="https://www.linkedin.com/in/charenk/" target="_blank" rel="noopener noreferrer" class="nav-pill nav-pill-external" aria-label="Open LinkedIn profile">
                     LinkedIn
-                    <svg class="inline-block w-3 h-3 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-                    </svg>
-                </a>
-                <a href="#" class="nav-button nav-button-resume" aria-label="Open resume" target="_blank" rel="noopener noreferrer">
-                    Resume
-                    <svg class="inline-block w-3 h-3 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <svg class="nav-pill-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
                     </svg>
                 </a>
             </div>
             
-            <!-- Mobile Menu Button -->
-            <button id="mobile-menu-btn" class="md:hidden text-black focus:outline-none" aria-label="Toggle mobile menu">
+            <button id="mobile-menu-btn" class="md:hidden nav-menu-btn" aria-label="Toggle mobile menu">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
             </button>
         </div>
         
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden mt-8 flex flex-col gap-3 font-mono text-caption">
-            <a href="#home" class="nav-button nav-button-active">Home</a>
-            <a href="https://www.linkedin.com/in/charenk/" target="_blank" rel="noopener noreferrer" class="nav-button nav-button-linkedin">
+        <div id="mobile-menu" class="nav-mobile hidden md:hidden">
+            <a href="#home" class="nav-pill nav-pill-active">Home</a>
+            <a href="#projects" class="nav-pill">Works</a>
+            <a href="https://www.linkedin.com/in/charenk/" target="_blank" rel="noopener noreferrer" class="nav-pill nav-pill-external">
                 LinkedIn
-                <svg class="inline-block w-3 h-3 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-                </svg>
-            </a>
-            <a href="#" class="nav-button nav-button-resume" target="_blank" rel="noopener noreferrer">
-                Resume
-                <svg class="inline-block w-3 h-3 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <svg class="nav-pill-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
                 </svg>
             </a>
