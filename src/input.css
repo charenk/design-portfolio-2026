@@ -224,6 +224,236 @@
     }
   }
   
+  /* Experiments Section */
+  .experiments-section {
+    margin-top: 80px;
+    margin-bottom: 80px;
+    width: 100%;
+    max-width: 1200px;
+  }
+  
+  .experiments-container {
+    background: #2d2d2d;
+    border-radius: 16px;
+    padding: 40px 32px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  }
+  
+  .experiments-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0 0 24px 0;
+    letter-spacing: -0.02em;
+  }
+  
+  .experiments-body {
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  
+  .experiments-cards-scroll {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 8px;
+    flex: 1 1 0;
+    min-width: 0;
+  }
+  
+  .experiments-cards-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .experiment-card {
+    flex: 0 0 auto;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+  
+  .experiment-card-placeholder {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: rgba(240, 240, 240, 0.9);
+  }
+  
+  .experiments-details-panel {
+    background: #3d3d3d;
+    border-radius: 12px;
+    padding: 24px;
+    min-width: 280px;
+    max-width: 360px;
+    flex-shrink: 0;
+    transition: opacity 0.25s ease;
+  }
+  
+  .experiments-detail-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0 0 12px 0;
+    line-height: 1.3;
+  }
+  
+  .experiments-detail-description {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #b0b0b0;
+    margin: 0 0 20px 0;
+    max-height: 4.5em;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+  
+  .experiments-ctas {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  
+  .experiments-cta-link {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #e0e0e0;
+    text-decoration: underline;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    transition: color 0.2s ease;
+  }
+  
+  .experiments-cta-link:hover {
+    color: #ffffff;
+  }
+  
+  .experiments-cta-demo {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  
+  @media (max-width: 767px) {
+    .experiments-body {
+      flex-direction: column;
+    }
+    .experiments-details-panel {
+      max-width: 100%;
+    }
+  }
+  
+  /* Demo Video Modal */
+  .demo-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  
+  .demo-modal.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+  
+  .demo-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    cursor: pointer;
+  }
+  
+  .demo-modal-box {
+    position: relative;
+    background: #1a1a1a;
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 90vw;
+    width: 720px;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+    z-index: 1;
+  }
+  
+  .demo-modal-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.2s ease, color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+  
+  .demo-modal-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+  
+  .demo-modal-video-wrap {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+  
+  .demo-modal-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+  
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  
   .nav-gradient {
     background: transparent !important;
     backdrop-filter: blur(0px) !important;

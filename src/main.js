@@ -196,4 +196,43 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
         console.error('Navigation element not found');
     }
+    
+    // Demo video modal
+    const demoModal = document.getElementById('demo-modal');
+    const demoModalBackdrop = demoModal && demoModal.querySelector('.demo-modal-backdrop');
+    const demoModalClose = demoModal && demoModal.querySelector('.demo-modal-close');
+    const demoModalIframe = document.getElementById('demo-modal-iframe');
+    
+    function openDemoModal(videoUrl) {
+        if (!demoModal || !demoModalIframe) return;
+        demoModalIframe.src = videoUrl || 'https://www.youtube.com/embed/dQw4w9WgXcQ';
+        demoModal.setAttribute('aria-hidden', 'false');
+        demoModal.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+        demoModalClose && demoModalClose.focus();
+    }
+    
+    function closeDemoModal() {
+        if (!demoModal || !demoModalIframe) return;
+        demoModal.classList.remove('is-open');
+        demoModal.setAttribute('aria-hidden', 'true');
+        demoModalIframe.src = '';
+        document.body.style.overflow = '';
+    }
+    
+    var panelDemoBtn = document.getElementById('experiment-panel-demo');
+    if (panelDemoBtn) {
+        panelDemoBtn.addEventListener('click', function() {
+            openDemoModal('https://www.youtube.com/embed/dQw4w9WgXcQ');
+        });
+    }
+    
+    if (demoModalBackdrop) demoModalBackdrop.addEventListener('click', closeDemoModal);
+    if (demoModalClose) demoModalClose.addEventListener('click', closeDemoModal);
+    
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && demoModal && demoModal.classList.contains('is-open')) {
+            closeDemoModal();
+        }
+    });
 });
