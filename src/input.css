@@ -95,17 +95,6 @@
   }
   
   /* Soft fade on right edge - smooth transition to background */
-  .carousel-wrapper::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 80px;
-    height: 100%;
-    background: linear-gradient(to right, transparent, #FFF7EF);
-    pointer-events: none;
-  }
-  
   .carousel-container {
     display: flex;
     gap: var(--carousel-gap);
@@ -195,13 +184,13 @@
     justify-content: center;
     box-shadow: 
       0 4px 12px rgba(0, 0, 0, 0.08),
-      4px 0 24px -8px rgba(0, 0, 0, 0.15);
+      4px 0 12px rgba(0, 0, 0, 0.12);
   }
   
   .cta-card:hover {
     box-shadow: 
       0 8px 24px rgba(0, 0, 0, 0.1),
-      4px 0 24px -8px rgba(0, 0, 0, 0.2);
+      4px 0 12px rgba(0, 0, 0, 0.15);
   }
   
   .cta-text {
