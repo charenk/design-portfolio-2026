@@ -801,6 +801,97 @@
     min-height: 200px;
   }
   
+  /* PAM Tab Content Styles */
+  .pam-hero-image,
+  .pam-feature-image {
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .pam-hero-image:hover,
+  .pam-feature-image:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+  }
+  
+  .pam-info-grid,
+  .pam-feature {
+    font-family: 'Montserrat', sans-serif;
+    color: #000000;
+  }
+  
+  .pam-info-section h3,
+  .pam-feature-content h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 28px;
+    color: #000000;
+    transition: color 0.3s ease;
+  }
+  
+  .pam-info-section p,
+  .pam-feature-content p,
+  .pam-role-description p,
+  .pam-footer p {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    color: #000000;
+    transition: opacity 0.3s ease;
+  }
+  
+  /* Fade-in animations for scroll reveal */
+  .fade-in-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .fade-in-up.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Stagger animation delays */
+  .fade-in-up:nth-child(1) { transition-delay: 0.1s; }
+  .fade-in-up:nth-child(2) { transition-delay: 0.2s; }
+  .fade-in-up:nth-child(3) { transition-delay: 0.3s; }
+  
+  /* Workato page specific intro animation */
+  .workato-intro {
+    animation: fadeInContent 0.8s ease-out;
+  }
+  
+  @keyframes fadeInContent {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Tab content fade transition */
+  .tab-content {
+    animation: fadeIn 0.5s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
   @media (max-width: 767px) {
     .tab-trigger {
       font-size: 13px;

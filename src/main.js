@@ -266,8 +266,42 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (targetContent) {
                     targetContent.classList.remove('hidden');
                     targetContent.setAttribute('aria-hidden', 'false');
+                    
+                    // Re-trigger scroll animations for newly visible tab content
+                    setTimeout(() => {
+                        const fadeElements = targetContent.querySelectorAll('.fade-in-up');
+                        fadeElements.forEach(el => {
+                            scrollAnimationObserver.observe(el);
+                        });
+                    }, 50);
                 }
             });
         });
     }
+    
+    // Scroll-triggered animations for Workato page
+    const scrollAnimationObserver = new IntersectionObserver(
+        (entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    // Optionally unobserve after animation to improve performance
+                    // scrollAnimationObserver.unobserve(entry.target);
+                }
+            });
+        },
+        {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+        }
+    );
+    
+    // Observe all fade-in elements on page load
+    const fadeInElements = document.querySelectorAll('.fade-in-up');
+    fadeInElements.forEach(element => {
+        scrollAnimationObserver.observe(element);
+    });
+    
+    // Smooth scroll enhancement
+    document.documentElement.style.scrollBehavior = 'smooth';
 });
