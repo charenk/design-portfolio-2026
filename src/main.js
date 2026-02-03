@@ -235,4 +235,39 @@ document.addEventListener('DOMContentLoaded', function() {
             closeDemoModal();
         }
     });
+    
+    // Tabs functionality (Workato page)
+    const tabTriggers = document.querySelectorAll('.tab-trigger');
+    
+    if (tabTriggers.length > 0) {
+        tabTriggers.forEach(trigger => {
+            trigger.addEventListener('click', function() {
+                const targetTab = this.getAttribute('data-tab');
+                
+                // Remove active class from all triggers
+                tabTriggers.forEach(t => {
+                    t.classList.remove('tab-active');
+                    t.setAttribute('aria-selected', 'false');
+                });
+                
+                // Add active class to clicked trigger
+                this.classList.add('tab-active');
+                this.setAttribute('aria-selected', 'true');
+                
+                // Hide all tab content panels
+                const tabContents = document.querySelectorAll('.tab-content');
+                tabContents.forEach(content => {
+                    content.classList.add('hidden');
+                    content.setAttribute('aria-hidden', 'true');
+                });
+                
+                // Show the target tab content
+                const targetContent = document.getElementById('tab-' + targetTab);
+                if (targetContent) {
+                    targetContent.classList.remove('hidden');
+                    targetContent.setAttribute('aria-hidden', 'false');
+                }
+            });
+        });
+    }
 });

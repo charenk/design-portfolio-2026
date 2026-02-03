@@ -754,6 +754,59 @@
     font-size: 28px;
     font-weight: 600;
   }
+  
+  /* Work Tabs - Workato Page */
+  .work-tabs {
+    width: 100%;
+  }
+  
+  .tabs-list {
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .tabs-list::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .tab-trigger {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    color: #52525b;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.2s ease, border-color 0.2s ease;
+    border-bottom: 2px solid transparent;
+    position: relative;
+  }
+  
+  .tab-trigger:hover {
+    color: #18181b;
+  }
+  
+  .tab-trigger.tab-active {
+    color: #18181b;
+    border-bottom-color: #18181b;
+  }
+  
+  .tab-content {
+    padding-top: 40px;
+    min-height: 200px;
+  }
+  
+  @media (max-width: 767px) {
+    .tab-trigger {
+      font-size: 13px;
+      padding: 8px 12px;
+    }
+  }
 }
 
 /* Utilities */
