@@ -237,7 +237,7 @@
   
   .experiments-title {
     font-family: 'Montserrat', sans-serif;
-    font-size: 32px;
+    font-size: 28px;
     font-weight: 600;
     color: #ffffff;
     margin: 0 0 24px 0;
@@ -749,9 +749,9 @@
     object-position: bottom;
   }
   
-  /* Projects section header override */
+  /* Projects section header override — 28px to match .experiments-title */
   #projects {
-    font-size: 18px;
+    font-size: 28px;
     font-weight: 600;
   }
 }
