@@ -721,6 +721,34 @@
     font-weight: inherit;
   }
   
+  /* Previously shipped at — hero third block; no top margin so gap from paragraph 2 matches paragraph 1→2 spacing */
+  .previously-shipped {
+    margin-top: 0;
+  }
+  
+  .previously-shipped-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: #C4A574;
+    margin: 0 0 16px 0;
+    letter-spacing: -0.02em;
+  }
+  
+  .previously-shipped-logos {
+    display: flex;
+    align-items: flex-end;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  
+  .previously-shipped-logo {
+    height: 36px;
+    width: auto;
+    object-fit: contain;
+    object-position: bottom;
+  }
+  
   /* Projects section header override */
   #projects {
     font-size: 18px;
