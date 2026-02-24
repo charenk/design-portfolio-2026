@@ -220,12 +220,11 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.style.overflow = '';
     }
     
-    var panelDemoBtn = document.getElementById('experiment-panel-demo');
-    if (panelDemoBtn) {
-        panelDemoBtn.addEventListener('click', function() {
-            openDemoModal('https://www.youtube.com/embed/dQw4w9WgXcQ');
+    document.querySelectorAll('.experiment-pill-demo').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            openDemoModal(this.getAttribute('data-video') || 'https://www.youtube.com/embed/dQw4w9WgXcQ');
         });
-    }
+    });
     
     if (demoModalBackdrop) demoModalBackdrop.addEventListener('click', closeDemoModal);
     if (demoModalClose) demoModalClose.addEventListener('click', closeDemoModal);

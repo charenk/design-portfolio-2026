@@ -227,133 +227,201 @@
     width: 100%;
     max-width: 1200px;
   }
-  
+
   .experiments-container {
     background: #2d2d2d;
     border-radius: 16px;
-    padding: 40px 32px;
+    padding: 40px 40px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 12px 32px rgba(0, 0, 0, 0.08);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
   }
-  
+
+  /* Left column: title + icon rail */
+  .experiments-left {
+    grid-column: 1 / 2;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-self: start;
+  }
+
   .experiments-title {
     font-family: 'Montserrat', sans-serif;
-    font-size: 28px;
+    font-size: 22px;
     font-weight: 600;
     color: #ffffff;
-    margin: 0 0 24px 0;
-    letter-spacing: -0.02em;
+    margin: 0;
+    letter-spacing: -0.01em;
   }
-  
-  .experiments-body {
+
+  .experiment-icon-rail {
     display: flex;
-    gap: 32px;
-    align-items: flex-start;
+    gap: 10px;
     flex-wrap: wrap;
   }
-  
-  .experiments-cards-scroll {
-    display: flex;
-    gap: 16px;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    padding-bottom: 8px;
-    flex: 1 1 0;
-    min-width: 0;
-  }
-  
-  .experiments-cards-scroll::-webkit-scrollbar {
-    display: none;
-  }
-  
-  .experiment-card {
-    flex: 0 0 auto;
-    width: 32px;
-    height: 32px;
-    border-radius: 6px;
-    background: rgba(255, 255, 255, 0.95);
-    padding: 0;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-  }
-  
-  .experiment-card-placeholder {
-    display: block;
-    width: 100%;
-    height: 100%;
-    background: rgba(240, 240, 240, 0.9);
-  }
-  
-  .experiments-details-panel {
-    background: #3d3d3d;
-    border-radius: 12px;
-    padding: 24px;
-    min-width: 280px;
-    max-width: 360px;
+
+  .experiment-icon-wrap {
+    position: relative;
+    display: inline-flex;
     flex-shrink: 0;
-    transition: opacity 0.25s ease;
   }
-  
-  .experiments-detail-title {
+
+  .experiment-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    object-fit: cover;
+    display: block;
+    cursor: default;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+  }
+
+  .experiment-icon-wrap:hover .experiment-icon {
+    transform: scale(1.1);
+    opacity: 0.9;
+  }
+
+  .experiment-tooltip {
+    /* Hidden by default */
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    /* Positioning: below the icon */
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%) translateY(-4px);
+    /* Appearance */
+    background: #1a1a1a;
+    color: #f0f0f0;
     font-family: 'Montserrat', sans-serif;
-    font-size: 20px;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.45;
+    white-space: normal;
+    width: 200px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+    /* Transition */
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    z-index: 100;
+  }
+
+  /* Arrow pointing up */
+  .experiment-tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-bottom-color: #1a1a1a;
+  }
+
+  .experiment-icon-wrap:hover .experiment-tooltip {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Right column: stacked cards */
+  .experiments-body {
+    grid-column: 2 / 3;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* Individual experiment card */
+  .experiment-item {
+    background: #3a3a3a;
+    border-radius: 12px;
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+
+  .experiment-item:hover {
+    transform: translateY(-2px);
+    background: #404040;
+  }
+
+  .experiment-item + .experiment-item {
+    margin-top: 16px;
+  }
+
+  .experiment-item-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
     font-weight: 600;
     color: #ffffff;
-    margin: 0 0 12px 0;
-    line-height: 1.3;
+    line-height: 1.4;
+    margin: 0;
   }
-  
-  .experiments-detail-description {
+
+  .experiment-item-desc {
     font-family: 'Montserrat', sans-serif;
-    font-size: 14px;
-    line-height: 1.5;
-    color: #b0b0b0;
-    margin: 0 0 20px 0;
-    max-height: 4.5em;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
+    font-size: 13px;
+    line-height: 1.55;
+    color: #9e9e9e;
+    margin: 0;
   }
-  
-  .experiments-ctas {
+
+  .experiment-item-ctas {
     display: flex;
-    gap: 16px;
+    gap: 10px;
     flex-wrap: wrap;
+    margin-top: 4px;
   }
-  
-  .experiments-cta-link {
+
+  .experiment-pill-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 16px;
+    border-radius: 999px;
     font-family: 'Montserrat', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
-    color: #e0e0e0;
-    text-decoration: underline;
     cursor: pointer;
-    background: none;
+    text-decoration: none;
     border: none;
-    padding: 0;
-    transition: color 0.2s ease;
+    transition: opacity 0.2s ease, transform 0.2s ease;
   }
-  
-  .experiments-cta-link:hover {
+
+  .experiment-pill-btn:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
+  }
+
+  .experiment-pill-demo {
+    background: #4a4a4a;
     color: #ffffff;
   }
-  
-  .experiments-cta-demo {
-    -webkit-appearance: none;
-    appearance: none;
+
+  .experiment-pill-github {
+    background: #4a4a4a;
+    color: #ffffff;
   }
-  
+
+  .experiment-pill-reach {
+    background: #4a4a4a;
+    color: #ffffff;
+  }
+
   @media (max-width: 767px) {
-    .experiments-body {
-      flex-direction: column;
+    .experiments-container {
+      grid-template-columns: 1fr;
     }
-    .experiments-details-panel {
-      max-width: 100%;
+    .experiments-title {
+      grid-column: 1 / -1;
+    }
+    .experiments-body {
+      grid-column: 1 / -1;
     }
   }
   
@@ -371,6 +439,8 @@
   
   .footer-inner {
     position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
   }
   
   /* Contact section - LEFT-aligned, top of footer, aligned with content grid */
@@ -412,16 +482,16 @@
     color: #b45309;
   }
   
-  /* Decorative text - LEFT-aligned with content grid, higher contrast, 2s animation delay */
+  /* Decorative text - flows below contact block in natural document order */
   .footer-decorative {
-    position: absolute;
-    bottom: 10%;
-    left: 48px;
-    right: auto;
-    width: calc(100% - 48px);
+    position: relative;
+    margin-top: 48px;
     pointer-events: none;
     user-select: none;
     overflow: hidden;
+    /* Break out of footer-inner max-width to span full footer width */
+    margin-left: calc(-1 * ((100vw - 1200px) / 2 + 48px));
+    margin-right: calc(-1 * ((100vw - 1200px) / 2 + 48px));
   }
   
   .footer-decorative-inner {
@@ -747,6 +817,12 @@
     width: auto;
     object-fit: contain;
     object-position: bottom;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  .previously-shipped-logo:hover {
+    transform: scale(1.08);
+    opacity: 0.75;
   }
   
   /* Projects section header override — 28px to match .experiments-title */

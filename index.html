@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BCJZTX3QTN"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BCJZTX3QTN');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Charen - Product Designer specializing in AI-powered access management solutions and 0-1 product development">
@@ -75,13 +83,13 @@
             
             <!-- Hero Section: paragraph 1, paragraph 2, Previously shipped at — evenly spaced; larger gap below to Recent works -->
             <header class="pb-16 md:pb-[88px] pr-0 md:pr-[100px]" id="home">
-                <p class="text-body font-serif mb-6 md:mb-[32px]">
+                <p class="text-body font-serif mb-6 md:mb-[32px] fade-in-up">
                     I design and lead product experiences for complex B2B systems, with a focus on identity, access, data and enterprise platforms.
                 </p>
-                <p class="text-body font-serif mb-6 md:mb-[32px]">
+                <p class="text-body font-serif mb-6 md:mb-[32px] fade-in-up" style="transition-delay: 0.15s">
                     Currently shaping <span class="gradient-text">AI-powered</span> privileged access management products at CyberQP.
                 </p>
-                <div class="previously-shipped">
+                <div class="previously-shipped fade-in-up" style="transition-delay: 0.3s">
                     <p class="previously-shipped-label">Previously shipped at</p>
                     <div class="previously-shipped-logos">
                         <img src="./assets/sg-logo.png" alt="ShareGate by Workleap" class="previously-shipped-logo" loading="lazy">
@@ -90,6 +98,9 @@
                     </div>
                 </div>
             </header>
+
+            <!-- Recent Works Section — hidden until all 4 case studies are ready. To show: remove the `hidden` class from the div below. -->
+            <div class="hidden">
 
             <!-- Section Header -->
             <h2 class="text-h1 font-serif font-light text-[#FF6B4A] mb-[30px]" id="projects">
@@ -138,40 +149,61 @@
                 </div>
             </div>
 
+            </div><!-- end hidden Recent Works section -->
+
             <!-- Experiments Section -->
             <section class="experiments-section" id="experiments">
                 <div class="experiments-container">
-                    <h2 class="experiments-title">Experiments</h2>
-                    <div class="experiments-body">
-                        <div class="experiments-cards-scroll" role="list">
-                            <div class="experiment-card">
-                                <span class="experiment-card-placeholder"></span>
+
+                    <!-- Left column: title + icon rail -->
+                    <div class="experiments-left fade-in-up">
+                        <h2 class="experiments-title">Experiments</h2>
+                        <div class="experiment-icon-rail">
+                            <div class="experiment-icon-wrap">
+                                <img src="./assets/icons/Claude code.png" alt="Claude Code" class="experiment-icon">
+                                <span class="experiment-tooltip">Claude code for system design, architecture setup and automation</span>
                             </div>
-                            <div class="experiment-card">
-                                <span class="experiment-card-placeholder"></span>
+                            <div class="experiment-icon-wrap">
+                                <img src="./assets/icons/Cursor AI.png" alt="Cursor AI" class="experiment-icon">
+                                <span class="experiment-tooltip">Cursor for deep application level work</span>
                             </div>
-                            <div class="experiment-card">
-                                <span class="experiment-card-placeholder"></span>
+                            <div class="experiment-icon-wrap">
+                                <img src="./assets/icons/Figma.png" alt="Figma" class="experiment-icon">
+                                <span class="experiment-tooltip">Figma for design exploration</span>
                             </div>
-                            <div class="experiment-card">
-                                <span class="experiment-card-placeholder"></span>
+                            <div class="experiment-icon-wrap">
+                                <img src="./assets/icons/Supabase.png" alt="Supabase" class="experiment-icon">
+                                <span class="experiment-tooltip">Supabase for database and authentication</span>
                             </div>
-                            <div class="experiment-card">
-                                <span class="experiment-card-placeholder"></span>
-                            </div>
-                            <div class="experiment-card">
-                                <span class="experiment-card-placeholder"></span>
-                            </div>
-                        </div>
-                        <div class="experiments-details-panel">
-                            <h3 class="experiments-detail-title" id="experiment-panel-title">Experiment title</h3>
-                            <p class="experiments-detail-description" id="experiment-panel-description">Lorem ipsum description. Placeholder text for the experiment details panel. Replace with actual content.</p>
-                            <div class="experiments-ctas">
-                                <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="experiments-cta-link" id="experiment-panel-github">Github</a>
-                                <button type="button" class="experiments-cta-link experiments-cta-demo" id="experiment-panel-demo">Demo video</button>
+                            <div class="experiment-icon-wrap">
+                                <img src="./assets/icons/Vercel.png" alt="Vercel" class="experiment-icon">
+                                <span class="experiment-tooltip">Vercel for deployment, log analysis and getting public feedback</span>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Right column: stacked cards -->
+                    <div class="experiments-body fade-in-up" style="transition-delay: 0.1s">
+                        <!-- Experiment Card 1 -->
+                        <div class="experiment-item">
+                            <h3 class="experiment-item-title">Figma buddy - prototype to interact with chatGPT via figma comments</h3>
+                            <p class="experiment-item-desc">Design experiment to help get design feedback straight where designers work and iterate,</p>
+                            <div class="experiment-item-ctas">
+                                <button type="button" class="experiment-pill-btn experiment-pill-demo" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ">Demo Video</button>
+                                <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="experiment-pill-btn experiment-pill-github">Github ↗</a>
+                            </div>
+                        </div>
+
+                        <!-- Experiment Card 2 -->
+                        <div class="experiment-item">
+                            <h3 class="experiment-item-title">Building systems for understanding user habits and methods to influence financial decisions</h3>
+                            <p class="experiment-item-desc">To introduce habit shaping features in HabitCents app, I am currently researching</p>
+                            <div class="experiment-item-ctas">
+                                <a href="mailto:charen@gmail.com" class="experiment-pill-btn experiment-pill-reach">Reach out</a>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </section>
 
@@ -193,7 +225,7 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-inner">
-            <div class="footer-contact">
+            <div class="footer-contact fade-in-up">
                 <h2 class="footer-heading">Interested in collaborating? Let's connect</h2>
                 <div class="footer-links">
                     <a href="mailto:charen@gmail.com" class="footer-link">charen@gmail.com</a>
