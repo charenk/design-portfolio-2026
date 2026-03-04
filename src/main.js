@@ -303,4 +303,110 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Smooth scroll enhancement
     document.documentElement.style.scrollBehavior = 'smooth';
+
+    // Background Beams with Collision — Footer
+    (function initFooterBeams() {
+        var footer = document.querySelector('.footer');
+        if (!footer) return;
+
+        var beamsEl = document.createElement('div');
+        beamsEl.className = 'beams-container';
+        beamsEl.setAttribute('aria-hidden', 'true');
+        footer.insertBefore(beamsEl, footer.firstChild);
+
+        // Collision bar at bottom
+        var bar = document.createElement('div');
+        bar.className = 'beam-collision-bar';
+        beamsEl.appendChild(bar);
+
+        var configs = [
+            { x: 10,   dur: 7,  repeat: 3,  delay: 2, h: 56 },
+            { x: 600,  dur: 3,  repeat: 3,  delay: 4, h: 56 },
+            { x: 100,  dur: 7,  repeat: 7,  delay: 0, h: 24 },
+            { x: 400,  dur: 5,  repeat: 14, delay: 4, h: 56 },
+            { x: 800,  dur: 11, repeat: 2,  delay: 0, h: 80 },
+            { x: 1000, dur: 4,  repeat: 2,  delay: 0, h: 48 },
+            { x: 1200, dur: 6,  repeat: 4,  delay: 2, h: 24 },
+        ];
+
+        configs.forEach(function(cfg) { runBeam(beamsEl, cfg); });
+
+        function runBeam(container, cfg) {
+            var beam = document.createElement('div');
+            beam.className = 'beam';
+            beam.style.left = cfg.x + 'px';
+            beam.style.height = cfg.h + 'px';
+            container.appendChild(beam);
+
+            function cycle() {
+                var containerH = container.offsetHeight;
+                var startY = -cfg.h - 200;
+                var endY = containerH;
+                var dist = endY - startY;
+                var duration = cfg.dur * 1000;
+                var start = null;
+                var collided = false;
+
+                beam.style.opacity = '1';
+                beam.style.transform = 'translateY(' + startY + 'px)';
+
+                function step(ts) {
+                    if (!start) start = ts;
+                    var t = Math.min((ts - start) / duration, 1);
+                    var y = startY + dist * t;
+                    beam.style.transform = 'translateY(' + y + 'px)';
+
+                    if (!collided && y + cfg.h >= containerH) {
+                        collided = true;
+                        explode(container, cfg.x, containerH);
+                        beam.style.opacity = '0';
+                        setTimeout(cycle, cfg.repeat * 1000);
+                        return;
+                    }
+                    if (t < 1) requestAnimationFrame(step);
+                }
+                requestAnimationFrame(step);
+            }
+
+            setTimeout(cycle, (cfg.delay || 0) * 1000);
+        }
+
+        function explode(container, x, y) {
+            var wrap = document.createElement('div');
+            wrap.className = 'beam-explosion';
+            wrap.style.left = x + 'px';
+            wrap.style.top = y + 'px';
+            container.appendChild(wrap);
+
+            // Horizontal glow
+            var glow = document.createElement('div');
+            glow.className = 'beam-explosion-glow';
+            wrap.appendChild(glow);
+
+            // Particles
+            var particles = [];
+            for (var i = 0; i < 20; i++) {
+                var p = document.createElement('span');
+                p.className = 'beam-particle';
+                var dx = Math.floor(Math.random() * 80 - 40);
+                var dy = Math.floor(Math.random() * -50 - 10);
+                var dur = (Math.random() * 1.5 + 0.5).toFixed(2);
+                p.style.transition = 'transform ' + dur + 's ease-out, opacity ' + dur + 's ease-out';
+                wrap.appendChild(p);
+                particles.push({ el: p, dx: dx, dy: dy });
+            }
+
+            // Trigger animations next frame
+            requestAnimationFrame(function() {
+                glow.style.opacity = '0';
+                particles.forEach(function(pt) {
+                    pt.el.style.transform = 'translate(' + pt.dx + 'px,' + pt.dy + 'px)';
+                    pt.el.style.opacity = '0';
+                });
+            });
+
+            // Cleanup
+            setTimeout(function() { wrap.remove(); }, 2000);
+        }
+    })();
 });

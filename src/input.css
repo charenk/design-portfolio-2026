@@ -224,14 +224,15 @@
     z-index: 10;
     margin-top: 80px;
     margin-bottom: 0;
-    width: 100%;
+    width: calc(100% + 16px);
     max-width: 1200px;
+    margin-left: -16px;
   }
 
   .experiments-container {
     background: #2d2d2d;
     border-radius: 16px;
-    padding: 40px 40px;
+    padding: 40px 40px 40px 16px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 12px 32px rgba(0, 0, 0, 0.08);
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -429,9 +430,9 @@
   .footer {
     position: relative;
     z-index: 1;
-    max-width: calc(100% - 80px);
+    max-width: 1280px;
     margin: -180px auto 0;
-    padding: 244px 48px 80px;
+    padding: 240px 48px 48px;
     background: #FEDEC3;
     border-radius: 24px 24px 0 0;
     overflow: hidden;
@@ -439,8 +440,10 @@
   
   .footer-inner {
     position: relative;
+    z-index: 1;
     max-width: 1200px;
     margin: 0 auto;
+    padding-left: 16px;
   }
   
   /* Contact section - LEFT-aligned, top of footer, aligned with content grid */
@@ -448,7 +451,7 @@
     position: relative;
     z-index: 2;
     text-align: left;
-    margin-bottom: 60px;
+    margin-bottom: 0;
   }
   
   .footer-heading {
@@ -482,40 +485,77 @@
     color: #b45309;
   }
   
-  /* Decorative text - flows below contact block in natural document order */
-  .footer-decorative {
-    position: relative;
-    margin-top: 48px;
-    pointer-events: none;
-    user-select: none;
+  /* Background Beams with Collision */
+  .beams-container {
+    position: absolute;
+    inset: 0;
     overflow: hidden;
-    /* Break out of footer-inner max-width to span full footer width */
-    margin-left: calc(-1 * ((100vw - 1200px) / 2 + 48px));
-    margin-right: calc(-1 * ((100vw - 1200px) / 2 + 48px));
+    pointer-events: none;
+    z-index: 0;
   }
-  
-  .footer-decorative-inner {
-    display: inline-block;
-    font-family: 'Montserrat', sans-serif;
-    font-size: clamp(80px, 12vw, 140px);
-    font-weight: 700;
-    color: rgba(210, 180, 140, 0.15);
-    letter-spacing: -0.02em;
-    white-space: nowrap;
-    animation: footer-scroll 60s linear 2s infinite;
-    transform-origin: left center;
+
+  .beam {
+    position: absolute;
+    top: 0;
+    width: 1px;
+    border-radius: 9999px;
+    background: linear-gradient(to top, #6366f1, #a855f7, transparent);
+    will-change: transform;
+    opacity: 0;
   }
-  
-  @keyframes footer-scroll {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+
+  .beam-explosion {
+    position: absolute;
+    z-index: 50;
+    width: 8px;
+    height: 8px;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
   }
-  
+
+  .beam-explosion-glow {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 8px;
+    width: 40px;
+    border-radius: 9999px;
+    background: linear-gradient(to right, transparent, #6366f1, transparent);
+    filter: blur(4px);
+    transition: opacity 1.5s ease-out;
+  }
+
+  .beam-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 9999px;
+    background: linear-gradient(to bottom, #6366f1, #a855f7);
+  }
+
+  /* Collision bar at bottom of footer */
+  .beam-collision-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(245, 245, 245, 0.05);
+    pointer-events: none;
+    box-shadow:
+      0 0 24px rgba(34, 42, 53, 0.06),
+      0 1px 1px rgba(0, 0, 0, 0.05),
+      0 0 0 1px rgba(34, 42, 53, 0.04),
+      0 0 4px rgba(34, 42, 53, 0.08),
+      0 16px 68px rgba(47, 48, 55, 0.05),
+      0 1px 0 rgba(255, 255, 255, 0.1) inset;
+  }
+
   @media (max-width: 768px) {
     .footer {
       max-width: calc(100% - 32px);
       margin-top: -140px;
-      padding: 204px 24px 60px;
+      padding: 200px 24px 40px;
       border-radius: 16px 16px 0 0;
     }
     .footer-heading {
@@ -524,24 +564,18 @@
     .footer-links {
       gap: 24px;
     }
-    .footer-decorative-inner {
-      font-size: clamp(60px, 10vw, 100px);
-    }
   }
-  
+
   @media (max-width: 480px) {
     .footer {
       max-width: 100%;
       margin-top: -120px;
-      padding: 184px 24px 60px;
+      padding: 180px 24px 40px;
       border-radius: 16px 16px 0 0;
     }
     .footer-links {
       flex-direction: column;
       gap: 16px;
-    }
-    .footer-decorative-inner {
-      font-size: 60px;
     }
   }
   
