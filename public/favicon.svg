@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <style>
+    @keyframes gradient-shift {
+      0%, 100% { stop-color: #4297e1; }
+      50% { stop-color: #31c648; }
+    }
+    @keyframes gradient-shift-2 {
+      0%, 100% { stop-color: #31c648; }
+      50% { stop-color: #4297e1; }
+    }
+    .stop1 { animation: gradient-shift 3s ease-in-out infinite; }
+    .stop2 { animation: gradient-shift-2 3s ease-in-out infinite; }
+  </style>
+  <defs>
+    <linearGradient id="cGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" class="stop1" stop-color="#4297e1"/>
+      <stop offset="100%" class="stop2" stop-color="#31c648"/>
+    </linearGradient>
+  </defs>
+  <circle cx="16" cy="16" r="14" fill="#1a1a1a"/>
+  <text x="16" y="22" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="18" font-weight="600" fill="url(#cGrad)">c</text>
+</svg>
