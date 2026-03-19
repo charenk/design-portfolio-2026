@@ -18,10 +18,10 @@ interface CircularRevealHeadingProps {
 const sizeConfig = {
     xs: {
         container: 'h-[248px] w-[248px]',
-        fontSize: 'text-[10px]',
-        tracking: 'tracking-[0.2em]',
-        radius: 132,
-        gap: 40,
+        fontSize: 'text-[12px]',
+        tracking: 'tracking-[0.15em]',
+        radius: 160,
+        gap: 30,
         imageSize: 'w-[75%] h-[75%]',
         textStyle: 'font-medium'
     },
@@ -29,7 +29,7 @@ const sizeConfig = {
         container: 'h-[300px] w-[300px]',
         fontSize: 'text-xs',
         tracking: 'tracking-[0.25em]',
-        radius: 160,
+        radius: 180,
         gap: 40,
         imageSize: 'w-[75%] h-[75%]',
         textStyle: 'font-medium'
@@ -38,7 +38,7 @@ const sizeConfig = {
         container: 'h-[400px] w-[400px]',
         fontSize: 'text-sm',
         tracking: 'tracking-[0.3em]',
-        radius: 160,
+        radius: 180,
         gap: 30,
         imageSize: 'w-[75%] h-[75%]',
         textStyle: 'font-medium',
@@ -47,7 +47,7 @@ const sizeConfig = {
         container: 'h-[500px] w-[500px]',
         fontSize: 'text-base',
         tracking: 'tracking-[0.35em]',
-        radius: 160,
+        radius: 185,
         gap: 20,
         imageSize: 'w-[75%] h-[75%]',
         textStyle: 'font-medium'
@@ -117,10 +117,21 @@ export const CircularRevealHeading = ({
         const totalItems = items.length;
         const totalGapDegrees = config.gap * totalItems;
         const availableDegrees = 360 - totalGapDegrees;
-        const segmentDegrees = availableDegrees / totalItems;
+
+        // Calculate total text length for proportional distribution
+        const totalTextLength = items.reduce((sum, item) => sum + item.text.length, 0);
+
+        // Calculate cumulative positions
+        let cumulativePosition = 0;
+
         return items.map((item, index) => {
-            const startPosition = index * (segmentDegrees + config.gap);
+            const startPosition = cumulativePosition;
             const startOffset = `${(startPosition / 360) * 100}%`;
+
+            // Proportional segment size based on text length
+            const segmentDegrees = (item.text.length / totalTextLength) * availableDegrees;
+            cumulativePosition += segmentDegrees + config.gap;
+
             return (
                 <g key={index}>
                     <text
@@ -141,8 +152,6 @@ export const CircularRevealHeading = ({
                             href="#curve"
                             className="fill-[url(#textGradient)] hover:fill-[#2d3436]"
                             startOffset={startOffset}
-                            textLength={`${segmentDegrees * 1.8}`}
-                            lengthAdjust="spacingAndGlyphs"
                         >
                             {item.text}
                         </textPath>
@@ -157,7 +166,7 @@ export const CircularRevealHeading = ({
             <ImagePreloader images={items.map(item => item.image)} />
             <motion.div
                 whileHover={{
-                    boxShadow: "20px 20px 40px #e5c5ab, -20px -20px 40px #fff7ef"
+                    boxShadow: "20px 20px 40px #e5c5ab, -20px -20px 40px #f5d6bc"
                 }}
                 whileTap={{ scale: 0.98 }}
                 animate={{ y: [0, -8, 0] }}
@@ -170,7 +179,7 @@ export const CircularRevealHeading = ({
                     "relative overflow-hidden",
                     config.container,
                     "rounded-full bg-[#FEDEC3]",
-                    "shadow-[16px_16px_32px_#e5c5ab,-16px_-16px_32px_#fff7ef]",
+                    "shadow-[16px_16px_32px_#e5c5ab,-16px_-16px_32px_#f5d6bc]",
                     "transition-all duration-500 ease-out",
                     className
                 )}
@@ -184,14 +193,14 @@ export const CircularRevealHeading = ({
                 <motion.div
                     className="absolute inset-[2px] rounded-full bg-[#FEDEC3]"
                     style={{
-                        boxShadow: "inset 6px 6px 12px #e5c5ab, inset -6px -6px 12px #fff7ef"
+                        boxShadow: "inset 6px 6px 12px #e5c5ab, inset -6px -6px 12px #f5d6bc"
                     }}
                 />
 
                 <motion.div
                     className="absolute inset-[12px] rounded-full bg-[#FEDEC3]"
                     style={{
-                        boxShadow: "inset 4px 4px 8px #e5c5ab, inset -4px -4px 8px #fff7ef"
+                        boxShadow: "inset 4px 4px 8px #e5c5ab, inset -4px -4px 8px #f5d6bc"
                     }}
                 />
 
@@ -204,9 +213,6 @@ export const CircularRevealHeading = ({
                                 animate={{ opacity: 1 }}
                                 transition={{ duration: 0.3 }}
                                 className="relative z-10 p-6 rounded-3xl bg-[#FEDEC3]"
-                                whileHover={{
-                                    boxShadow: "inset 3px 3px 6px #e5c5ab, inset -3px -3px 6px #fff7ef"
-                                }}
                             >
                                 {centerText}
                             </motion.div>
