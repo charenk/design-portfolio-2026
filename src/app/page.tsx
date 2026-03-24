@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from 'react'
+import Link from 'next/link'
 import Image from 'next/image'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
@@ -168,10 +169,10 @@ export default function Home() {
               <div className="experiments-body">
                 {/* Experiment Card 1 */}
                 <div className="experiment-item">
-                  <p className="experiment-item-desc">Building a Figma workflow that brings contextual design feedback directly into comments.</p>
+                  <p className="experiment-item-desc">Explored improving Figma feedback with AI-generated insights in comments using OpenAI, reducing screenshot-based workflows.</p>
                   <div className="experiment-item-ctas">
-                    <button type="button" className="experiment-pill-btn experiment-pill-demo">Demo Video</button>
-                    <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="experiment-pill-btn experiment-pill-github">Github</a>
+                    <Link href="/figma-buddy" className="experiment-pill-btn experiment-pill-demo">Demo Video</Link>
+                    <a href="https://github.com/charenk/buddy/tree/main?tab=readme-ov-file#whats-does-figma-buddy-do" target="_blank" rel="noopener noreferrer" className="experiment-pill-btn experiment-pill-github">Github</a>
                   </div>
                 </div>
 
