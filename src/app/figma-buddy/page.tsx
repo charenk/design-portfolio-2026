@@ -7,6 +7,7 @@ import { Footer } from '@/components/layout/Footer'
 
 export default function FigmaBuddyPage() {
   const [gridOpacity, setGridOpacity] = useState(1)
+  const [videoActive, setVideoActive] = useState(false)
   const pageBackgroundRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -75,65 +76,80 @@ export default function FigmaBuddyPage() {
             Back
           </Link>
 
-          {/* Hero Title */}
+          {/* Title */}
           <h1 className="font-serif font-light text-[40px] md:text-[52px] leading-tight mb-[50px] pr-0 md:pr-[100px]">
-            Figma Buddy brings AI-generated design feedback directly into Figma comments using OpenAI.
+            Building AI feedback flow via Figma comments
           </h1>
 
-          {/* Overview: two columns */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-[30px] md:gap-[50px] mb-[50px]">
-
-            {/* Left: description */}
-            <div>
-              <p className="text-body font-serif mb-[30px]">
-                Design feedback loops in Figma often rely on screenshots, back-and-forth messages, and manual note-taking — slowing down iteration cycles.
-              </p>
-              <p className="text-body font-serif">
-                Figma Buddy is a plugin that uses OpenAI to analyse the selected frame and post contextual, structured feedback as a Figma comment — reducing the overhead of screenshot-based review workflows.
-              </p>
-            </div>
-
-            {/* Right: role + results */}
-            <div>
-              <div className="mb-[30px]">
-                <p className="text-caption font-serif text-[#9e9e9e] mb-3 uppercase tracking-widest">My role</p>
-                <p className="text-body font-serif">Solo designer &amp; developer</p>
-                <p className="text-body font-serif">Concept, prototyping, Figma plugin development</p>
-              </div>
-              <div>
-                <p className="text-caption font-serif text-[#9e9e9e] mb-3 uppercase tracking-widest">Results</p>
-                <p className="text-body font-serif">Reduced screenshot-based feedback workflows</p>
-                <p className="text-body font-serif">AI-generated insights posted inline in Figma</p>
-                <p className="text-body font-serif">Faster design review iteration cycles</p>
-              </div>
-            </div>
+          {/* Video — thumbnail with play button, swaps to inline embed on click */}
+          <div
+            className="w-full aspect-[16/9] rounded-lg overflow-hidden mb-[50px] relative bg-black cursor-pointer"
+            onClick={() => setVideoActive(true)}
+          >
+            {!videoActive ? (
+              <>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="https://img.youtube.com/vi/J0Z9t416FEY/maxresdefault.jpg"
+                  alt="Figma Buddy demo video thumbnail"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 flex items-center justify-center bg-black/10 hover:bg-black/20 transition-colors">
+                  <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
+                    <svg className="w-6 h-6 text-black ml-1" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <iframe
+                src="https://www.youtube.com/embed/J0Z9t416FEY?autoplay=1"
+                title="Figma Buddy demo"
+                className="absolute inset-0 w-full h-full border-0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowFullScreen
+              />
+            )}
           </div>
 
-          {/* Full-width Banner — image/video placeholder */}
-          <div className="w-full bg-[#C4C4C4] aspect-[16/9] rounded-lg mb-[50px]">
-            {/* Replace with <video> or <Image> when ready */}
-          </div>
+          {/* Content — Overview + Project Stack */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-[30px] md:gap-[80px] mb-[80px]">
 
-          {/* Content Section: left text + right images */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-[30px] md:gap-[50px] mb-[50px]">
-
-            {/* Left: body copy */}
+            {/* Left: Overview text */}
             <div>
-              <h2 className="text-h1 font-serif font-light mb-[30px]">
-                For a designer, anything related to async feedback seems fragmented and slow.
-              </h2>
-              <p className="text-body font-serif mb-[30px]">
-                The truth is that most designers spend more time chasing feedback than acting on it. Figma Buddy automates the first pass — giving reviewers a structured starting point without leaving the design file.
+              <h2 className="text-h1 font-serif font-light mb-[30px]">Overview</h2>
+              <p className="font-serif text-[17px] leading-relaxed mb-[24px]">
+                Designers often step out of Figma to get AI feedback, pasting images into ChatGPT or other tools for critique. While this works, it disrupts their creative flow and separates design from reflection.
               </p>
-              <p className="text-body font-serif">
-                The plugin sends the selected frame to OpenAI, which returns structured critique covering layout, hierarchy, and accessibility, then posts it as a Figma comment thread — no copy-paste, no screenshots.
+              <p className="font-serif text-[17px] leading-relaxed mb-[24px]">
+                Figma Buddy explores how AI can exist <em>inside</em> the design process rather than outside it. By allowing users to comment <strong>@buddy</strong> within Figma, designers can receive contextual feedback on hierarchy, typography, layout, and usability without leaving their workspace.
+              </p>
+              <p className="font-serif text-[17px] leading-relaxed">
+                This project began as a proof of concept to test how AI can understand frame context, interpret visual data, and provide structured, conversational design critique directly in Figma comments.
               </p>
             </div>
 
-            {/* Right: stacked image placeholders */}
-            <div className="flex flex-col gap-[20px]">
-              <div className="w-full bg-[#C4C4C4] aspect-[4/3] rounded-lg" />
-              <div className="w-full bg-[#C4C4C4] aspect-[4/3] rounded-lg" />
+            {/* Right: Project Stack */}
+            <div>
+              <p className="text-caption font-serif text-[#9e9e9e] mb-[20px] uppercase tracking-widest">Project stack</p>
+              <ul className="space-y-[14px] list-none p-0 m-0">
+                <li className="font-serif text-[17px] leading-relaxed">
+                  <strong>OpenAI API</strong> for generating contextual design feedback
+                </li>
+                <li className="font-serif text-[17px] leading-relaxed">
+                  <strong>Supabase</strong> for authentication, data storage, and activity logging
+                </li>
+                <li className="font-serif text-[17px] leading-relaxed">
+                  <strong>Vercel</strong> for app hosting and deployment
+                </li>
+                <li className="font-serif text-[17px] leading-relaxed">
+                  <strong>Cursor IDE</strong> for development and rapid iteration
+                </li>
+                <li className="font-serif text-[17px] leading-relaxed">
+                  <strong>GitHub</strong> for version control and public collaboration
+                </li>
+              </ul>
             </div>
           </div>
 

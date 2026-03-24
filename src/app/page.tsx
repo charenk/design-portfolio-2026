@@ -171,8 +171,13 @@ export default function Home() {
                 <div className="experiment-item">
                   <p className="experiment-item-desc">Explored improving Figma feedback with AI-generated insights in comments using OpenAI, reducing screenshot-based workflows.</p>
                   <div className="experiment-item-ctas">
-                    <Link href="/figma-buddy" className="experiment-pill-btn experiment-pill-demo">Demo Video</Link>
-                    <a href="https://github.com/charenk/buddy/tree/main?tab=readme-ov-file#whats-does-figma-buddy-do" target="_blank" rel="noopener noreferrer" className="experiment-pill-btn experiment-pill-github">Github</a>
+                    <Link href="/figma-buddy" className="experiment-pill-btn experiment-pill-demo">View Demo</Link>
+                    <a href="https://github.com/charenk/buddy/tree/main?tab=readme-ov-file#whats-does-figma-buddy-do" target="_blank" rel="noopener noreferrer" className="experiment-pill-btn experiment-pill-github">
+                      Github
+                      <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </a>
                   </div>
                 </div>
 
