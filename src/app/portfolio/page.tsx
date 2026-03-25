@@ -1,90 +1,175 @@
-import type { Metadata } from 'next'
+"use client"
+
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 
-export const metadata: Metadata = {
-  title: 'Portfolio — Charen',
-  robots: {
-    index: false,
-    follow: false,
-  },
+interface ProjectCard {
+  title: string
+  tags: string
+  href: string
+  badge?: string
+  aspect: string
+  placeholder: string
+  rotate?: string
 }
 
-const caseStudies = [
-  {
-    title: 'AI-powered privileged access management',
-    description: 'Shaping an intent-driven PAM platform for MSP and enterprise environments at CyberQP.',
-    href: '/ai-pam',
-    tag: 'Enterprise SaaS · Identity',
-  },
-  {
-    title: 'Workato — Integration platform',
-    description: 'Product design across PAM, QTech, Mobile, and B2B use cases.',
-    href: '/workato',
-    tag: 'Enterprise · Integrations',
-  },
-  {
-    title: 'Browser extension',
-    description: 'Designing a browser-based workflow tool to reduce context-switching for technical users.',
-    href: '/browser-extension',
-    tag: 'Productivity · Extension',
-  },
-  {
-    title: 'Figma Buddy — AI design feedback',
-    description: 'Explored AI-generated design critique posted directly into Figma comments using OpenAI.',
-    href: '/figma-buddy',
-    tag: 'Experiment · AI',
-  },
-]
+function Card({ title, tags, href, badge, aspect, placeholder, rotate }: ProjectCard) {
+  return (
+    <Link href={href} className={`group block no-underline ${rotate ?? ''}`}>
+      {/* Image area */}
+      <div
+        className={`w-full ${aspect} rounded-[14px] overflow-hidden shadow-sm relative
+                    transition-transform duration-[220ms] group-hover:scale-[1.02]`}
+        style={{ backgroundColor: placeholder }}
+      >
+        <div className="absolute inset-0" />
+        {badge && (
+          <span className="absolute bottom-3 right-3 bg-black/10 text-[#1a1a1a]
+                           text-[11px] font-medium px-2.5 py-1 rounded-full">
+            {badge}
+          </span>
+        )}
+      </div>
+
+      {/* Title + tags */}
+      <div className="mt-3 px-1">
+        <p className="font-sans text-[15px] font-semibold text-[#1a1a1a]
+                       inline-flex items-center gap-1.5 group-hover:gap-2.5 transition-all duration-[220ms]">
+          {title}
+          <span aria-hidden="true">→</span>
+        </p>
+        <p className="font-sans text-[12px] text-[#9e9e9e] mt-1">{tags}</p>
+      </div>
+    </Link>
+  )
+}
 
 export default function PortfolioPage() {
+  const [gridOpacity, setGridOpacity] = useState(1)
+  const pageBackgroundRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const updateGridOpacity = () => {
+      const scrollY = window.scrollY
+      const docHeight = document.documentElement.scrollHeight
+      const viewportHeight = window.innerHeight
+      const maxScroll = docHeight - viewportHeight
+      const progress = maxScroll > 0 ? scrollY / maxScroll : 0
+
+      let opacity = 1
+      if (progress <= 0.30) {
+        const fadeProgress = progress / 0.30
+        const easedProgress = 1 - Math.pow(1 - fadeProgress, 3)
+        opacity = 1 - easedProgress
+      } else {
+        opacity = 0
+      }
+
+      opacity = Math.max(0, Math.min(1, opacity))
+      setGridOpacity(opacity)
+    }
+
+    let ticking = false
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updateGridOpacity()
+          ticking = false
+        })
+        ticking = true
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    updateGridOpacity()
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  useEffect(() => {
+    if (pageBackgroundRef.current) {
+      pageBackgroundRef.current.style.setProperty('--gridOpacity', String(gridOpacity))
+    }
+  }, [gridOpacity])
+
+  // Zone A: Workato (secondary left) + AI PAM (hero right)
+  const workato: ProjectCard = {
+    title: 'Workato — Integration platform',
+    tags: 'Enterprise · Integrations',
+    href: '/workato',
+    badge: 'Workato',
+    aspect: 'aspect-square',
+    placeholder: '#ddeedd',
+    rotate: '-rotate-[2deg]',
+  }
+
+  const aiPam: ProjectCard = {
+    title: 'AI-powered privileged access management',
+    tags: 'Enterprise SaaS · Identity',
+    href: '/ai-pam',
+    badge: 'CyberQP',
+    aspect: 'aspect-[16/10]',
+    placeholder: '#dde4ed',
+    rotate: 'rotate-[1deg]',
+  }
+
+  const browserExt: ProjectCard = {
+    title: 'Browser extension',
+    tags: 'Productivity · Extension',
+    href: '/browser-extension',
+    aspect: 'aspect-[16/9]',
+    placeholder: '#e8dded',
+    rotate: '-rotate-[1deg]',
+  }
+
+  const figmaBuddy: ProjectCard = {
+    title: 'Figma Buddy — AI design feedback',
+    tags: 'Experiment · AI',
+    href: '/figma-buddy',
+    badge: 'Solo project',
+    aspect: 'aspect-[5/4]',
+    placeholder: '#edeadd',
+    rotate: 'rotate-[1.5deg]',
+  }
+
   return (
-    <div className="pageBackground">
+    <div className="pageBackground" ref={pageBackgroundRef}>
       <Navbar activePage="works" />
 
-      <main className="px-8 md:px-[50px] pt-[200px] pb-[80px]">
-        <div className="max-w-main-content mx-auto pl-4">
+      <main className="px-5 md:px-12 pt-[120px] md:pt-[160px] pb-[100px]">
+        <div className="max-w-[1200px] mx-auto">
 
           {/* Header */}
-          <div className="mb-[80px] pr-0 md:pr-[200px]">
-            <p className="font-sans text-[13px] font-medium tracking-widest uppercase text-[#9e9e9e] mb-6">
-              Selected work
-            </p>
-            <h1 className="font-serif font-light text-[40px] md:text-[52px] leading-tight">
-              Work I can walk you through
+          <div className="mb-14">
+            <h1 className="font-serif font-light text-[40px] md:text-[52px] text-[#1a1a1a] leading-tight">
+              My latest work
             </h1>
+            <p className="font-sans text-[16px] text-[#9e9e9e] mt-2">
+              from 2024 'til today
+            </p>
           </div>
 
-          {/* Case study list */}
-          <div className="flex flex-col divide-y divide-[#e4e4e4]">
-            {caseStudies.map((study) => (
-              <Link
-                key={study.href}
-                href={study.href}
-                className="group flex flex-col md:flex-row md:items-center gap-4 md:gap-[50px] py-[40px] no-underline hover:opacity-70 transition-opacity"
-              >
-                <div className="flex-1">
-                  <p className="font-sans text-[11px] font-medium tracking-widest uppercase text-[#9e9e9e] mb-3">
-                    {study.tag}
-                  </p>
-                  <h2 className="font-serif font-light text-[28px] md:text-[32px] leading-tight text-[#1a1a1a] mb-3">
-                    {study.title}
-                  </h2>
-                  <p className="font-sans text-[15px] leading-relaxed text-[#6b6b6b]">
-                    {study.description}
-                  </p>
-                </div>
-                <div className="flex-shrink-0">
-                  <span className="inline-flex items-center gap-1 font-sans text-[13px] font-medium text-[#1a1a1a] group-hover:gap-2 transition-all">
-                    View case study
-                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                    </svg>
-                  </span>
-                </div>
-              </Link>
-            ))}
+          {/* Desktop: hero anchors top-right, left col pushed down */}
+          <div className="hidden md:flex gap-16 items-start">
+            {/* Left column — narrower col makes Workato ~60% smaller */}
+            <div className="flex flex-col gap-32 w-[22%] mt-56">
+              <Card {...workato} />
+              <Card {...browserExt} />
+            </div>
+            {/* Right column — hero flush at top-right */}
+            <div className="flex flex-col gap-20 w-[62%]">
+              <Card {...aiPam} />
+              <Card {...figmaBuddy} />
+            </div>
+          </div>
+
+          {/* Mobile: single column stack, hero first */}
+          <div className="flex flex-col gap-6 md:hidden">
+            <Card {...aiPam} />
+            <Card {...workato} />
+            <Card {...browserExt} />
+            <Card {...figmaBuddy} />
           </div>
 
         </div>
