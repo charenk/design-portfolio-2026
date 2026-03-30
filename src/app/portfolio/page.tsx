@@ -1,50 +1,9 @@
 "use client"
 
 import { useEffect, useRef, useState } from 'react'
-import Link from 'next/link'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
-
-interface ProjectCard {
-  title: string
-  tags: string
-  href: string
-  badge?: string
-  aspect: string
-  placeholder: string
-  rotate?: string
-}
-
-function Card({ title, tags, href, badge, aspect, placeholder, rotate }: ProjectCard) {
-  return (
-    <Link href={href} className={`group block no-underline ${rotate ?? ''}`}>
-      {/* Image area */}
-      <div
-        className={`w-full ${aspect} rounded-[14px] overflow-hidden shadow-sm relative
-                    transition-transform duration-[220ms] group-hover:scale-[1.02]`}
-        style={{ backgroundColor: placeholder }}
-      >
-        <div className="absolute inset-0" />
-        {badge && (
-          <span className="absolute bottom-3 right-3 bg-black/10 text-[#1a1a1a]
-                           text-[11px] font-medium px-2.5 py-1 rounded-full">
-            {badge}
-          </span>
-        )}
-      </div>
-
-      {/* Title + tags */}
-      <div className="mt-3 px-1">
-        <p className="font-sans text-[15px] font-semibold text-[#1a1a1a]
-                       inline-flex items-center gap-1.5 group-hover:gap-2.5 transition-all duration-[220ms]">
-          {title}
-          <span aria-hidden="true">→</span>
-        </p>
-        <p className="font-sans text-[12px] text-[#9e9e9e] mt-1">{tags}</p>
-      </div>
-    </Link>
-  )
-}
+import { ProjectCard, type ProjectCardProps } from '@/components/ui/ProjectCard'
 
 export default function PortfolioPage() {
   const [gridOpacity, setGridOpacity] = useState(1)
@@ -94,17 +53,17 @@ export default function PortfolioPage() {
   }, [gridOpacity])
 
   // Zone A: Workato (secondary left) + AI PAM (hero right)
-  const workato: ProjectCard = {
-    title: 'Workato — Integration platform',
+  const workato: ProjectCardProps = {
+    title: 'Workato: Integration platform',
     tags: 'Enterprise · Integrations',
     href: '/workato',
     badge: 'Workato',
-    aspect: 'aspect-square',
+    aspect: 'aspect-[4/3]',
     placeholder: '#ddeedd',
     rotate: '-rotate-[2deg]',
   }
 
-  const aiPam: ProjectCard = {
+  const aiPam: ProjectCardProps = {
     title: 'AI-powered privileged access management',
     tags: 'Enterprise SaaS · Identity',
     href: '/ai-pam',
@@ -114,17 +73,17 @@ export default function PortfolioPage() {
     rotate: 'rotate-[1deg]',
   }
 
-  const browserExt: ProjectCard = {
-    title: 'Browser extension',
-    tags: 'Productivity · Extension',
+  const browserExt: ProjectCardProps = {
+    title: 'CyberQP Browser Extension',
+    tags: 'Vault, Just in Time accounts',
     href: '/browser-extension',
     aspect: 'aspect-[16/9]',
     placeholder: '#e8dded',
     rotate: '-rotate-[1deg]',
   }
 
-  const figmaBuddy: ProjectCard = {
-    title: 'Figma Buddy — AI design feedback',
+  const figmaBuddy: ProjectCardProps = {
+    title: 'Figma Buddy: AI design feedback',
     tags: 'Experiment · AI',
     href: '/figma-buddy',
     badge: 'Solo project',
@@ -137,7 +96,7 @@ export default function PortfolioPage() {
     <div className="pageBackground" ref={pageBackgroundRef}>
       <Navbar activePage="works" />
 
-      <main className="px-5 md:px-12 pt-[120px] md:pt-[160px] pb-[100px]">
+      <main className="px-5 md:px-12 pt-[120px] md:pt-[160px] pb-[140px]">
         <div className="max-w-[1200px] mx-auto">
 
           {/* Header */}
@@ -154,22 +113,22 @@ export default function PortfolioPage() {
           <div className="hidden md:flex gap-16 items-start">
             {/* Left column — narrower col makes Workato ~60% smaller */}
             <div className="flex flex-col gap-32 w-[22%] mt-56">
-              <Card {...workato} />
-              <Card {...browserExt} />
+              <ProjectCard {...workato} />
+              <ProjectCard {...browserExt} />
             </div>
             {/* Right column — hero flush at top-right */}
-            <div className="flex flex-col gap-20 w-[62%]">
-              <Card {...aiPam} />
-              <Card {...figmaBuddy} />
+            <div className="flex flex-col gap-20 flex-1">
+              <ProjectCard {...aiPam} />
+              <ProjectCard {...figmaBuddy} />
             </div>
           </div>
 
           {/* Mobile: single column stack, hero first */}
           <div className="flex flex-col gap-6 md:hidden">
-            <Card {...aiPam} />
-            <Card {...workato} />
-            <Card {...browserExt} />
-            <Card {...figmaBuddy} />
+            <ProjectCard {...aiPam} />
+            <ProjectCard {...workato} />
+            <ProjectCard {...browserExt} />
+            <ProjectCard {...figmaBuddy} />
           </div>
 
         </div>

@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
+import { WorkGallery } from '@/components/ui/WorkGallery'
 
 export default function Home() {
   const [gridOpacity, setGridOpacity] = useState(1)
@@ -72,9 +73,24 @@ export default function Home() {
             <p className="text-body font-serif mb-6 md:mb-[32px]">
               Currently shaping <span className="gradient-text">AI-powered</span> privileged access management products at CyberQP.
             </p>
-            <div className="previously-shipped">
-              <p className="previously-shipped-label">Previously shipped at</p>
-              <div className="previously-shipped-logos">
+          </header>
+
+          {/* Recent Work Section */}
+          <section className="py-[60px]" id="projects">
+            <div className="mb-[8px]">
+              <h2 className="experiments-title text-accent-yellow">
+                Recent work
+              </h2>
+            </div>
+
+            <WorkGallery />
+
+            {/* Previously shipped at */}
+            <div className="flex flex-col items-center gap-5 mt-16">
+              <p className="font-sans text-[13px] font-medium uppercase tracking-widest text-[#9e9e9e]">
+                Previously shipped at
+              </p>
+              <div className="flex items-center justify-center gap-8 flex-wrap">
                 <Image
                   src="/assets/sg-logo.png"
                   alt="ShareGate by Workleap"
@@ -98,12 +114,7 @@ export default function Home() {
                 />
               </div>
             </div>
-          </header>
-
-          {/* Section Header (hidden for now) */}
-          <h2 className="hidden text-h1 font-serif font-light text-accent-yellow mb-[30px]" id="projects">
-            Recent works
-          </h2>
+          </section>
 
           {/* Experiments Section */}
           <section className="experiments-section" id="experiments">

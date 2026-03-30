@@ -1,10 +1,22 @@
 "use client"
 
 import { useEffect, useRef, useState } from 'react'
-import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { Navbar } from '@/components/layout/Navbar'
+import { Footer } from '@/components/layout/Footer'
 
 export default function WorkatoPage() {
+  const router = useRouter()
   const [gridOpacity, setGridOpacity] = useState(1)
+
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      router.back()
+    } else {
+      router.push('/portfolio')
+    }
+  }
   const [activeTab, setActiveTab] = useState('pam')
   const pageBackgroundRef = useRef<HTMLDivElement>(null)
 
@@ -65,58 +77,23 @@ export default function WorkatoPage() {
 
   return (
     <div className="pageBackground" ref={pageBackgroundRef}>
-      {/* Navigation */}
-      <nav
-        className="fixed top-0 left-0 right-0 z-50 nav-outer px-4 md:px-8 pt-6 pb-6 md:pt-8 md:pb-8"
-        role="navigation"
-        aria-label="Main navigation"
-      >
-        <div className="nav-bar">
-          <a href="#" className="nav-brand" aria-label="Charen">
-            <Image
-              src="/assets/54c56fab5e082cbde275ba7c32edb4d1f4b2ae6e.png"
-              alt="Charen profile picture"
-              className="nav-avatar"
-              width={44}
-              height={44}
-              priority
-            />
-            <span className="nav-name">Charen</span>
-          </a>
-
-          <div className="hidden md:flex nav-links">
-            <a href="#" className="nav-pill nav-pill-active" aria-current="page">Hello Workato team</a>
-            <a
-              href="https://www.charen.online"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="nav-pill nav-pill-external"
-              aria-label="Open public portfolio"
-            >
-              Public portfolio
-              <svg className="nav-pill-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-              </svg>
-            </a>
-            <a
-              href="https://www.linkedin.com/in/charenk/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="nav-pill nav-pill-external"
-              aria-label="Open LinkedIn profile"
-            >
-              LinkedIn
-              <svg className="nav-pill-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-              </svg>
-            </a>
-          </div>
-        </div>
-      </nav>
+      <Navbar activePage="workato" />
 
       {/* Main Content */}
       <main className="px-8 md:px-[50px] pt-[200px] md:pt-[200px] min-h-screen">
         <div className="max-w-main-content mx-auto">
+
+          {/* Back Button */}
+          <button
+            onClick={handleBack}
+            className="inline-flex items-center gap-1 mb-[50px] bg-black text-white px-[10px] py-[5px] font-serif text-caption hover:opacity-80 transition-opacity"
+          >
+            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            Back
+          </button>
+
           <header className="workato-intro pr-0 md:pr-[100px]">
             <p className="text-body font-serif mb-[20px]">Thanks for taking time and looking into my work.</p>
             <p className="text-body font-serif mb-[40px]">Below you can find selected work samples that I have helped ship and am currently working on.</p>
@@ -209,8 +186,22 @@ export default function WorkatoPage() {
               </div>
             ))}
           </div>
+
+          {/* Bottom back link */}
+          <button
+            onClick={handleBack}
+            className="inline-flex items-center gap-1 mb-[80px] text-black font-serif text-caption hover:opacity-70 transition-opacity"
+          >
+            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to projects
+          </button>
+
         </div>
       </main>
+
+      <Footer />
     </div>
   )
 }

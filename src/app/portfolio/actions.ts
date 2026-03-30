@@ -3,7 +3,15 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-export async function verifyPassword(password: string): Promise<{ error?: string }> {
+const ALLOWED_RETURN_PATHS = ['/portfolio', '/workato', '/ai-pam', '/browser-extension', '/figma-buddy']
+
+function sanitizeReturn(url: string | null | undefined): string {
+  if (!url) return '/portfolio'
+  if (ALLOWED_RETURN_PATHS.some(p => url === p || url.startsWith(p + '/'))) return url
+  return '/portfolio'
+}
+
+export async function verifyPassword(password: string, returnUrl?: string): Promise<{ error?: string }> {
   const expected = process.env.PORTFOLIO_PASSWORD
   if (!expected || password !== expected) {
     return { error: 'Incorrect password. Try again.' }
@@ -15,5 +23,5 @@ export async function verifyPassword(password: string): Promise<{ error?: string
     sameSite: 'lax',
     path: '/',
   })
-  redirect('/portfolio')
+  redirect(sanitizeReturn(returnUrl))
 }

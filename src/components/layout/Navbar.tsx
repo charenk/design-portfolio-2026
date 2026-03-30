@@ -49,7 +49,7 @@ export function Navbar({ activePage = 'home' }: NavbarProps) {
             Home
           </Link>
           <Link
-            href="/#projects"
+            href="/portfolio"
             className={`nav-pill ${activePage === 'works' ? 'nav-pill-active' : ''}`}
             aria-label="Go to works"
           >
@@ -91,7 +91,7 @@ export function Navbar({ activePage = 'home' }: NavbarProps) {
             Home
           </Link>
           <Link
-            href="/#projects"
+            href="/portfolio"
             className={`nav-pill ${activePage === 'works' ? 'nav-pill-active' : ''}`}
             onClick={() => setMobileMenuOpen(false)}
           >

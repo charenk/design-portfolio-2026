@@ -13,8 +13,9 @@ export function middleware(request: NextRequest) {
   const envToken = process.env.PORTFOLIO_TOKEN
 
   if (urlToken && envToken && urlToken === envToken) {
-    // Valid token — set cookie and redirect to /portfolio (token stripped from URL)
-    const response = NextResponse.redirect(new URL('/portfolio', request.url))
+    // Valid token — set cookie and redirect to the same path (token stripped from URL)
+    const cleanUrl = new URL(pathname, request.url)
+    const response = NextResponse.redirect(cleanUrl)
     response.cookies.set('portfolio_access', '1', {
       httpOnly: true,
       maxAge: 60 * 60 * 24 * 7, // 7 days
@@ -30,10 +31,12 @@ export function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // No valid token or cookie — send to lock page
-  return NextResponse.redirect(new URL('/portfolio/lock', request.url))
+  // No valid token or cookie — send to lock page with return path
+  const lockUrl = new URL('/portfolio/lock', request.url)
+  lockUrl.searchParams.set('return', pathname)
+  return NextResponse.redirect(lockUrl)
 }
 
 export const config = {
-  matcher: ['/portfolio', '/portfolio/:path*'],
+  matcher: ['/portfolio', '/portfolio/:path*', '/workato', '/ai-pam', '/browser-extension', '/figma-buddy'],
 }
