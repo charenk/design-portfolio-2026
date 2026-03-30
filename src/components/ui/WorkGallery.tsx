@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, type Variants } from 'framer-motion'
 import { useRouter } from 'next/navigation'
 
 export interface WorkItem {
@@ -147,7 +147,7 @@ function WorkCard({
 }: {
   item: WorkItem
   position: (typeof POSITIONS)[number]
-  photoVariants: object
+  photoVariants: Variants
 }) {
   const [isHovered, setIsHovered] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
@@ -194,7 +194,7 @@ function ViewAllWrapper({
   photoVariants,
 }: {
   position: (typeof POSITIONS)[number]
-  photoVariants: object
+  photoVariants: Variants
 }) {
   const [isDragging, setIsDragging] = useState(false)
   const router = useRouter()
@@ -253,7 +253,7 @@ export function WorkGallery({
       x: custom.x,
       y: custom.y,
       scale: 1,
-      transition: { type: 'spring', stiffness: 70, damping: 12, mass: 1, delay: custom.order * 0.15 },
+      transition: { type: 'spring' as const, stiffness: 70, damping: 12, mass: 1, delay: custom.order * 0.15 },
     }),
   }
 
