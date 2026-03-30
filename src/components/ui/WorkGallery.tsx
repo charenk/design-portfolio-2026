@@ -220,7 +220,7 @@ function ViewAllWrapper({
 const DEFAULT_ITEMS: WorkItem[] = [
   { id: 1, title: 'Agentic Privileged Access Management suite', href: '/ai-pam',            placeholder: '#dde4ed', direction: 'left',  svgSrc: '/Agentic-Pam.svg'      },
   { id: 2, title: 'CyberQP browser extension',                  href: '/browser-extension', placeholder: '#e8dded', direction: 'left',  svgSrc: '/Browser-extension.svg' },
-  { id: 3, title: 'Figma Buddy: AI feedback experiment',         href: '/figma-buddy',       placeholder: '#edeadd', direction: 'right' },
+  { id: 3, title: 'Figma Buddy: AI feedback experiment',         href: '/figma-buddy',       placeholder: '#edeadd', direction: 'right', svgSrc: '/Figma-buddy.svg'       },
 ]
 
 export function WorkGallery({
