@@ -10,6 +10,7 @@ export interface WorkItem {
   href: string
   placeholder: string
   direction: 'left' | 'right'
+  svgSrc?: string
 }
 
 // Spread positions for 4 slots — fanned out from center
@@ -31,12 +32,14 @@ function getRandomInRange(min: number, max: number) {
 function ProjectCard({
   placeholder,
   direction,
+  svgSrc,
   onDragStart,
   onDragEnd,
   onClick,
 }: {
   placeholder: string
   direction: 'left' | 'right'
+  svgSrc?: string
   onDragStart: () => void
   onDragEnd: () => void
   onClick: () => void
@@ -70,9 +73,18 @@ function ProjectCard({
       draggable={false}
     >
       <div
-        className="h-full w-full rounded-3xl shadow-sm"
+        className="h-full w-full rounded-3xl shadow-sm overflow-hidden flex items-end justify-center"
         style={{ backgroundColor: placeholder }}
-      />
+      >
+        {svgSrc && (
+          <img
+            src={svgSrc}
+            alt=""
+            draggable={false}
+            className="w-full h-full object-contain object-bottom"
+          />
+        )}
+      </div>
     </motion.div>
   )
 }
@@ -153,6 +165,7 @@ function WorkCard({
       <ProjectCard
         placeholder={item.placeholder}
         direction={item.direction}
+        svgSrc={item.svgSrc}
         onDragStart={() => setIsDragging(true)}
         onDragEnd={() => setTimeout(() => setIsDragging(false), 100)}
         onClick={() => { if (!isDragging) router.push(item.href) }}
@@ -205,8 +218,8 @@ function ViewAllWrapper({
 // ─── Gallery ──────────────────────────────────────────────────────────────────
 
 const DEFAULT_ITEMS: WorkItem[] = [
-  { id: 1, title: 'Agentic Privileged Access Management suite', href: '/ai-pam',            placeholder: '#dde4ed', direction: 'left'  },
-  { id: 2, title: 'CyberQP browser extension',                  href: '/browser-extension', placeholder: '#e8dded', direction: 'left'  },
+  { id: 1, title: 'Agentic Privileged Access Management suite', href: '/ai-pam',            placeholder: '#dde4ed', direction: 'left',  svgSrc: '/Agentic-Pam.svg'      },
+  { id: 2, title: 'CyberQP browser extension',                  href: '/browser-extension', placeholder: '#e8dded', direction: 'left',  svgSrc: '/Browser-extension.svg' },
   { id: 3, title: 'Figma Buddy: AI feedback experiment',         href: '/figma-buddy',       placeholder: '#edeadd', direction: 'right' },
 ]
 
