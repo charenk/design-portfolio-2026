@@ -152,7 +152,7 @@ function ViewAllCard({
           className="pointer-events-none absolute inset-0 rounded-3xl transition-opacity duration-300"
           style={{
             opacity: spotlight.visible ? 1 : 0,
-            background: `radial-gradient(circle at ${spotlight.x}% ${spotlight.y}%, rgba(245,255,200,0.55) 0%, rgba(190,245,215,0.40) 20%, rgba(185,220,255,0.28) 45%, rgba(210,230,255,0.12) 70%, transparent 100%)`,
+            background: `radial-gradient(circle 300px at ${spotlight.x}% ${spotlight.y}%, rgba(200,225,255,0.5) 0%, transparent 100%)`,
           }}
         />
         <span className="relative font-sans text-[15px] font-semibold text-[#888075]">
