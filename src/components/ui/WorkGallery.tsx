@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence, type Variants } from 'framer-motion'
 import { useRouter } from 'next/navigation'
 
@@ -101,9 +101,22 @@ function ViewAllCard({
   onClick: () => void
 }) {
   const [rotation, setRotation] = useState(0)
+  const [spotlight, setSpotlight] = useState({ x: 50, y: 50, visible: false })
+  const cardRef = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
     setRotation(getRandomInRange(1, 2.5))
   }, [])
+
+  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    if (!cardRef.current) return
+    const rect = cardRef.current.getBoundingClientRect()
+    setSpotlight({
+      x: ((e.clientX - rect.left) / rect.width) * 100,
+      y: ((e.clientY - rect.top) / rect.height) * 100,
+      visible: true,
+    })
+  }
 
   return (
     <motion.div
@@ -128,9 +141,22 @@ function ViewAllCard({
       className="relative shrink-0 cursor-grab active:cursor-grabbing"
       draggable={false}
     >
-      <div className="h-full w-full rounded-3xl border border-dashed border-[#c8c4ba] bg-[#f5f2ed] flex flex-col items-center justify-center gap-3">
-        <span className="text-[32px] text-[#9e9e9e]">→</span>
-        <span className="font-sans text-[12px] font-medium uppercase tracking-widest text-[#9e9e9e]">
+      <div
+        ref={cardRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={() => setSpotlight(s => ({ ...s, visible: false }))}
+        className="h-full w-full rounded-3xl border border-dashed border-[#e0dbd2] bg-white overflow-hidden flex flex-col items-center justify-center gap-3 relative"
+      >
+        {/* Spotlight gradient */}
+        <div
+          className="pointer-events-none absolute inset-0 rounded-3xl transition-opacity duration-300"
+          style={{
+            opacity: spotlight.visible ? 1 : 0,
+            background: `radial-gradient(circle at ${spotlight.x}% ${spotlight.y}%, rgba(255,220,100,0.22) 0%, rgba(255,160,60,0.12) 30%, rgba(120,80,255,0.07) 60%, transparent 80%)`,
+          }}
+        />
+        <span className="relative text-[32px] text-[#b0a99a]">→</span>
+        <span className="relative font-sans text-[12px] font-medium uppercase tracking-widest text-[#b0a99a]">
           View all
         </span>
       </div>
