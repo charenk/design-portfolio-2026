@@ -15,13 +15,13 @@ export interface WorkItem {
 
 // Spread positions for 4 slots — fanned out from center
 const POSITIONS = [
-  { x: '-270px', y: '20px', zIndex: 40, order: 0 },
-  { x:  '-90px', y: '35px', zIndex: 30, order: 1 },
-  { x:   '90px', y: '10px', zIndex: 20, order: 2 },
-  { x:  '270px', y: '40px', zIndex: 10, order: 3 },
+  { x: '-390px', y: '20px', zIndex: 40, order: 0 },
+  { x: '-130px', y: '35px', zIndex: 30, order: 1 },
+  { x:  '130px', y: '10px', zIndex: 20, order: 2 },
+  { x:  '390px', y: '40px', zIndex: 10, order: 3 },
 ]
 
-const CARD_SIZE = 220
+const CARD_SIZE = 320
 
 function getRandomInRange(min: number, max: number) {
   return Math.random() * (max - min) + min
@@ -33,6 +33,7 @@ function ProjectCard({
   placeholder,
   direction,
   svgSrc,
+  rotation,
   onDragStart,
   onDragEnd,
   onClick,
@@ -40,15 +41,11 @@ function ProjectCard({
   placeholder: string
   direction: 'left' | 'right'
   svgSrc?: string
+  rotation: number
   onDragStart: () => void
   onDragEnd: () => void
   onClick: () => void
 }) {
-  const [rotation, setRotation] = useState(0)
-  useEffect(() => {
-    setRotation(getRandomInRange(1.5, 4) * (direction === 'left' ? -1 : 1))
-  }, [direction])
-
   return (
     <motion.div
       drag
@@ -176,7 +173,12 @@ function WorkCard({
 }) {
   const [isHovered, setIsHovered] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
+  const [rotation, setRotation] = useState(0)
   const router = useRouter()
+
+  useEffect(() => {
+    setRotation(getRandomInRange(1.5, 4) * (item.direction === 'left' ? -1 : 1))
+  }, [item.direction])
 
   return (
     <motion.div
@@ -191,6 +193,7 @@ function WorkCard({
         placeholder={item.placeholder}
         direction={item.direction}
         svgSrc={item.svgSrc}
+        rotation={rotation}
         onDragStart={() => setIsDragging(true)}
         onDragEnd={() => setTimeout(() => setIsDragging(false), 100)}
         onClick={() => { if (!isDragging) router.push(item.href) }}
@@ -203,8 +206,14 @@ function WorkCard({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 6 }}
             transition={{ duration: 0.18 }}
-            className="pointer-events-none absolute left-0 right-0 text-center font-serif text-[13px] text-[#1a1a1a] whitespace-nowrap"
-            style={{ top: CARD_SIZE + 12 }}
+            className="pointer-events-none absolute font-serif text-[18px] font-bold text-[#1a1a1a]"
+            style={{
+              top: CARD_SIZE + 36,
+              left: 0,
+              width: CARD_SIZE,
+              rotate: `${rotation}deg`,
+              transformOrigin: 'left top',
+            }}
           >
             {item.title}
           </motion.p>
@@ -287,7 +296,7 @@ export function WorkGallery({
   const viewAllPosition = POSITIONS[3]
 
   return (
-    <div className="relative h-[320px] w-full flex items-center justify-center overflow-visible">
+    <div className="relative h-[460px] w-full flex items-center justify-center overflow-visible">
       <motion.div
         className="relative mx-auto flex w-full max-w-5xl justify-center"
         initial={{ opacity: 0 }}

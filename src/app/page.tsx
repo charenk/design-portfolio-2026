@@ -87,7 +87,7 @@ export default function Home() {
 
             {/* Previously shipped at */}
             <div className="flex flex-col items-center gap-5 mt-16">
-              <p className="font-sans text-[13px] font-medium uppercase tracking-widest text-[#9e9e9e]">
+              <p className="font-sans text-[15px] font-medium uppercase tracking-widest text-[#9e9e9e]">
                 Previously shipped at
               </p>
               <div className="flex items-center justify-center gap-8 flex-wrap">
@@ -174,6 +174,20 @@ export default function Home() {
                     <div className="experiment-tooltip">Deployment platform for frontend frameworks with instant previews</div>
                   </div>
                 </div>
+
+                {/* Maken Lab nudge */}
+                <p className="maken-lab-nudge">
+                  <span className="maken-lab-nudge-dot" aria-hidden="true" />
+                  Try these tools at{' '}
+                  <a
+                    href="https://www.makenlab.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="maken-lab-nudge-link"
+                  >
+                    Maken Lab
+                  </a>
+                </p>
               </div>
 
               {/* Right column: stacked cards */}
