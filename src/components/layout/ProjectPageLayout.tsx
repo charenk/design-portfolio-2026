@@ -131,7 +131,7 @@ export function ProjectPageLayout({
     <div className="pageBackground" ref={pageBackgroundRef}>
       <Navbar activePage="works" />
 
-      <main className="px-8 md:px-[50px] pt-[200px] pb-[80px]">
+      <main className="px-8 md:px-[50px] pt-[200px] pb-[200px]">
         <div className="max-w-main-content mx-auto pl-4">
 
           {/* Back Button */}
@@ -146,7 +146,7 @@ export function ProjectPageLayout({
           </button>
 
           {/* Title */}
-          <h1 className={`font-serif font-light text-[40px] md:text-[52px] leading-tight mb-[50px] pr-0 md:pr-[100px]${titleColorClass ? ` ${titleColorClass}` : ''}`}>
+          <h1 className={`font-serif font-normal text-[40px] leading-tight mb-[50px] pr-0 md:pr-[100px]${titleColorClass ? ` ${titleColorClass}` : ''}`}>
             {title}
           </h1>
 
@@ -156,7 +156,7 @@ export function ProjectPageLayout({
           )}
           {hero.type === 'image' && (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={hero.src} alt={hero.alt} className="w-full aspect-[16/9] object-cover rounded-lg mb-[50px]" />
+            <img src={hero.src} alt={hero.alt} className="w-full aspect-[21/9] object-cover rounded-lg mb-[50px]" />
           )}
           {hero.type === 'placeholder' && (
             <div className="w-full bg-[#C4C4C4] aspect-[16/9] rounded mb-[50px]" />
@@ -168,6 +168,9 @@ export function ProjectPageLayout({
             <div>{overviewRight}</div>
           </div>
 
+          {/* Additional sections */}
+          {children}
+
           {/* Disclaimer */}
           {disclaimer && (
             <div className="border-t border-divider-grey pt-[30px] pb-[30px] mb-[50px]">
@@ -176,9 +179,6 @@ export function ProjectPageLayout({
               </div>
             </div>
           )}
-
-          {/* Additional sections */}
-          {children}
 
           {/* Bottom back link */}
           <button

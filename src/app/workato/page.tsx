@@ -80,7 +80,7 @@ export default function WorkatoPage() {
       <Navbar activePage="workato" />
 
       {/* Main Content */}
-      <main className="px-8 md:px-[50px] pt-[200px] md:pt-[200px] min-h-screen">
+      <main className="px-8 md:px-[50px] pt-[200px] md:pt-[200px] pb-[200px] min-h-screen">
         <div className="max-w-main-content mx-auto">
 
           {/* Back Button */}
@@ -95,8 +95,8 @@ export default function WorkatoPage() {
           </button>
 
           <header className="workato-intro pr-0 md:pr-[100px]">
-            <p className="text-body font-serif mb-[20px]">Thanks for taking time and looking into my work.</p>
-            <p className="text-body font-serif mb-[40px]">Below you can find selected work samples that I have helped ship and am currently working on.</p>
+            <p className="text-[18px] leading-[1.52] font-serif mb-[20px]">Thanks for taking time and looking into my work.</p>
+            <p className="text-[18px] leading-[1.52] font-serif mb-[40px]">Below you can find selected work samples that I have helped ship and am currently working on.</p>
           </header>
 
           {/* Tabs Navigation */}
@@ -190,7 +190,7 @@ export default function WorkatoPage() {
           {/* Bottom back link */}
           <button
             onClick={handleBack}
-            className="inline-flex items-center gap-1 mb-[80px] text-black font-serif text-caption hover:opacity-70 transition-opacity"
+            className="inline-flex items-center gap-1 text-black font-serif text-caption hover:opacity-70 transition-opacity"
           >
             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
