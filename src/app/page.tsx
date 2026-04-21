@@ -178,7 +178,7 @@ export default function Home() {
                 {/* Maken Lab nudge */}
                 <p className="maken-lab-nudge">
                   <span className="maken-lab-nudge-dot" aria-hidden="true" />
-                  Try these tools at{' '}
+                  Checkout{' '}
                   <a
                     href="https://www.makenlab.com"
                     target="_blank"
@@ -187,6 +187,7 @@ export default function Home() {
                   >
                     Maken Lab
                   </a>
+                  {' '}to try the apps
                 </p>
               </div>
 
