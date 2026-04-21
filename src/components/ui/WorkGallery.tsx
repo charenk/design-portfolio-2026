@@ -153,7 +153,10 @@ function ViewAllCard({
           }}
         />
         <span className="relative font-sans text-[15px] font-semibold text-[#888075]">
-          View all
+          More
+        </span>
+        <span className="relative inline-flex items-center rounded-full bg-[#fff3d6] px-3 py-1 font-sans text-[12px] font-medium text-[#8a6d1a]">
+          Coming soon
         </span>
       </div>
     </motion.div>
@@ -230,9 +233,6 @@ function ViewAllWrapper({
   position: (typeof POSITIONS)[number]
   photoVariants: Variants
 }) {
-  const [isDragging, setIsDragging] = useState(false)
-  const router = useRouter()
-
   return (
     <motion.div
       className="absolute left-0 top-0"
@@ -241,9 +241,9 @@ function ViewAllWrapper({
       custom={{ x: position.x, y: position.y, order: position.order }}
     >
       <ViewAllCard
-        onDragStart={() => setIsDragging(true)}
-        onDragEnd={() => setTimeout(() => setIsDragging(false), 100)}
-        onClick={() => { if (!isDragging) router.push('/portfolio') }}
+        onDragStart={() => {}}
+        onDragEnd={() => {}}
+        onClick={() => {}}
       />
     </motion.div>
   )

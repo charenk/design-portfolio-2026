@@ -49,7 +49,7 @@ export function Navbar({ activePage = 'home' }: NavbarProps) {
             Home
           </Link>
           <Link
-            href="/portfolio"
+            href="/#projects"
             className={`nav-pill ${activePage === 'works' ? 'nav-pill-active' : ''}`}
             aria-label="Go to works"
           >

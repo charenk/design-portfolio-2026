@@ -3,11 +3,6 @@ import { NextRequest, NextResponse } from 'next/server'
 export function middleware(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl
 
-  // Don't guard the lock page itself — would cause a redirect loop
-  if (pathname.startsWith('/portfolio/lock')) {
-    return NextResponse.next()
-  }
-
   // Tier 1: magic link token in URL
   const urlToken = searchParams.get('t')
   const envToken = process.env.PORTFOLIO_TOKEN
@@ -25,6 +20,12 @@ export function middleware(request: NextRequest) {
     return response
   }
 
+  // Home page: open to everyone, no gate.
+  // (Matcher includes "/" only so the magic-link token above can be consumed.)
+  if (pathname === '/') {
+    return NextResponse.next()
+  }
+
   // Tier 2: check for existing access cookie
   const accessCookie = request.cookies.get('portfolio_access')
   if (accessCookie?.value === '1') {
@@ -38,5 +39,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/portfolio', '/portfolio/:path*', '/workato', '/ai-pam', '/browser-extension', '/figma-buddy'],
+  matcher: ['/', '/workato', '/ai-pam', '/browser-extension', '/figma-buddy'],
 }

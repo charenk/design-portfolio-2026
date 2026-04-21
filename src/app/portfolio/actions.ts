@@ -3,12 +3,12 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-const ALLOWED_RETURN_PATHS = ['/portfolio', '/workato', '/ai-pam', '/browser-extension', '/figma-buddy']
+const ALLOWED_RETURN_PATHS = ['/workato', '/ai-pam', '/browser-extension', '/figma-buddy']
 
 function sanitizeReturn(url: string | null | undefined): string {
-  if (!url) return '/portfolio'
+  if (!url) return '/'
   if (ALLOWED_RETURN_PATHS.some(p => url === p || url.startsWith(p + '/'))) return url
-  return '/portfolio'
+  return '/'
 }
 
 export async function verifyPassword(password: string, returnUrl?: string): Promise<{ error?: string }> {
