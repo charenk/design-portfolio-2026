@@ -1,9 +1,11 @@
 "use client"
 
 import { useState, useTransition } from 'react'
+import { useRouter } from 'next/navigation'
 import { verifyPassword } from '../actions'
 
 export function LockForm({ returnUrl }: { returnUrl: string }) {
+  const router = useRouter()
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [isPending, startTransition] = useTransition()
@@ -15,6 +17,13 @@ export function LockForm({ returnUrl }: { returnUrl: string }) {
       const result = await verifyPassword(password, returnUrl)
       if (result?.error) {
         setError(result.error)
+        return
+      }
+      if (result?.redirectTo) {
+        // replace, not push, so the lock page is overwritten in history.
+        // Pressing back from the case study now goes to wherever the user
+        // came from before the lock (typically the home page).
+        router.replace(result.redirectTo)
       }
     })
   }

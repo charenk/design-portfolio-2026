@@ -1,7 +1,6 @@
 "use server"
 
 import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
 
 const ALLOWED_RETURN_PATHS = ['/workato', '/ai-pam', '/browser-extension', '/figma-buddy']
 
@@ -11,7 +10,10 @@ function sanitizeReturn(url: string | null | undefined): string {
   return '/'
 }
 
-export async function verifyPassword(password: string, returnUrl?: string): Promise<{ error?: string }> {
+export async function verifyPassword(
+  password: string,
+  returnUrl?: string,
+): Promise<{ error?: string; redirectTo?: string }> {
   const expected = process.env.PORTFOLIO_PASSWORD
   if (!expected || password !== expected) {
     return { error: 'Incorrect password. Try again.' }
@@ -23,5 +25,9 @@ export async function verifyPassword(password: string, returnUrl?: string): Prom
     sameSite: 'lax',
     path: '/',
   })
-  redirect(sanitizeReturn(returnUrl))
+  // Return the destination so the client can use router.replace, which
+  // overwrites the /portfolio/lock entry in browser history. Without this,
+  // pressing back from the unlocked page would land the user on the lock
+  // screen again.
+  return { redirectTo: sanitizeReturn(returnUrl) }
 }
