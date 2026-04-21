@@ -156,10 +156,10 @@ export function ProjectPageLayout({
           )}
           {hero.type === 'image' && (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={hero.src} alt={hero.alt} className="w-full aspect-[21/9] object-cover rounded-lg mb-[50px]" />
+            <img src={hero.src} alt={hero.alt} className="w-full aspect-[21/9] object-cover rounded-figure-banner mb-[50px]" />
           )}
           {hero.type === 'placeholder' && (
-            <div className="w-full bg-[#C4C4C4] aspect-[16/9] rounded mb-[50px]" />
+            <div className="w-full bg-[#C4C4C4] aspect-[16/9] rounded-figure-banner mb-[50px]" />
           )}
 
           {/* Overview columns */}

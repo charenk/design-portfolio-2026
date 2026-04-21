@@ -46,6 +46,13 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
 
+  /* Project detail page figure radii.
+     Banner = full-width hero / banner images.
+     Card   = inline section figures (~600px wide).
+     Larger surface, larger radius — keeps optical weight consistent. */
+  --radius-figure-banner: 16px;
+  --radius-figure-card: 12px;
+
   /* Custom colors from old project */
   --color-accent-magenta: #AB0782;
   --color-accent-blue: #0034AD;
