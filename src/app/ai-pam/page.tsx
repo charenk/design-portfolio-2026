@@ -81,7 +81,7 @@ function ImageLightbox({
               <img
                 src={detailedSrc}
                 alt={alt}
-                className="block max-w-full max-h-[calc(92vh-48px)] w-auto h-auto object-contain"
+                className="block max-w-full max-h-[calc(92vh-48px)] w-auto h-auto object-contain rounded-figure-banner"
               />
             </motion.div>
           </motion.div>
@@ -160,7 +160,7 @@ export default function AiPamCaseStudy() {
           <img
             src="/assets/discovery-ost.svg"
             alt="Discovery OST diagram showing customer automation demand"
-            className="absolute inset-0 w-full h-full object-contain"
+            className="absolute inset-0 w-full h-full object-cover"
           />
         </div>
         <div className="flex-1 py-[37px]">
@@ -211,7 +211,7 @@ export default function AiPamCaseStudy() {
           detailedSrc="/assets/hitl-gates-detailed.svg"
           alt="Four sequential human-in-the-loop gates: intent confirmation, policy authorization, query plan review, workflow approval"
           wrapperClassName="relative w-full md:w-[592px] h-[357px] bg-[#FFF7EF] shrink-0 overflow-hidden rounded-figure-card"
-          thumbnailClassName="absolute inset-0 w-full h-full object-contain"
+          thumbnailClassName="absolute inset-0 w-full h-full object-cover"
         />
       </div>
 
@@ -221,7 +221,7 @@ export default function AiPamCaseStudy() {
           <img
             src="/assets/consent-at-config-level.svg"
             alt="Diagram showing consent moved to the connector configuration layer"
-            className="absolute inset-0 w-full h-full object-contain"
+            className="absolute inset-0 w-full h-full object-cover"
           />
         </div>
         <div className="flex-1 py-[37px]">
@@ -258,7 +258,7 @@ export default function AiPamCaseStudy() {
           <img
             src="/assets/stopping-is-safer.svg"
             alt="Diagram showing how the system stops and surfaces errors rather than proceeding with partial data"
-            className="absolute inset-0 w-full h-full object-contain"
+            className="absolute inset-0 w-full h-full object-cover"
           />
         </div>
       </div>

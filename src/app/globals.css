@@ -46,10 +46,10 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
 
-  /* Project detail page figure radii.
-     Banner = full-width hero / banner images.
-     Card   = inline section figures (~600px wide).
-     Larger surface, larger radius — keeps optical weight consistent. */
+  /* Project detail page figure radii. Two tiers sized for optical consistency:
+     a bigger surface needs a bigger corner to read as the same degree of rounded.
+     - banner: full-width hero / banner images, and modal-expanded images. 16px.
+     - card:   inline section figures (~600px wide). 12px. */
   --radius-figure-banner: 16px;
   --radius-figure-card: 12px;
 
