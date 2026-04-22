@@ -1,9 +1,9 @@
 "use client"
 
 import { useEffect, useRef, useState } from 'react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Navbar } from '@/components/layout/Navbar'
-import { Footer } from '@/components/layout/Footer'
 
 type HeroMedia =
   | { type: 'video'; youtubeId: string; thumbnailAlt: string }
@@ -19,6 +19,8 @@ interface ProjectPageLayoutProps {
   overviewRight: React.ReactNode
   disclaimer?: React.ReactNode
   children?: React.ReactNode
+  nextHref?: string
+  nextLabel?: string
 }
 
 function VideoHero({ youtubeId, thumbnailAlt }: { youtubeId: string; thumbnailAlt: string }) {
@@ -66,6 +68,8 @@ export function ProjectPageLayout({
   overviewRight,
   disclaimer,
   children,
+  nextHref,
+  nextLabel,
 }: ProjectPageLayoutProps) {
   const router = useRouter()
   const [gridOpacity, setGridOpacity] = useState(1)
@@ -180,21 +184,32 @@ export function ProjectPageLayout({
             </div>
           )}
 
-          {/* Bottom back link */}
-          <button
-            onClick={handleBack}
-            className="inline-flex items-center gap-1 text-black font-serif text-caption hover:opacity-70 transition-opacity"
-          >
-            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
-            </svg>
-            Back to projects
-          </button>
+          {/* Bottom navigation: back to projects on the left, next project on the right */}
+          <div className="flex items-center justify-between gap-4">
+            <button
+              onClick={handleBack}
+              className="inline-flex items-center gap-1 text-black font-serif text-caption hover:opacity-70 transition-opacity"
+            >
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+              </svg>
+              Back to projects
+            </button>
+            {nextHref && nextLabel && (
+              <Link
+                href={nextHref}
+                className="inline-flex items-center gap-1 text-black font-serif text-caption hover:opacity-70 transition-opacity"
+              >
+                Next project: {nextLabel}
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            )}
+          </div>
 
         </div>
       </main>
-
-      <Footer />
     </div>
   )
 }

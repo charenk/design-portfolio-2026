@@ -43,6 +43,8 @@ export default function FigmaBuddyPage() {
           </ul>
         </div>
       }
+      nextHref="/ai-pam"
+      nextLabel="AI-Pam"
     />
   )
 }

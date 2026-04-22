@@ -153,6 +153,8 @@ export default function AiPamCaseStudy() {
           Detailed flows, data models, and system logic are not included here. Happy to walk through the full rationale and tradeoffs in conversation.
         </p>
       }
+      nextHref="/browser-extension"
+      nextLabel="Browser extension"
     >
       {/* Section 1: Image left, text right */}
       <div className="flex flex-col md:flex-row gap-[38px] items-start mb-[50px]">
