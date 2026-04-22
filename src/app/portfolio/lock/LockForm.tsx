@@ -44,6 +44,7 @@ export function LockForm({ returnUrl }: { returnUrl: string }) {
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
             type="password"
+            data-private
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}

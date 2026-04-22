@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { LogRocketInit } from "@/components/LogRocketInit";
 import "./globals.css";
 
 const montserrat = Montserrat({
@@ -32,6 +33,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${montserrat.variable} antialiased`}>
         {children}
+        <LogRocketInit />
       </body>
       <GoogleAnalytics gaId="G-BCJZTX3QTN" />
     </html>
