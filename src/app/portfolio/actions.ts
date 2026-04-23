@@ -25,6 +25,12 @@ export async function verifyPassword(
     sameSite: 'lax',
     path: '/',
   })
+  cookieStore.set('portfolio_entry', 'password', {
+    httpOnly: false,
+    maxAge: 60 * 60 * 24 * 7,
+    sameSite: 'lax',
+    path: '/',
+  })
   // Return the destination so the client can use router.replace, which
   // overwrites the /portfolio/lock entry in browser history. Without this,
   // pressing back from the unlocked page would land the user on the lock

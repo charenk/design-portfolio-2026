@@ -12,14 +12,23 @@ export function initLogRocket() {
   initialized = true
 }
 
+function readEntryCookie(): string | null {
+  if (typeof document === "undefined") return null
+  const match = document.cookie.match(/(?:^|;\s*)portfolio_entry=([^;]+)/)
+  return match?.[1] ?? null
+}
+
 export function identifyViewer(pathname: string) {
   if (!initialized) return
 
   const hasAccess = pathname !== "/portfolio/lock"
   const tier = pathname === "/" ? "public" : hasAccess ? "gated" : "pre-auth"
+  const entryMode =
+    pathname === "/" ? "public" : (readEntryCookie() ?? "unknown")
 
   LogRocket.identify({
     portfolio_access: hasAccess,
     viewer_tier: tier,
+    entry_mode: entryMode,
   })
 }

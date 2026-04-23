@@ -17,6 +17,12 @@ export function middleware(request: NextRequest) {
       sameSite: 'lax',
       path: '/',
     })
+    response.cookies.set('portfolio_entry', 'magic', {
+      httpOnly: false,
+      maxAge: 60 * 60 * 24 * 7,
+      sameSite: 'lax',
+      path: '/',
+    })
     return response
   }
 
