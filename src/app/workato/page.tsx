@@ -80,7 +80,7 @@ export default function WorkatoPage() {
       <Navbar activePage="workato" />
 
       {/* Main Content */}
-      <main className="px-8 md:px-[50px] pt-[200px] md:pt-[200px] pb-[200px] min-h-screen">
+      <main className="px-5 md:px-[50px] pt-[120px] md:pt-[200px] pb-[120px] md:pb-[200px] min-h-screen">
         <div className="max-w-main-content mx-auto">
 
           {/* Back Button */}

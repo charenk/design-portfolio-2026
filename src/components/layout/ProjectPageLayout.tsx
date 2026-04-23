@@ -27,7 +27,7 @@ function VideoHero({ youtubeId, thumbnailAlt }: { youtubeId: string; thumbnailAl
   const [videoActive, setVideoActive] = useState(false)
   return (
     <div
-      className="w-full aspect-[16/9] rounded-lg overflow-hidden mb-[50px] relative bg-black cursor-pointer"
+      className="w-full aspect-[4/3] md:aspect-[16/9] rounded-lg overflow-hidden mb-[50px] relative bg-black cursor-pointer"
       onClick={() => setVideoActive(true)}
     >
       {!videoActive ? (
@@ -135,13 +135,13 @@ export function ProjectPageLayout({
     <div className="pageBackground" ref={pageBackgroundRef}>
       <Navbar activePage="works" />
 
-      <main className="px-8 md:px-[50px] pt-[200px] pb-[200px]">
-        <div className="max-w-main-content mx-auto pl-4">
+      <main className="px-5 md:px-[50px] pt-[120px] md:pt-[200px] pb-[120px] md:pb-[200px]">
+        <div className="max-w-main-content mx-auto md:pl-4">
 
           {/* Back Button */}
           <button
             onClick={handleBack}
-            className="inline-flex items-center gap-1 mb-[50px] bg-black text-white px-[10px] py-[5px] font-serif text-caption hover:opacity-80 transition-opacity"
+            className="inline-flex items-center gap-1 mb-[30px] md:mb-[50px] bg-black text-white px-[10px] py-[5px] font-serif text-caption hover:opacity-80 transition-opacity"
           >
             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
@@ -150,7 +150,7 @@ export function ProjectPageLayout({
           </button>
 
           {/* Title */}
-          <h1 className={`font-serif font-normal text-[40px] leading-tight mb-[50px] pr-0 md:pr-[100px]${titleColorClass ? ` ${titleColorClass}` : ''}`}>
+          <h1 className={`font-serif font-normal text-[28px] md:text-[40px] leading-tight mb-[30px] md:mb-[50px] pr-0 md:pr-[100px]${titleColorClass ? ` ${titleColorClass}` : ''}`}>
             {title}
           </h1>
 
@@ -160,10 +160,10 @@ export function ProjectPageLayout({
           )}
           {hero.type === 'image' && (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={hero.src} alt={hero.alt} className="w-full aspect-[21/9] object-cover rounded-figure-banner mb-[50px]" />
+            <img src={hero.src} alt={hero.alt} className="w-full aspect-[3/2] md:aspect-[21/9] object-cover rounded-figure-banner mb-[50px]" />
           )}
           {hero.type === 'placeholder' && (
-            <div className="w-full bg-[#C4C4C4] aspect-[16/9] rounded-figure-banner mb-[50px]" />
+            <div className="w-full bg-[#C4C4C4] aspect-[4/3] md:aspect-[16/9] rounded-figure-banner mb-[50px]" />
           )}
 
           {/* Overview columns */}

@@ -520,14 +520,28 @@
   }
 
   @media (max-width: 767px) {
+    .experiments-section {
+      margin-top: 48px;
+      width: 100%;
+      margin-left: 0;
+    }
     .experiments-container {
       grid-template-columns: 1fr;
+      padding: 24px;
+      gap: 24px;
+      border-radius: 14px;
     }
     .experiments-title {
       grid-column: 1 / -1;
     }
     .experiments-body {
       grid-column: 1 / -1;
+    }
+    .experiment-item {
+      padding: 18px 20px;
+    }
+    .experiment-tooltip {
+      display: none;
     }
   }
 
@@ -603,13 +617,22 @@
     }
     .footer-inner {
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
+      padding-left: 0;
+      gap: 24px;
+    }
+    .footer-contact {
+      width: 100%;
     }
     .footer-heading {
       font-size: 20px;
     }
     .footer-links {
-      gap: 24px;
+      justify-content: flex-start;
+      gap: 20px;
+    }
+    .footer-link {
+      font-size: 17px;
     }
   }
 
@@ -622,7 +645,8 @@
     }
     .footer-links {
       flex-direction: column;
-      gap: 16px;
+      align-items: flex-start;
+      gap: 14px;
     }
   }
 

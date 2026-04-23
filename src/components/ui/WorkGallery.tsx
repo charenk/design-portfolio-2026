@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from 'react'
+import Link from 'next/link'
 import { motion, AnimatePresence, type Variants } from 'framer-motion'
 import { useRouter } from 'next/navigation'
 
@@ -296,39 +297,95 @@ export function WorkGallery({
   const viewAllPosition = POSITIONS[3]
 
   return (
-    <div className="relative h-[460px] w-full flex items-center justify-center overflow-visible">
-      <motion.div
-        className="relative mx-auto flex w-full max-w-5xl justify-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: isVisible ? 1 : 0 }}
-        transition={{ duration: 0.4, ease: 'easeOut' }}
-      >
-        <motion.div
-          className="relative flex w-full justify-center"
-          variants={containerVariants}
-          initial="hidden"
-          animate={isLoaded ? 'visible' : 'hidden'}
+    <>
+      {/* Mobile: 2-row horizontal snap-scroll grid with peek */}
+      <div className="md:hidden -mx-5">
+        <div
+          className="grid grid-rows-2 gap-x-4 gap-y-6 overflow-x-auto snap-x snap-mandatory pl-7 pr-5 pb-2 scroll-pl-7 [-webkit-overflow-scrolling:touch] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          style={{ gridTemplateColumns: 'repeat(2, 72%)', gridAutoFlow: 'row' }}
+          role="list"
+          aria-label="Recent work"
         >
-          <div className="relative" style={{ width: CARD_SIZE, height: CARD_SIZE }}>
-            {/* Render in reverse z-order so highest zIndex sits on top */}
-            {[...projectCards].reverse().map((item, reversedIdx) => {
-              const originalIdx = projectCards.length - 1 - reversedIdx
-              return (
-                <WorkCard
-                  key={item.id}
-                  item={item}
-                  position={POSITIONS[originalIdx]}
-                  photoVariants={photoVariants}
-                />
-              )
-            })}
-            <ViewAllWrapper
-              position={viewAllPosition}
-              photoVariants={photoVariants}
-            />
+          {projectCards.map((item) => (
+            <Link
+              key={item.id}
+              href={item.href}
+              role="listitem"
+              aria-label={item.title}
+              className="group snap-start flex flex-col"
+            >
+              <div
+                className="relative w-full aspect-square rounded-3xl shadow-sm overflow-hidden flex items-end justify-center transition-transform duration-200 group-active:scale-[0.98]"
+                style={{ backgroundColor: item.placeholder }}
+              >
+                {item.svgSrc && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={item.svgSrc}
+                    alt=""
+                    draggable={false}
+                    className="w-full h-full object-contain object-bottom"
+                  />
+                )}
+              </div>
+              <p className="mt-3 font-serif text-[15px] font-bold leading-snug text-[#1a1a1a]">
+                {item.title}
+              </p>
+            </Link>
+          ))}
+          <div
+            role="listitem"
+            className="snap-start flex flex-col"
+            aria-label="More coming soon"
+          >
+            <div className="w-full aspect-square rounded-3xl border border-dashed border-[#e0dbd2] bg-white flex flex-col items-center justify-center gap-3">
+              <span className="font-sans text-[15px] font-semibold text-[#888075]">More</span>
+              <span className="inline-flex items-center rounded-full bg-[#fff3d6] px-3 py-1 font-sans text-[12px] font-medium text-[#8a6d1a]">
+                Coming soon
+              </span>
+            </div>
+            <p className="mt-3 font-serif text-[15px] font-bold leading-snug text-[#888075]">
+              More work, coming soon
+            </p>
           </div>
+        </div>
+      </div>
+
+      {/* Desktop: fanned gallery */}
+      <div className="hidden md:flex relative h-[460px] w-full items-center justify-center overflow-visible">
+        <motion.div
+          className="relative mx-auto flex w-full max-w-5xl justify-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isVisible ? 1 : 0 }}
+          transition={{ duration: 0.4, ease: 'easeOut' }}
+        >
+          <motion.div
+            className="relative flex w-full justify-center"
+            variants={containerVariants}
+            initial="hidden"
+            animate={isLoaded ? 'visible' : 'hidden'}
+          >
+            <div className="relative" style={{ width: CARD_SIZE, height: CARD_SIZE }}>
+              {/* Render in reverse z-order so highest zIndex sits on top */}
+              {[...projectCards].reverse().map((item, reversedIdx) => {
+                const originalIdx = projectCards.length - 1 - reversedIdx
+                return (
+                  <WorkCard
+                    key={item.id}
+                    item={item}
+                    position={POSITIONS[originalIdx]}
+                    photoVariants={photoVariants}
+                  />
+                )
+              })}
+              <ViewAllWrapper
+                position={viewAllPosition}
+                photoVariants={photoVariants}
+              />
+            </div>
+          </motion.div>
         </motion.div>
-      </motion.div>
-    </div>
+      </div>
+    </>
   )
 }

@@ -63,8 +63,8 @@ export default function Home() {
     <div className="pageBackground" ref={pageBackgroundRef}>
       <Navbar activePage="home" />
 
-      <main className="px-8 md:px-[50px] pt-[200px] md:pt-[200px]">
-        <div className="max-w-main-content mx-auto pl-4">
+      <main className="px-5 md:px-[50px] pt-[120px] md:pt-[200px]">
+        <div className="max-w-main-content mx-auto md:pl-4">
           {/* Hero Section */}
           <header className="pb-10 md:pb-[40px] pr-0 md:pr-[100px]" id="home">
             <p className="text-body font-serif mb-6 md:mb-[32px]">
