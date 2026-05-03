@@ -4,6 +4,11 @@ import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence, type Variants } from 'framer-motion'
 import { useRouter } from 'next/navigation'
+import { LastViewedBadge } from './LastViewedBadge'
+
+function slugFromHref(href: string): string {
+  return href.replace(/^\//, '').split('/')[0] ?? ''
+}
 
 export interface WorkItem {
   id: number
@@ -35,6 +40,7 @@ function ProjectCard({
   direction,
   svgSrc,
   rotation,
+  slug,
   onDragStart,
   onDragEnd,
   onClick,
@@ -43,6 +49,7 @@ function ProjectCard({
   direction: 'left' | 'right'
   svgSrc?: string
   rotation: number
+  slug: string
   onDragStart: () => void
   onDragEnd: () => void
   onClick: () => void
@@ -71,7 +78,7 @@ function ProjectCard({
       draggable={false}
     >
       <div
-        className="h-full w-full rounded-3xl shadow-sm overflow-hidden flex items-end justify-center"
+        className="relative h-full w-full rounded-3xl shadow-sm overflow-hidden flex items-end justify-center"
         style={{ backgroundColor: placeholder }}
       >
         {svgSrc && (
@@ -82,6 +89,7 @@ function ProjectCard({
             className="w-full h-full object-contain object-bottom"
           />
         )}
+        <LastViewedBadge slug={slug} />
       </div>
     </motion.div>
   )
@@ -156,8 +164,8 @@ function ViewAllCard({
         <span className="relative font-sans text-[15px] font-semibold text-[#888075]">
           More
         </span>
-        <span className="relative inline-flex items-center rounded-full bg-[#fff3d6] px-3 py-1 font-sans text-[12px] font-medium text-[#8a6d1a]">
-          Coming soon
+        <span className="relative inline-flex items-center rounded-full bg-[#eef1ff] px-3 py-1 font-sans text-[12px] font-medium text-[#3a4cba]">
+          View all
         </span>
       </div>
     </motion.div>
@@ -198,6 +206,7 @@ function WorkCard({
         direction={item.direction}
         svgSrc={item.svgSrc}
         rotation={rotation}
+        slug={slugFromHref(item.href)}
         onDragStart={() => setIsDragging(true)}
         onDragEnd={() => setTimeout(() => setIsDragging(false), 100)}
         onClick={() => { if (!isDragging) router.push(item.href) }}
@@ -234,6 +243,9 @@ function ViewAllWrapper({
   position: (typeof POSITIONS)[number]
   photoVariants: Variants
 }) {
+  const [isDragging, setIsDragging] = useState(false)
+  const router = useRouter()
+
   return (
     <motion.div
       className="absolute left-0 top-0"
@@ -242,9 +254,9 @@ function ViewAllWrapper({
       custom={{ x: position.x, y: position.y, order: position.order }}
     >
       <ViewAllCard
-        onDragStart={() => {}}
-        onDragEnd={() => {}}
-        onClick={() => {}}
+        onDragStart={() => setIsDragging(true)}
+        onDragEnd={() => setTimeout(() => setIsDragging(false), 100)}
+        onClick={() => { if (!isDragging) router.push('/portfolio') }}
       />
     </motion.div>
   )
@@ -327,27 +339,29 @@ export function WorkGallery({
                     className="w-full h-full object-contain object-bottom"
                   />
                 )}
+                <LastViewedBadge slug={slugFromHref(item.href)} />
               </div>
               <p className="mt-3 font-serif text-[15px] font-bold leading-snug text-[#1a1a1a]">
                 {item.title}
               </p>
             </Link>
           ))}
-          <div
+          <Link
+            href="/portfolio"
             role="listitem"
-            className="snap-start flex flex-col"
-            aria-label="More coming soon"
+            aria-label="View all work"
+            className="group snap-start flex flex-col"
           >
-            <div className="w-full aspect-square rounded-3xl border border-dashed border-[#e0dbd2] bg-white flex flex-col items-center justify-center gap-3">
+            <div className="w-full aspect-square rounded-3xl border border-dashed border-[#e0dbd2] bg-white flex flex-col items-center justify-center gap-3 transition-transform duration-200 group-active:scale-[0.98]">
               <span className="font-sans text-[15px] font-semibold text-[#888075]">More</span>
-              <span className="inline-flex items-center rounded-full bg-[#fff3d6] px-3 py-1 font-sans text-[12px] font-medium text-[#8a6d1a]">
-                Coming soon
+              <span className="inline-flex items-center rounded-full bg-[#eef1ff] px-3 py-1 font-sans text-[12px] font-medium text-[#3a4cba]">
+                View all
               </span>
             </div>
-            <p className="mt-3 font-serif text-[15px] font-bold leading-snug text-[#888075]">
-              More work, coming soon
+            <p className="mt-3 font-serif text-[15px] font-bold leading-snug text-[#1a1a1a]">
+              See all my work
             </p>
-          </div>
+          </Link>
         </div>
       </div>
 

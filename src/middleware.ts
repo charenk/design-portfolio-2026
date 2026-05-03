@@ -45,5 +45,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/', '/workato', '/ai-pam', '/browser-extension', '/figma-buddy'],
+  matcher: ['/', '/portfolio', '/workato', '/ai-pam', '/browser-extension', '/figma-buddy'],
 }

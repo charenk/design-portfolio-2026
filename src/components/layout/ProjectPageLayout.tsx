@@ -2,8 +2,11 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { Navbar } from '@/components/layout/Navbar'
+import { markViewed } from '@/lib/viewedTracker'
+
+const TRACKED_SLUGS = new Set(['ai-pam', 'browser-extension', 'figma-buddy', 'workato'])
 
 type HeroMedia =
   | { type: 'video'; youtubeId: string; thumbnailAlt: string }
@@ -72,8 +75,14 @@ export function ProjectPageLayout({
   nextLabel,
 }: ProjectPageLayoutProps) {
   const router = useRouter()
+  const pathname = usePathname()
   const [gridOpacity, setGridOpacity] = useState(1)
   const pageBackgroundRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const slug = pathname?.replace(/^\//, '').split('/')[0] ?? ''
+    if (TRACKED_SLUGS.has(slug)) markViewed(slug)
+  }, [pathname])
 
   const handleBack = () => {
     if (window.history.length > 1) {
@@ -141,9 +150,10 @@ export function ProjectPageLayout({
           {/* Back Button */}
           <button
             onClick={handleBack}
-            className="inline-flex items-center gap-1 mb-[30px] md:mb-[50px] bg-black text-white px-[10px] py-[5px] font-serif text-caption hover:opacity-80 transition-opacity"
+            className="inline-flex items-center gap-2 mb-[30px] md:mb-[50px] px-4 py-2 rounded-lg bg-[#1a1a1a] text-white font-sans text-[14px] font-medium hover:bg-black transition-colors"
+            aria-label="Back"
           >
-            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
             </svg>
             Back
@@ -188,12 +198,13 @@ export function ProjectPageLayout({
           <div className="flex items-center justify-between gap-4">
             <button
               onClick={handleBack}
-              className="inline-flex items-center gap-1 text-black font-serif text-caption hover:opacity-70 transition-opacity"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#1a1a1a] text-white font-sans text-[14px] font-medium hover:bg-black transition-colors"
+              aria-label="Back"
             >
-              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
               </svg>
-              Back to projects
+              Back
             </button>
             {nextHref && nextLabel && (
               <Link

@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
+import { markViewed } from '@/lib/viewedTracker'
 
 export default function WorkatoPage() {
   const router = useRouter()
@@ -19,6 +20,10 @@ export default function WorkatoPage() {
   }
   const [activeTab, setActiveTab] = useState('pam')
   const pageBackgroundRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    markViewed('workato')
+  }, [])
 
   useEffect(() => {
     const updateGridOpacity = () => {
@@ -190,12 +195,13 @@ export default function WorkatoPage() {
           {/* Bottom back link */}
           <button
             onClick={handleBack}
-            className="inline-flex items-center gap-1 text-black font-serif text-caption hover:opacity-70 transition-opacity"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#1a1a1a] text-white font-sans text-[14px] font-medium hover:bg-black transition-colors"
+            aria-label="Back"
           >
-            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
             </svg>
-            Back to projects
+            Back
           </button>
 
         </div>
