@@ -92,15 +92,16 @@ export default function PortfolioPage() {
     rotate: '-rotate-[1deg]',
   }
 
-  const figmaBuddy: ProjectCardProps = {
-    title: 'Figma Buddy: AI design feedback',
-    tags: 'Experiment · AI',
-    href: '/figma-buddy',
+  const refinery: ProjectCardProps = {
+    title: 'Multi agentic experiment for finance',
+    tags: 'Experiment · Agentic',
+    href: '#',
     badge: 'Solo project',
     aspect: 'aspect-[5/4]',
     placeholder: '#edeadd',
     rotate: 'rotate-[1.5deg]',
-    svgSrc: '/Figma-buddy.svg',
+    svgSrc: '/assets/portfolio%20list%20page/The%20refinery%20project.svg',
+    imageFit: 'contain-padded',
   }
 
   // Row 3 — small left + large right (matches row 1 pattern)
@@ -166,7 +167,7 @@ export default function PortfolioPage() {
                 <ProjectCard {...onboarding} />
               </div>
               <div className={`${SMALL_WIDTH} mt-[126px]`}>
-                <ProjectCard {...figmaBuddy} />
+                <ProjectCard {...refinery} />
               </div>
             </div>
 
@@ -187,7 +188,7 @@ export default function PortfolioPage() {
             <ProjectCard {...onboarding} />
             <ProjectCard {...placeholderLarge} />
             <ProjectCard {...browserExt} />
-            <ProjectCard {...figmaBuddy} />
+            <ProjectCard {...refinery} />
             <ProjectCard {...placeholderSmall} />
           </div>
 

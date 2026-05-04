@@ -125,16 +125,6 @@ export default function Home() {
                 <div className="experiment-icon-rail" role="list">
                   <div className="experiment-icon-wrap">
                     <Image
-                      src="/assets/icons/Figma.png"
-                      alt="Figma"
-                      className="experiment-icon"
-                      width={36}
-                      height={36}
-                    />
-                    <div className="experiment-tooltip">Design and prototyping tool for creating UI mockups and interactive designs</div>
-                  </div>
-                  <div className="experiment-icon-wrap">
-                    <Image
                       src="/assets/icons/Claude code.png"
                       alt="Claude Code"
                       className="experiment-icon"
@@ -162,6 +152,16 @@ export default function Home() {
                       height={36}
                     />
                     <div className="experiment-tooltip">Open-source Firebase alternative for backend, database, and auth</div>
+                  </div>
+                  <div className="experiment-icon-wrap">
+                    <Image
+                      src="/assets/icons/Figma.png"
+                      alt="Figma"
+                      className="experiment-icon"
+                      width={36}
+                      height={36}
+                    />
+                    <div className="experiment-tooltip">Design and prototyping tool for creating UI mockups and interactive designs</div>
                   </div>
                   <div className="experiment-icon-wrap">
                     <Image
@@ -193,7 +193,21 @@ export default function Home() {
 
               {/* Right column: stacked cards */}
               <div className="experiments-body">
-                {/* Experiment Card 1 */}
+                {/* Experiment Card 1 — Refinery */}
+                <div className="experiment-item">
+                  <p className="experiment-item-desc">Built Refinery, a team of 8 agents that scans my TFSA holdings twice a day and surfaces what&apos;s worth learning about. Open source, not a trading tool.</p>
+                  <div className="experiment-item-ctas">
+                    <a href="#" className="experiment-pill-btn experiment-pill-demo">View Demo</a>
+                    <a href="#" target="_blank" rel="noopener noreferrer" className="experiment-pill-btn experiment-pill-github">
+                      Learn more
+                      <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+
+                {/* Experiment Card 2 — Figma Buddy */}
                 <div className="experiment-item">
                   <p className="experiment-item-desc">Explored improving Figma feedback with AI-generated insights in comments using OpenAI, reducing screenshot-based workflows.</p>
                   <div className="experiment-item-ctas">
@@ -204,14 +218,6 @@ export default function Home() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                       </svg>
                     </a>
-                  </div>
-                </div>
-
-                {/* Experiment Card 2 */}
-                <div className="experiment-item">
-                  <p className="experiment-item-desc">Building HabitSense, a finance product that helps users see hidden spending patterns and build better money habits.</p>
-                  <div className="experiment-item-ctas">
-                    <a href="mailto:charen@gmail.com" className="experiment-pill-btn experiment-pill-reach">Reach out</a>
                   </div>
                 </div>
               </div>

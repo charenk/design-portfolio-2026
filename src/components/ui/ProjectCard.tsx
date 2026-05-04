@@ -14,14 +14,15 @@ export interface ProjectCardProps {
   placeholder: string
   rotate?: string
   svgSrc?: string
-  imageFit?: 'contain' | 'cover'
+  imageFit?: 'contain' | 'cover' | 'contain-padded'
 }
 
 export function ProjectCard({ title, tags, href, badge, aspect, placeholder, rotate, svgSrc, imageFit = 'contain' }: ProjectCardProps) {
-  const fitClass =
-    imageFit === 'cover'
-      ? 'object-cover object-center'
-      : 'object-contain object-bottom'
+  const fitClass = (() => {
+    if (imageFit === 'cover') return 'object-cover object-center'
+    if (imageFit === 'contain-padded') return 'object-contain object-center p-[10%]'
+    return 'object-contain object-bottom'
+  })()
 
   // Cards with href='#' are placeholders for case studies still in progress.
   // Render them as non-link divs so clicks don't trigger a top-of-page jump,
