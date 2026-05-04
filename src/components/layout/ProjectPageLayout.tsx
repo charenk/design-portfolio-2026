@@ -6,7 +6,7 @@ import { useRouter, usePathname } from 'next/navigation'
 import { Navbar } from '@/components/layout/Navbar'
 import { markViewed } from '@/lib/viewedTracker'
 
-const TRACKED_SLUGS = new Set(['ai-pam', 'browser-extension', 'figma-buddy', 'workato'])
+const TRACKED_SLUGS = new Set(['ai-pam', 'browser-extension', 'figma-buddy', 'workato', 'copilot', 'blackberry'])
 
 type HeroMedia =
   | { type: 'video'; youtubeId: string; thumbnailAlt: string }
@@ -18,8 +18,8 @@ interface ProjectPageLayoutProps {
   titleColorClass?: string
   backHref?: string
   hero: HeroMedia
-  overviewLeft: React.ReactNode
-  overviewRight: React.ReactNode
+  overviewLeft?: React.ReactNode
+  overviewRight?: React.ReactNode
   disclaimer?: React.ReactNode
   children?: React.ReactNode
   nextHref?: string
@@ -176,11 +176,13 @@ export function ProjectPageLayout({
             <div className="w-full bg-[#C4C4C4] aspect-[4/3] md:aspect-[16/9] rounded-figure-banner mb-[50px]" />
           )}
 
-          {/* Overview columns */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-[30px] md:gap-[80px] mb-[80px]">
-            <div>{overviewLeft}</div>
-            <div>{overviewRight}</div>
-          </div>
+          {/* Overview columns (legacy 2-column pattern; omit by passing no overview props) */}
+          {(overviewLeft || overviewRight) && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-[30px] md:gap-[80px] mb-[80px]">
+              <div>{overviewLeft}</div>
+              <div>{overviewRight}</div>
+            </div>
+          )}
 
           {/* Additional sections */}
           {children}

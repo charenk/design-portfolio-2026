@@ -91,124 +91,225 @@ function ImageLightbox({
   )
 }
 
-function ExpandableText({ preview, children }: { preview: React.ReactNode, children: React.ReactNode }) {
-  const [expanded, setExpanded] = useState(false)
-  return (
-    <div>
-      <div className="relative">
-        {preview}
-        {!expanded && (
-          <div
-            className="absolute bottom-0 left-0 right-0 h-[80px] pointer-events-none"
-            style={{ background: 'linear-gradient(to bottom, rgba(255,247,239,0), rgba(255,247,239,1))' }}
-          />
-        )}
-      </div>
-      {expanded && <div className="mt-[18px]">{children}</div>}
-      <button
-        onClick={() => setExpanded(!expanded)}
-        className="text-[16px] leading-[1.52] font-serif font-medium text-[#D97706] hover:text-[#b45309] transition-colors mt-[12px]"
-      >
-        {expanded ? 'Show less' : 'Learn more'}
-      </button>
-    </div>
-  )
-}
-
 export default function AiPamCaseStudy() {
   return (
     <ProjectPageLayout
       title="Agentic Privileged Access Management Platform"
       titleColorClass="text-accent-yellow"
       hero={{ type: 'image', src: '/ai-pam-banner.svg', alt: 'Agentic Privileged Access Management Platform banner' }}
-      overviewLeft={
-        <div>
-          <p className="text-[18px] leading-[1.52] font-serif">
-            CyberQP is a PAM platform built for MSPs, IT teams managing security for dozens of client organizations at once. I led the design of the AI terminal: a natural language interface that lets technicians run identity and access workflows without switching tools or writing scripts.
-          </p>
-        </div>
-      }
-      overviewRight={
-        <div className="flex flex-col gap-[30px]">
-          <div>
-            <h3 className="text-[18px] leading-[1.52] font-serif font-semibold mb-2">Role:</h3>
-            <p className="text-[18px] leading-[1.52] font-serif">Sole designer (sometimes wearing PM hat)</p>
-          </div>
-          <div>
-            <h3 className="text-[18px] leading-[1.52] font-serif font-semibold mb-2">Team:</h3>
-            <p className="text-[18px] leading-[1.52] font-serif">
-              Director of Product, 2 product and engineering squads, AI labs team lead by founder, partners
-            </p>
-          </div>
-          <div>
-            <h3 className="text-[18px] leading-[1.52] font-serif font-semibold mb-2">Scope:</h3>
-            <p className="text-[18px] leading-[1.52] font-serif">
-              Rebuilding legacy SaaS ground up with intelligence layer, AI terminal and system wide guardrails.
-            </p>
-          </div>
-        </div>
-      }
       disclaimer={
-        <p className="text-[18px] leading-[1.52] font-serif italic">
-          Detailed flows, data models, and system logic are not included here. Happy to walk through the full rationale and tradeoffs in conversation.
+        <p className="text-[14px] leading-[1.6] font-serif italic">
+          Not all aspects of the design are shown here given the sensitive nature of this work. Happy to walk through the full picture in conversation.
         </p>
       }
       nextHref="/browser-extension"
       nextLabel="Browser extension"
     >
-      {/* Section 1: Image left, text right */}
-      <section className="mb-[50px]">
-        <h3 className="md:hidden text-[18px] leading-[1.52] font-serif font-semibold mb-4">
-          Over 60% of customers were asking for automation before we started
-        </h3>
+      {/* Meta strip — Role / Team / Scope */}
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-[30px] md:gap-[40px] mb-[56px]">
+        <div>
+          <p className="text-[14px] font-serif text-[#9e9e9e] mb-[8px]">Role</p>
+          <p className="text-[14px] leading-[1.6] font-serif">
+            Sole designer (sometimes wearing PM hat)
+          </p>
+        </div>
+        <div>
+          <p className="text-[14px] font-serif text-[#9e9e9e] mb-[8px]">Team</p>
+          <p className="text-[14px] leading-[1.6] font-serif">
+            Director of Product, two product and engineering squads, AI labs team led by the founder, partner advisory council
+          </p>
+        </div>
+        <div>
+          <p className="text-[14px] font-serif text-[#9e9e9e] mb-[8px]">Scope</p>
+          <p className="text-[14px] leading-[1.6] font-serif">
+            Designing the AI terminal and system-wide guardrails for an agentic PAM product. Joined before scope was defined. Shipped through three customer-facing iterations.
+          </p>
+        </div>
+      </section>
+
+      {/* Divider */}
+      <div className="border-t border-divider-grey/30 mb-[56px]" />
+
+      {/* Stakes — Why this matters */}
+      <section className="mb-[80px]">
+        <p className="text-[12px] uppercase tracking-[0.15em] font-serif font-medium text-accent-yellow mb-[16px]">
+          Why this matters
+        </p>
+        <h2 className="font-serif font-normal text-[28px] md:text-[40px] leading-[1.2] mb-[28px] max-w-[860px]">
+          A technician spends more time gathering context than making decisions
+        </h2>
+        <div className="text-[14px] leading-[1.6] font-serif flex flex-col gap-[18px] max-w-[760px]">
+          <p>
+            Identity and access management at MSPs runs on tickets, tab switching, and tribal knowledge. A technician managing 30 to 50 client organizations spends more time gathering context than making decisions.
+          </p>
+          <p>
+            CyberQP is the PAM platform that 1000+ MSPs use to manage that complexity. I led the design for the AI terminal: a natural language interface that lets technicians run identity and access workflows without writing scripts or switching tools.
+          </p>
+        </div>
+      </section>
+
+      {/* Divider */}
+      <div className="border-t border-divider-grey/30 mb-[56px]" />
+
+      {/* What I shaped (with Hypothesis nested as a closing block) */}
+      <section className="mb-[80px]">
+        <h2 className="font-serif font-normal text-[26px] md:text-[34px] leading-[1.2] mb-[28px]">
+          What I shaped
+        </h2>
+        <p className="text-[14px] leading-[1.6] font-serif mb-[30px] max-w-[760px]">
+          Four architectural calls survived from the first design exploration to the third customer-facing iteration.
+        </p>
+        <div className="bg-white rounded-figure-card shadow-[0_1px_3px_rgba(0,0,0,0.06)] overflow-hidden mb-[40px]">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-x lg:divide-y-0 divide-divider-grey/20">
+            {[
+              { title: 'Read only by default', desc: 'The agent never writes to source systems without explicit human confirmation.' },
+              { title: 'Four-gate human in the loop', desc: 'Each gate is a distinct trust moment, not a generic confirmation step.' },
+              { title: 'Confidence-weighted disambiguation', desc: 'The system pauses on low certainty matches rather than guessing.' },
+              { title: 'One workflow per session', desc: 'Scope is enforced by design, not by user discipline.' },
+            ].map((item) => (
+              <div key={item.title} className="p-[20px] md:p-[24px]">
+                <h4 className="text-[14px] leading-[1.4] font-serif font-semibold mb-[10px]">{item.title}</h4>
+                <p className="text-[14px] leading-[1.6] font-serif text-[#4F4F4F]">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Hypothesis — nested inside What I shaped */}
+        <div className="border-l-[3px] border-accent-yellow pl-[24px] md:pl-[36px] py-[4px]">
+          <p className="text-[11px] uppercase tracking-[0.15em] font-serif font-medium text-accent-yellow mb-[14px]">
+            Hypothesis
+          </p>
+          <p className="font-serif italic text-[20px] md:text-[22px] leading-[1.4] max-w-[760px]">
+            Specialists will adopt agentic AI in regulated workflows only when the system reads before it writes, and asks before every irreversible change. Read-only by default is the trust contract that makes the rest of the design possible.
+          </p>
+        </div>
+      </section>
+
+      {/* Research */}
+      <section className="mb-[80px]">
+        <h2 className="font-serif font-normal text-[26px] md:text-[34px] leading-[1.2] mb-[28px]">
+          Research
+        </h2>
+        <p className="text-[14px] leading-[1.6] font-serif mb-[24px] max-w-[760px]">
+          I joined the AI initiative before scope was defined. Discovery ran across three cohorts.
+        </p>
+
+        {/* Cohorts */}
+        <div className="bg-white rounded-figure-card shadow-[0_1px_3px_rgba(0,0,0,0.06)] overflow-hidden mb-[40px]">
+          <div className="flex flex-col divide-y divide-divider-grey/20">
+            {[
+              { num: '01', title: 'MSP technicians using competitor PAM products', desc: 'What they were trying to automate, what their internal n8n workarounds looked like, where those workarounds broke.' },
+              { num: '02', title: 'L1 to L3 specialists at customers already on CyberQP', desc: 'Where time was actually going during a typical week. Where they escalated and why.' },
+              { num: '03', title: 'Partner advisory council representing seven mid-sized MSP operations', desc: 'Strategic-level input on what would and would not survive in regulated environments.' },
+            ].map((cohort) => (
+              <div key={cohort.num} className="flex gap-[16px] md:gap-[28px] p-[20px] md:p-[24px]">
+                <p className="text-[12px] font-serif font-medium text-[#9e9e9e] min-w-[28px] pt-[4px]">{cohort.num}</p>
+                <div className="flex-1">
+                  <h4 className="text-[14px] leading-[1.4] font-serif font-semibold mb-[8px]">{cohort.title}</h4>
+                  <p className="text-[14px] leading-[1.6] font-serif text-[#4F4F4F]">{cohort.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* OST + findings 50/50 row */}
         <div className="flex flex-col md:flex-row gap-[38px] items-start">
-          <div className="order-1 md:order-1 relative w-full md:w-[592px] aspect-[592/357] bg-[#FFF7EF] shrink-0 overflow-hidden rounded-figure-card">
+          <div className="order-2 md:order-1 flex-1 md:py-[24px] flex flex-col gap-[18px]">
+            <p className="text-[14px] leading-[1.6] font-serif">
+              The opportunity solution tree mapped each unmet need to a use case the model could be trained on, rather than a feature that needed its own screen. That mapping changed how the team prioritized: opportunities became use cases the terminal could absorb, not separate items in a roadmap queue.
+            </p>
+            <p className="text-[14px] leading-[1.6] font-serif">
+              Additionally, several themes were clearly visible across all three cohorts.
+            </p>
+            <ul className="text-[14px] leading-[1.6] font-serif list-disc ml-[20px] flex flex-col gap-[10px]">
+              <li>Cleanup spans 3+ tools every quarter.</li>
+              <li>L1 access-request triage escalates to L3.</li>
+              <li>Inline access workflows are the top productivity ask.</li>
+            </ul>
+          </div>
+          <div className="order-1 md:order-2 relative w-full md:w-[592px] aspect-[592/357] bg-[#FFF7EF] shrink-0 overflow-hidden rounded-figure-card">
             <img
               src="/assets/discovery-ost.svg"
-              alt="Discovery OST diagram showing customer automation demand"
+              alt="Opportunity Solution Tree workshop output"
               className="absolute inset-0 w-full h-full object-cover"
             />
-          </div>
-          <div className="order-2 md:order-2 flex-1 md:py-[37px]">
-            <h3 className="hidden md:block text-[18px] leading-[1.52] font-serif font-semibold mb-2">
-              Over 60% of customers were asking for automation before we started
-            </h3>
-            <ExpandableText
-              preview={
-                <div className="text-[18px] leading-[1.52] font-serif">
-                  <p>
-                    Over 60% of existing customers had asked about automation in the two years before this project started. Technicians were already building internal agents using tools like n8n, but those experiments did not scale in regulated environments and did not meet compliance requirements.
-                  </p>
-                </div>
-              }
-            >
-              <div className="text-[18px] leading-[1.52] font-serif">
-                <p>
-                  Three things kept coming up in discovery sessions. Technicians were spending more time on lookups than on actual decisions, switching between PSA, directory, and RMM tools just to gather context for a single request. L1 technicians lacked the experience to triage application access requests confidently, which pushed escalations up to L3 staff whose time was better spent elsewhere. And managers had no vendor-backed solution that could automate recurring identity tasks within a compliance-safe boundary.
-                </p>
-              </div>
-            </ExpandableText>
-            <div className="mt-[24px]">
-              <h4 className="text-[18px] leading-[1.52] font-serif font-semibold mb-2">Design challenge</h4>
-              <p className="text-[18px] leading-[1.52] font-serif">
-                The design challenge became: build an AI terminal that understands a technician&apos;s intent, acts across multiple identity systems, and keeps them in control of every security-sensitive decision.
-              </p>
-            </div>
           </div>
         </div>
       </section>
 
-      {/* Section 2: Text left, image right */}
+      {/* Design outcomes */}
+      <section className="mb-[80px]">
+        <h2 className="font-serif font-normal text-[26px] md:text-[34px] leading-[1.2] mb-[28px]">
+          Design outcomes
+        </h2>
+        <p className="text-[14px] leading-[1.6] font-serif mb-[30px] max-w-[760px]">
+          An outcome of this work was a set of operating principles I drafted alongside product, engineering, and leadership. The team committed to them in the new AI-driven product to anchor decision making and reduce bias, since we were maintaining a legacy app while building the new AI app in parallel.
+        </p>
+        <div className="bg-white rounded-figure-card shadow-[0_1px_3px_rgba(0,0,0,0.06)] overflow-hidden mb-[40px]">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-x lg:divide-y-0 divide-divider-grey/20">
+            {[
+              { title: 'Read only by default', desc: 'The agent never writes to source systems without explicit human confirmation. Reading is free. Writing requires a gate.' },
+              { title: 'Ask before acting on irreversible change', desc: 'Suggestion is not enough. The system pauses and asks for confirmation before any action that cannot be undone with one click.' },
+              { title: 'Never fail silently', desc: 'Every failure has a recoverable path. The system always names what happened, why, and what the technician can do next.' },
+              { title: 'One workflow per session', desc: 'The terminal handles one workflow at a time. Scope is enforced by design rather than by user discipline. No half finished states.' },
+            ].map((item) => (
+              <div key={item.title} className="p-[20px] md:p-[24px]">
+                <h4 className="text-[14px] leading-[1.4] font-serif font-semibold mb-[10px]">{item.title}</h4>
+                <p className="text-[14px] leading-[1.6] font-serif text-[#4F4F4F]">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <p className="text-[14px] leading-[1.6] font-serif max-w-[760px] mb-[30px]">
+          These principles were co-owned with engineering, marketing, and customer success, giving the team a shared operating language across functions. They also became the foundation for content writing on the new product platform, covering voice, terminology, and terminal-specific copy patterns.
+        </p>
+        <img
+          src="/assets/content-guidelines.svg"
+          alt="Confluence principles document and AI terminal content guidelines"
+          className="w-full aspect-[2770/850] rounded-figure-banner object-contain"
+        />
+      </section>
+
+      {/* Decision 1: Read-only by default — text only for now, image to follow */}
       <section className="mb-[50px]">
-        <h3 className="md:hidden text-[18px] leading-[1.52] font-serif font-semibold mb-4">
-          Human in the loop pattern grew from one to four through testing
-        </h3>
+        <div className="mb-4">
+          <p className="text-[11px] uppercase tracking-[0.15em] font-serif font-medium text-accent-yellow mb-[8px]">
+            Decision 01
+          </p>
+          <h3 className="text-[18px] leading-[1.52] font-serif font-semibold">
+            Why we shipped read-only by default
+          </h3>
+        </div>
+        <div className="text-[14px] leading-[1.6] font-serif flex flex-col gap-[18px]">
+          <p>The first prototype gave the agent write access to source systems by default. That choice was not careless. It was the obvious starting point, modeled on how technicians work today: identify a problem, fix it, move on.</p>
+          <p>Partner advisory feedback in the second sandbox session was direct. An agent that acts on source systems before the technician sees what it&apos;s doing breaks the trust contract that makes PAM viable in regulated environments.</p>
+          <p>We flipped the default. The agent reads first, names what it found, and waits. Writes only happen after explicit human review at four sequential gates.</p>
+        </div>
+      </section>
+
+      {/* Decision 2: HITL gates — text left, image right */}
+      <section className="mb-[50px]">
+        <div className="md:hidden mb-4">
+          <p className="text-[11px] uppercase tracking-[0.15em] font-serif font-medium text-accent-yellow mb-[8px]">
+            Decision 02
+          </p>
+          <h3 className="text-[18px] leading-[1.52] font-serif font-semibold">
+            Why human in the loop grew from one gate to four
+          </h3>
+        </div>
         <div className="flex flex-col md:flex-row gap-[38px] items-start">
           <div className="order-2 md:order-1 flex-1 md:py-[37px]">
-            <h3 className="hidden md:block text-[18px] leading-[1.52] font-serif font-semibold mb-2">
-              Human in the loop pattern grew from one to four through testing
-            </h3>
-            <div className="text-[18px] leading-[1.52] font-serif flex flex-col gap-[18px]">
+            <div className="hidden md:block mb-2">
+              <p className="text-[11px] uppercase tracking-[0.15em] font-serif font-medium text-accent-yellow mb-[8px]">
+                Decision 02
+              </p>
+              <h3 className="text-[18px] leading-[1.52] font-serif font-semibold">
+                Why human in the loop grew from one gate to four
+              </h3>
+            </div>
+            <div className="text-[14px] leading-[1.6] font-serif flex flex-col gap-[18px]">
               <p>
                 Early sandbox sessions showed that one confirmation gate was not enough. Technicians approved the action plan but then felt surprised by what the system actually queried. They wanted to verify the AI interpretation before it started planning, not just before it executed.
               </p>
@@ -227,24 +328,34 @@ export default function AiPamCaseStudy() {
         </div>
       </section>
 
-      {/* Section 3: Image left, text right */}
+      {/* Decision 3: Consent at config — image left, text right */}
       <section className="mb-[50px]">
-        <h3 className="md:hidden text-[18px] leading-[1.52] font-serif font-semibold mb-4">
-          Consent does not have to mean friction on every action
-        </h3>
+        <div className="md:hidden mb-4">
+          <p className="text-[11px] uppercase tracking-[0.15em] font-serif font-medium text-accent-yellow mb-[8px]">
+            Decision 03
+          </p>
+          <h3 className="text-[18px] leading-[1.52] font-serif font-semibold">
+            Consent does not have to mean friction on every action
+          </h3>
+        </div>
         <div className="flex flex-col md:flex-row gap-[38px] items-start">
-          <div className="order-1 md:order-1 relative w-full md:w-[592px] aspect-[592/357] bg-[#FFF7EF] shrink-0 overflow-hidden rounded-figure-card">
+          <div className="order-1 md:order-2 relative w-full md:w-[592px] aspect-[592/357] bg-[#FFF7EF] shrink-0 overflow-hidden rounded-figure-card">
             <img
               src="/assets/consent-at-config-level.svg"
               alt="Diagram showing consent moved to the connector configuration layer"
               className="absolute inset-0 w-full h-full object-cover"
             />
           </div>
-          <div className="order-2 md:order-2 flex-1 md:py-[37px]">
-            <h3 className="hidden md:block text-[18px] leading-[1.52] font-serif font-semibold mb-2">
-              Consent does not have to mean friction on every action
-            </h3>
-            <div className="text-[18px] leading-[1.52] font-serif flex flex-col gap-[18px]">
+          <div className="order-2 md:order-1 flex-1 md:py-[37px]">
+            <div className="hidden md:block mb-2">
+              <p className="text-[11px] uppercase tracking-[0.15em] font-serif font-medium text-accent-yellow mb-[8px]">
+                Decision 03
+              </p>
+              <h3 className="text-[18px] leading-[1.52] font-serif font-semibold">
+                Consent does not have to mean friction on every action
+              </h3>
+            </div>
+            <div className="text-[14px] leading-[1.6] font-serif flex flex-col gap-[18px]">
               <p>
                 The first version showed nothing when the system was about to act at a source level. The second version interrupted the flow with a confirmation gate every time. Partner feedback was clear: it created anxiety rather than confidence on recurring workflows.
               </p>
@@ -256,17 +367,27 @@ export default function AiPamCaseStudy() {
         </div>
       </section>
 
-      {/* Section 4: Text left, image right */}
+      {/* Decision 4: Stopping is safer — text left, image right */}
       <section className="mb-[50px]">
-        <h3 className="md:hidden text-[18px] leading-[1.52] font-serif font-semibold mb-4">
-          Stopping is safer than proceeding with partial data
-        </h3>
+        <div className="md:hidden mb-4">
+          <p className="text-[11px] uppercase tracking-[0.15em] font-serif font-medium text-accent-yellow mb-[8px]">
+            Decision 04
+          </p>
+          <h3 className="text-[18px] leading-[1.52] font-serif font-semibold">
+            Stopping is safer than proceeding with partial data
+          </h3>
+        </div>
         <div className="flex flex-col md:flex-row gap-[38px] items-start">
           <div className="order-2 md:order-1 flex-1 md:py-[37px]">
-            <h3 className="hidden md:block text-[18px] leading-[1.52] font-serif font-semibold mb-2">
-              Stopping is safer than proceeding with partial data
-            </h3>
-            <div className="text-[18px] leading-[1.52] font-serif flex flex-col gap-[18px]">
+            <div className="hidden md:block mb-2">
+              <p className="text-[11px] uppercase tracking-[0.15em] font-serif font-medium text-accent-yellow mb-[8px]">
+                Decision 04
+              </p>
+              <h3 className="text-[18px] leading-[1.52] font-serif font-semibold">
+                Stopping is safer than proceeding with partial data
+              </h3>
+            </div>
+            <div className="text-[14px] leading-[1.6] font-serif flex flex-col gap-[18px]">
               <p>
                 In PAM, partial execution is more dangerous than no execution. When a connector goes offline mid-workflow, the system stops and names the connector rather than continuing. When a query returns an unusually large result set, the system surfaces the discrepancy and asks the technician to confirm scope.
               </p>
@@ -285,38 +406,55 @@ export default function AiPamCaseStudy() {
         </div>
       </section>
 
-      {/* Section 5: Full-width text + image */}
-      <div className="py-[37px] mb-[50px]">
-        <h3 className="text-[18px] leading-[1.52] font-serif font-semibold mb-2">
-          One shared language across product, engineering, and customer success
-        </h3>
-        <div className="text-[18px] leading-[1.52] font-serif flex flex-col gap-[18px] mb-[30px]">
-          <p>
-            Before the terminal launched, I ran a cross-functional session to define AI-native design principles and document them in Confluence. A full content guidelines system followed, covering voice, tone, terminology, and terminal-specific copy patterns.
-          </p>
-          <p>
-            The two principles that anchored everything: AI should ask before it acts on any irreversible identity change. The system should never fail silently.
-          </p>
+      {/* Business impact */}
+      <section className="py-[37px] mb-[50px]">
+        <h2 className="font-serif font-normal text-[26px] md:text-[34px] leading-[1.2] mb-[20px]">
+          Business impact
+        </h2>
+        <p className="text-[14px] leading-[1.6] font-serif mb-[24px] max-w-[760px]">
+          The terminal shipped as the first agentic capability in CyberQP&apos;s PAM suite. Three measurable outcomes are tracked across the partner cohort.
+        </p>
+        <div className="flex flex-col">
+          {[
+            { label: 'Activation', text: 'Terminal activation rate is the primary adoption indicator from day one. Partner advisory council named the work as a top three product investment for the next renewal cycle.' },
+            { label: 'Specialist enablement', text: 'L1 technicians completed triage workflows previously gated to L3, removing a long-standing escalation bottleneck. The follow-on work on a trust and confidence score for L1 decisions ships next.' },
+            { label: 'Continuous learning loop', text: 'HITL override rate per scenario became the primary design feedback signal the AI labs team uses for model refinement. A dedicated feedback action was instrumented from launch to capture edge cases the override metric alone does not surface.' },
+          ].map((row) => (
+            <div key={row.label} className="grid grid-cols-1 md:grid-cols-[320px_1fr] gap-[8px] md:gap-[32px] py-[20px] border-b border-divider-grey/30">
+              <p className="text-[18px] leading-[1.52] font-serif font-semibold md:whitespace-nowrap">{row.label}</p>
+              <p className="text-[14px] leading-[1.6] font-serif">{row.text}</p>
+            </div>
+          ))}
         </div>
-        <img
-          src="/assets/content-guidelines.svg"
-          alt="Content guidelines diagram showing AI-native principles and terminal-specific copy patterns"
-          className="w-full aspect-[2770/850] rounded-figure-banner object-contain"
-        />
-      </div>
+        <p className="text-[16px] leading-[1.52] font-serif italic text-[#4F4F4F] mt-[24px] max-w-[640px]">
+          Exact figures are not shared due to the competitive nature of this domain. Happy to walk through the specifics in conversation.
+        </p>
+      </section>
 
-      {/* Section 6: Results */}
-      <div className="py-[37px] mb-[50px]">
-        <h3 className="text-[18px] leading-[1.52] font-serif font-semibold mb-2">
-          Results
-        </h3>
-        <ul className="text-[18px] leading-[1.52] font-serif list-disc ml-[27px] flex flex-col gap-[4px]">
-          <li>HITL override rate per scenario became the primary design feedback loop after launch. Where technicians override the AI is where the next unmet need lives.</li>
-          <li>A dedicated feedback action was instrumented to capture edge cases, giving the AI labs team high-signal input for model refinement.</li>
-          <li>Terminal activation rate tracked from day one as the primary adoption indicator.</li>
-          <li>Partner advisory council feedback incorporated across three design iterations.</li>
-        </ul>
-      </div>
+      {/* What's still open */}
+      <section className="py-[37px] mb-[50px]">
+        <h2 className="font-serif font-normal text-[26px] md:text-[34px] leading-[1.2] mb-[20px]">
+          What&apos;s still open
+        </h2>
+        <p className="text-[14px] leading-[1.6] font-serif mb-[24px] max-w-[760px]">
+          Three problems are open as the terminal moves into multi-agent territory.
+        </p>
+        <div className="flex flex-col">
+          {[
+            { label: 'Source authority by context', text: 'Identity sources rarely carry equal weight on the same decision. The next problem is surfacing context-dependent source authority: naming which source is canonical for which kind of decision, per client, without burying the technician in setup screens.' },
+            { label: 'Scope confidence above threshold', text: 'The current "scope unusually large" gate fires on volume. The next iteration tests whether scope confidence can be modeled on intent rather than volume alone.' },
+            { label: 'Cross-workflow memory', text: 'One workflow per session is the right constraint today. It will not be the right constraint when technicians are running three coordinated workflows for the same incident.' },
+          ].map((row) => (
+            <div key={row.label} className="grid grid-cols-1 md:grid-cols-[320px_1fr] gap-[8px] md:gap-[32px] py-[20px] border-b border-divider-grey/30">
+              <p className="text-[18px] leading-[1.52] font-serif font-semibold md:whitespace-nowrap">{row.label}</p>
+              <p className="text-[14px] leading-[1.6] font-serif">{row.text}</p>
+            </div>
+          ))}
+        </div>
+        <p className="text-[16px] leading-[1.52] font-serif italic text-[#4F4F4F] mt-[24px] max-w-[640px]">
+          The terminal is one surface in an agentic system that&apos;s continuously evolving. The trust patterns from this work are the contract for what evolves next.
+        </p>
+      </section>
     </ProjectPageLayout>
   )
 }

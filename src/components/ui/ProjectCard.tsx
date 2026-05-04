@@ -23,11 +23,17 @@ export function ProjectCard({ title, tags, href, badge, aspect, placeholder, rot
       ? 'object-cover object-center'
       : 'object-contain object-bottom'
 
-  return (
-    <Link href={href} className={`group block no-underline ${rotate ?? ''}`}>
+  // Cards with href='#' are placeholders for case studies still in progress.
+  // Render them as non-link divs so clicks don't trigger a top-of-page jump,
+  // and drop the hover affordances + arrow that imply navigation.
+  const isLocked = href === '#'
+
+  const tile = (
+    <>
       <div
-        className={`w-full ${aspect} rounded-[14px] overflow-hidden shadow-sm relative
-                    transition-transform duration-[220ms] group-hover:scale-[1.02]`}
+        className={`w-full ${aspect} rounded-[14px] overflow-hidden shadow-sm relative ${
+          isLocked ? '' : 'transition-transform duration-[220ms] group-hover:scale-[1.02]'
+        }`}
         style={{ backgroundColor: placeholder }}
       >
         {svgSrc && (
@@ -48,13 +54,33 @@ export function ProjectCard({ title, tags, href, badge, aspect, placeholder, rot
         <LastViewedBadge slug={slugFromHref(href)} />
       </div>
       <div className="mt-3 px-1">
-        <p className="font-sans text-[15px] font-semibold text-[#1a1a1a]
-                       inline-flex items-center gap-1.5 group-hover:gap-2.5 transition-all duration-[220ms]">
+        <p
+          className={`font-sans text-[15px] font-semibold text-[#1a1a1a] inline-flex items-center ${
+            isLocked ? '' : 'gap-1.5 group-hover:gap-2.5 transition-all duration-[220ms]'
+          }`}
+        >
           {title}
-          <span aria-hidden="true">→</span>
+          {!isLocked && <span aria-hidden="true">→</span>}
         </p>
         <p className="font-sans text-[12px] text-[#9e9e9e] mt-1">{tags}</p>
       </div>
+    </>
+  )
+
+  if (isLocked) {
+    return (
+      <div
+        className={`group block cursor-default ${rotate ?? ''}`}
+        aria-disabled="true"
+      >
+        {tile}
+      </div>
+    )
+  }
+
+  return (
+    <Link href={href} className={`group block no-underline ${rotate ?? ''}`}>
+      {tile}
     </Link>
   )
 }
