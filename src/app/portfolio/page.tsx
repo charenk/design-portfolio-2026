@@ -65,7 +65,7 @@ export default function PortfolioPage() {
     aspect: 'aspect-[16/9]',
     placeholder: '#e8dded',
     rotate: '-rotate-[1deg]',
-    svgSrc: '/browser-extension-banner.svg',
+    svgSrc: '/assets/portfolio%20list%20page/CyberQP%20browser%20extension.svg',
     imageFit: 'cover',
   }
 
@@ -77,7 +77,7 @@ export default function PortfolioPage() {
     aspect: 'aspect-[16/10]',
     placeholder: '#dde4ed',
     rotate: 'rotate-[1deg]',
-    svgSrc: '/ai-pam-banner.svg',
+    svgSrc: '/assets/portfolio%20list%20page/ai-pam-portfolio-page-banner.svg',
     imageFit: 'cover',
   }
 
@@ -90,18 +90,20 @@ export default function PortfolioPage() {
     aspect: 'aspect-[16/10]',
     placeholder: '#f4dde0',
     rotate: '-rotate-[1deg]',
+    svgSrc: '/assets/portfolio%20list%20page/CyberQP%20growth.svg',
+    imageFit: 'cover',
   }
 
   const refinery: ProjectCardProps = {
-    title: 'Multi agentic experiment for finance',
+    title: 'Multi agent experiment to monitor TFSA holdings',
     tags: 'Experiment · Agentic',
-    href: '#',
+    href: '/refinery',
     badge: 'Solo project',
     aspect: 'aspect-[5/4]',
     placeholder: '#edeadd',
     rotate: 'rotate-[1.5deg]',
-    svgSrc: '/assets/portfolio%20list%20page/The%20refinery%20project.svg',
-    imageFit: 'contain-padded',
+    svgSrc: '/assets/portfolio%20list%20page/The%20refinery%20project.png',
+    imageFit: 'cover',
   }
 
   // Row 3 — small left + large right (matches row 1 pattern)
@@ -113,16 +115,20 @@ export default function PortfolioPage() {
     aspect: 'aspect-[4/3]',
     placeholder: '#dee9e0',
     rotate: 'rotate-[1deg]',
+    svgSrc: '/assets/portfolio%20list%20page/Blackberry.svg',
+    imageFit: 'cover',
   }
 
   const placeholderLarge: ProjectCardProps = {
     title: 'Copilot tenant assessment',
-    tags: 'Copilot · Assessment',
+    tags: 'MSP, Enterprises SaaS, M365 Governance',
     href: '#',
     badge: 'Coming soon',
     aspect: 'aspect-[16/10]',
     placeholder: '#e7dde9',
     rotate: '-rotate-[1.5deg]',
+    svgSrc: '/assets/portfolio%20list%20page/Tenant%20assessment.svg',
+    imageFit: 'cover',
   }
 
   return (
@@ -226,10 +232,7 @@ export default function PortfolioPage() {
 
         {/* Bottom credit — pinned near page bottom */}
         <div className="text-center mt-40 md:mt-56 px-5">
-          <p className="font-sans text-[15px] font-bold text-[#1a1a1a]">Charen Koneti</p>
-          <p className="font-mono text-[13px] md:text-[14px] text-[#3a4cba] mt-2">
-            Designed, built and shipped from Canada <span aria-hidden="true">🍁</span>
-          </p>
+          <p className="font-sans text-[15px] font-bold text-[#1a1a1a]">Designed by Charen, built using Claude</p>
         </div>
       </main>
     </div>

@@ -19,6 +19,8 @@ export interface WorkItem {
   svgSrc?: string
   /** When true, image is centered inside the card with padding. Default false anchors to the bottom (illustration style). */
   imageCentered?: boolean
+  /** When 'cover', image fills the card edge-to-edge (overrides imageCentered). */
+  imageFit?: 'cover'
 }
 
 // Spread positions for 4 slots — fanned out from center
@@ -44,6 +46,7 @@ function ProjectCard({
   rotation,
   slug,
   imageCentered,
+  imageFit,
   onDragStart,
   onDragEnd,
   onClick,
@@ -54,6 +57,7 @@ function ProjectCard({
   rotation: number
   slug: string
   imageCentered?: boolean
+  imageFit?: 'cover'
   onDragStart: () => void
   onDragEnd: () => void
   onClick: () => void
@@ -90,7 +94,13 @@ function ProjectCard({
             src={svgSrc}
             alt=""
             draggable={false}
-            className={imageCentered ? 'w-[80%] h-[80%] object-contain object-center m-auto' : 'w-full h-full object-contain object-bottom'}
+            className={
+              imageFit === 'cover'
+                ? 'w-full h-full object-cover object-center'
+                : imageCentered
+                  ? 'w-[80%] h-[80%] object-contain object-center m-auto'
+                  : 'w-full h-full object-contain object-bottom'
+            }
           />
         )}
         <LastViewedBadge slug={slug} />
@@ -212,6 +222,7 @@ function WorkCard({
         rotation={rotation}
         slug={slugFromHref(item.href)}
         imageCentered={item.imageCentered}
+        imageFit={item.imageFit}
         onDragStart={() => setIsDragging(true)}
         onDragEnd={() => setTimeout(() => setIsDragging(false), 100)}
         onClick={() => { if (!isDragging) router.push(item.href) }}
@@ -224,7 +235,7 @@ function WorkCard({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 6 }}
             transition={{ duration: 0.18 }}
-            className="pointer-events-none absolute font-serif text-[18px] font-bold text-[#1a1a1a]"
+            className="pointer-events-none absolute font-sans text-[14px] font-medium text-[#6a6a6a]"
             style={{
               top: CARD_SIZE + 36,
               left: 0,
@@ -272,7 +283,7 @@ function ViewAllWrapper({
 const DEFAULT_ITEMS: WorkItem[] = [
   { id: 1, title: 'Agentic Privileged Access Management suite', href: '/ai-pam',            placeholder: '#dde4ed', direction: 'left',  svgSrc: '/Agentic-Pam.svg'      },
   { id: 2, title: 'CyberQP browser extension',                  href: '/browser-extension', placeholder: '#e8dded', direction: 'left',  svgSrc: '/Browser-extension.svg' },
-  { id: 3, title: 'Multi agentic experiment for finance', href: '#', placeholder: '#edeadd', direction: 'right', svgSrc: '/assets/portfolio%20list%20page/The%20refinery%20project.svg', imageCentered: true },
+  { id: 3, title: 'Multi agent experiment to monitor TFSA holdings', href: '/refinery', placeholder: '#edeadd', direction: 'right', svgSrc: '/assets/portfolio%20list%20page/The%20refinery%20project.png', imageFit: 'cover' },
 ]
 
 export function WorkGallery({
@@ -341,7 +352,13 @@ export function WorkGallery({
                     src={item.svgSrc}
                     alt=""
                     draggable={false}
-                    className={item.imageCentered ? 'w-[80%] h-[80%] object-contain object-center m-auto' : 'w-full h-full object-contain object-bottom'}
+                    className={
+                      item.imageFit === 'cover'
+                        ? 'w-full h-full object-cover object-center'
+                        : item.imageCentered
+                          ? 'w-[80%] h-[80%] object-contain object-center m-auto'
+                          : 'w-full h-full object-contain object-bottom'
+                    }
                   />
                 )}
                 <LastViewedBadge slug={slugFromHref(item.href)} />
