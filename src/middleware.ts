@@ -25,7 +25,25 @@ export function middleware(request: NextRequest) {
       sameSite: 'lax',
       path: '/',
     })
+    // Token-bearing visits also unlock /admin routes. Password unlock does NOT set
+    // this cookie, so the admin tools stay invisible to anyone who only has the password.
+    response.cookies.set('admin_access', '1', {
+      httpOnly: true,
+      maxAge: 60 * 60 * 24 * 7,
+      sameSite: 'lax',
+      path: '/',
+    })
     return response
+  }
+
+  // /admin/* — token-only gate. Password access does not unlock these routes.
+  if (pathname.startsWith('/admin')) {
+    const adminCookie = request.cookies.get('admin_access')
+    if (adminCookie?.value === '1') {
+      return NextResponse.next()
+    }
+    // No admin cookie — bounce to home silently. The route is non-discoverable on purpose.
+    return NextResponse.redirect(new URL('/', request.url))
   }
 
   // Home page: open to everyone, no gate.
@@ -50,5 +68,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/', '/portfolio', '/workato', '/ai-pam', '/browser-extension', '/figma-buddy', '/copilot', '/blackberry'],
+  matcher: ['/', '/portfolio', '/workato', '/ai-pam', '/browser-extension', '/figma-buddy', '/copilot', '/blackberry', '/admin/:path*'],
 }
