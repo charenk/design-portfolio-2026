@@ -2,11 +2,23 @@
 
 import { cookies } from 'next/headers'
 
-const ALLOWED_RETURN_PATHS = ['/workato', '/ai-pam', '/browser-extension', '/figma-buddy']
+const ALLOWED_RETURN_PATHS = [
+  '/portfolio',
+  '/workato',
+  '/ai-pam',
+  '/browser-extension',
+  '/figma-buddy',
+  '/refinery',
+  '/copilot',
+  '/blackberry',
+]
 
 function sanitizeReturn(url: string | null | undefined): string {
   if (!url) return '/'
-  if (ALLOWED_RETURN_PATHS.some(p => url === p || url.startsWith(p + '/'))) return url
+  // Match the path portion against the allow-list, but preserve any query
+  // string (UTM params, etc.) on the returned URL.
+  const pathOnly = url.split('?')[0]
+  if (ALLOWED_RETURN_PATHS.some(p => pathOnly === p || pathOnly.startsWith(p + '/'))) return url
   return '/'
 }
 

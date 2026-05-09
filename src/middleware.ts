@@ -8,8 +8,10 @@ export function middleware(request: NextRequest) {
   const envToken = process.env.PORTFOLIO_TOKEN
 
   if (urlToken && envToken && urlToken === envToken) {
-    // Valid token — set cookie and redirect to the same path (token stripped from URL)
-    const cleanUrl = new URL(pathname, request.url)
+    // Valid token — set cookie and redirect with only the token stripped (UTM params preserved
+    // so GA + LogRocket can attribute the visit to a specific application/campaign).
+    const cleanUrl = new URL(request.url)
+    cleanUrl.searchParams.delete('t')
     const response = NextResponse.redirect(cleanUrl)
     response.cookies.set('portfolio_access', '1', {
       httpOnly: true,
@@ -38,9 +40,12 @@ export function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // No valid token or cookie — send to lock page with return path
+  // No valid token or cookie — send to lock page with return path.
+  // Keep the original query string (UTM params, etc.) so attribution survives
+  // the password unlock round-trip.
   const lockUrl = new URL('/portfolio/lock', request.url)
-  lockUrl.searchParams.set('return', pathname)
+  const returnPath = pathname + (request.nextUrl.search || '')
+  lockUrl.searchParams.set('return', returnPath)
   return NextResponse.redirect(lockUrl)
 }
 
