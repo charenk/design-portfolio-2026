@@ -14,31 +14,7 @@ const SOURCE_SUGGESTIONS = [
   'resume',
 ] as const
 
-// Short forms for utm_source when building the path-based short URL.
-// Anything not in this map (e.g. typed company names like "okta") falls
-// through as-is.
-const SOURCE_SHORT: Record<string, string> = {
-  ycombinator: 'yc',
-  linkedin: 'ln',
-  wellfound: 'wf',
-  indeed: 'ind',
-  email: 'email',
-  referral: 'ref',
-  slack: 'sl',
-  twitter: 'tw',
-  resume: 'rs',
-}
-
 const MEDIUMS = ['application', 'cold', 'intro', 'bio'] as const
-
-// Short forms for utm_medium in the path-based short URL. These match
-// the whitelist in src/app/[slug]/page.tsx.
-const MEDIUM_SHORT: Record<(typeof MEDIUMS)[number], string> = {
-  application: 'app',
-  cold: 'cold',
-  intro: 'intro',
-  bio: 'bio',
-}
 
 const TARGETS = [
   { label: 'Portfolio (default)', path: '/portfolio' },
@@ -63,14 +39,6 @@ function todayISO(): string {
   return `${yyyy}-${mm}-${dd}`
 }
 
-function compactDate(iso: string): string {
-  // YYYY-MM-DD → MMDD (e.g. "0511"). Just enough to disambiguate same-day
-  // applications without bloating the slug with the full year.
-  const parts = iso.split('-')
-  if (parts.length !== 3) return ''
-  return `${parts[1]}${parts[2]}`
-}
-
 function slugify(s: string): string {
   return s
     .toLowerCase()
@@ -91,7 +59,7 @@ export default function LinkBuilderPage() {
   const [withToken, setWithToken] = useState(false)
   const [token, setToken] = useState('')
   const [tokenInput, setTokenInput] = useState('')
-  const [descriptorOverride, setDescriptorOverride] = useState('')
+  const [slugOverride, setSlugOverride] = useState('')
   const [copyState, setCopyState] = useState<CopyKind | null>(null)
 
   // Load saved token on mount.
@@ -131,41 +99,13 @@ export default function LinkBuilderPage() {
     return u.toString()
   }, [target, withToken, token, source, medium, campaign, org])
 
-  // Short URL — path-based, no query string, no token. Recipient lands on
-  // the lock screen. See src/app/[slug]/page.tsx for the redirect logic.
-  const sourceShort = useMemo(() => {
-    const trimmed = slugify(source)
-    return SOURCE_SHORT[trimmed] ?? trimmed
-  }, [source])
-
-  const mediumShort = MEDIUM_SHORT[medium]
-
-  const defaultDescriptor = useMemo(() => {
-    if (!org) return ''
-    const orgSlug = slugify(org)
-    const dateShort = compactDate(date)
-    // If the source already encodes the company (e.g. source="okta", org="Okta"),
-    // drop the org from the descriptor to avoid duplication.
-    if (orgSlug === sourceShort || orgSlug === slugify(source)) {
-      return dateShort
-    }
-    return [orgSlug, dateShort].filter(Boolean).join('-')
-  }, [org, date, source, sourceShort])
-
-  const effectiveDescriptor = (descriptorOverride.trim() || defaultDescriptor)
-    .toLowerCase()
-    .replace(/[^a-z0-9-]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-
-  const shortSlug = useMemo(() => {
-    if (!effectiveDescriptor || !sourceShort || !mediumShort) return ''
-    return `${sourceShort}-${mediumShort}-${effectiveDescriptor}`
-  }, [sourceShort, mediumShort, effectiveDescriptor])
-
-  const shortUrl = useMemo(() => {
-    if (!shortSlug) return ''
-    return `${SITE_ORIGIN}/${shortSlug}`
-  }, [shortSlug])
+  // Short URL — just the org slug. Falls back to user override if they want
+  // to disambiguate (e.g. "okta-fall" when applying to the same org twice).
+  // The route handler at src/app/[slug]/route.ts handles cookie planting and
+  // UTM injection, then redirects to /.
+  const defaultSlug = useMemo(() => (org ? slugify(org) : ''), [org])
+  const shortSlug = slugify(slugOverride) || defaultSlug
+  const shortUrl = useMemo(() => (shortSlug ? `${SITE_ORIGIN}/${shortSlug}` : ''), [shortSlug])
 
   const ledgerRow = useMemo(() => {
     if (!campaign) return ''
@@ -195,8 +135,7 @@ export default function LinkBuilderPage() {
           Application URL builder
         </h1>
         <p className="font-sans text-[14px] text-[#6b6b6b] mb-10 leading-relaxed">
-          Generate a tracked link for an application or recruiter outreach. UTM params land in
-          Google Analytics; <code className="text-[12px] bg-white px-1 py-0.5 rounded">utm_campaign</code> shows up as a LogRocket session trait.
+          Generate a tracked link for an application or recruiter outreach. <strong>Short URLs</strong> are just the org name (e.g. <code className="text-[12px] bg-white px-1 py-0.5 rounded">charen.online/okta</code>) &mdash; they auto-unlock and land visitors on the home page. <strong>Long URLs</strong> encode source, medium, and date for richer attribution, with an optional silent-access token. Both feed UTM data into Google Analytics and LogRocket.
         </p>
 
         <div className="flex flex-col gap-5">
@@ -222,7 +161,7 @@ export default function LinkBuilderPage() {
           </Field>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <Field label="Source">
+            <Field label="Source (for long URL)">
               <input
                 type="text"
                 list="source-suggestions"
@@ -238,7 +177,7 @@ export default function LinkBuilderPage() {
               </datalist>
             </Field>
 
-            <Field label="Medium">
+            <Field label="Medium (for long URL)">
               <select value={medium} onChange={(e) => setMedium(e.target.value as (typeof MEDIUMS)[number])} className={inputClass}>
                 {MEDIUMS.map((m) => (
                   <option key={m} value={m}>
@@ -254,7 +193,7 @@ export default function LinkBuilderPage() {
               <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className={inputClass} />
             </Field>
 
-            <Field label="Landing page">
+            <Field label="Landing page (for long URL)">
               <select value={target} onChange={(e) => setTarget(e.target.value)} className={inputClass}>
                 {TARGETS.map((t) => (
                   <option key={t.path} value={t.path}>
@@ -265,12 +204,12 @@ export default function LinkBuilderPage() {
             </Field>
           </div>
 
-          <Field label={`Short URL descriptor (defaults to "${defaultDescriptor || 'org-MMDD'}")`}>
+          <Field label={`Short URL slug (defaults to "${defaultSlug || 'org-name'}")`}>
             <input
               type="text"
-              value={descriptorOverride}
-              onChange={(e) => setDescriptorOverride(e.target.value)}
-              placeholder={defaultDescriptor || 'e.g. 2026 or acme-pm'}
+              value={slugOverride}
+              onChange={(e) => setSlugOverride(e.target.value)}
+              placeholder={defaultSlug || 'e.g. okta or okta-fall'}
               className={inputClass}
             />
           </Field>
@@ -323,7 +262,7 @@ export default function LinkBuilderPage() {
         {/* Output */}
         <div className="mt-10 flex flex-col gap-5">
           <OutputBlock
-            label="Short URL (path-based · password gate)"
+            label="Short URL · auto-unlocks, lands on home"
             onCopy={() => copyText(shortUrl, 'short')}
             copied={copyState === 'short'}
             disabled={!shortUrl}
@@ -331,13 +270,13 @@ export default function LinkBuilderPage() {
             {shortUrl || <span className="text-[#b0b0b0]">Enter an organization name…</span>}
           </OutputBlock>
 
-          <OutputBlock label="Long URL (with UTM query params)" onCopy={() => copyText(url, 'url')} copied={copyState === 'url'} disabled={!url}>
+          <OutputBlock label="Long URL · UTM query params · optional silent token" onCopy={() => copyText(url, 'url')} copied={copyState === 'url'} disabled={!url}>
             {url || <span className="text-[#b0b0b0]">Enter an organization name…</span>}
           </OutputBlock>
 
           {campaign && (
             <p className="font-sans text-[13px] text-[#6b6b6b]">
-              Campaign slug:{' '}
+              Long-URL campaign slug:{' '}
               <code className="font-mono bg-white px-1.5 py-0.5 rounded text-[12px]">{campaign}</code>
             </p>
           )}
