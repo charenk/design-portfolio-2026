@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 
-const SOURCES = [
+const SOURCE_SUGGESTIONS = [
   'ycombinator',
   'linkedin',
   'wellfound',
@@ -12,10 +12,33 @@ const SOURCES = [
   'slack',
   'twitter',
   'resume',
-  'other',
 ] as const
 
+// Short forms for utm_source when building the path-based short URL.
+// Anything not in this map (e.g. typed company names like "okta") falls
+// through as-is.
+const SOURCE_SHORT: Record<string, string> = {
+  ycombinator: 'yc',
+  linkedin: 'ln',
+  wellfound: 'wf',
+  indeed: 'ind',
+  email: 'email',
+  referral: 'ref',
+  slack: 'sl',
+  twitter: 'tw',
+  resume: 'rs',
+}
+
 const MEDIUMS = ['application', 'cold', 'intro', 'bio'] as const
+
+// Short forms for utm_medium in the path-based short URL. These match
+// the whitelist in src/app/[slug]/page.tsx.
+const MEDIUM_SHORT: Record<(typeof MEDIUMS)[number], string> = {
+  application: 'app',
+  cold: 'cold',
+  intro: 'intro',
+  bio: 'bio',
+}
 
 const TARGETS = [
   { label: 'Portfolio (default)', path: '/portfolio' },
@@ -40,6 +63,14 @@ function todayISO(): string {
   return `${yyyy}-${mm}-${dd}`
 }
 
+function compactDate(iso: string): string {
+  // YYYY-MM-DD → MMDD (e.g. "0511"). Just enough to disambiguate same-day
+  // applications without bloating the slug with the full year.
+  const parts = iso.split('-')
+  if (parts.length !== 3) return ''
+  return `${parts[1]}${parts[2]}`
+}
+
 function slugify(s: string): string {
   return s
     .toLowerCase()
@@ -48,17 +79,20 @@ function slugify(s: string): string {
     .replace(/^-+|-+$/g, '')
 }
 
+type CopyKind = 'url' | 'short' | 'row'
+
 export default function LinkBuilderPage() {
   const [org, setOrg] = useState('')
   const [role, setRole] = useState('')
-  const [source, setSource] = useState<(typeof SOURCES)[number]>('linkedin')
+  const [source, setSource] = useState<string>('linkedin')
   const [medium, setMedium] = useState<(typeof MEDIUMS)[number]>('application')
   const [date, setDate] = useState(todayISO())
   const [target, setTarget] = useState<string>('/portfolio')
   const [withToken, setWithToken] = useState(false)
   const [token, setToken] = useState('')
   const [tokenInput, setTokenInput] = useState('')
-  const [copyState, setCopyState] = useState<'url' | 'row' | null>(null)
+  const [descriptorOverride, setDescriptorOverride] = useState('')
+  const [copyState, setCopyState] = useState<CopyKind | null>(null)
 
   // Load saved token on mount.
   useEffect(() => {
@@ -97,6 +131,42 @@ export default function LinkBuilderPage() {
     return u.toString()
   }, [target, withToken, token, source, medium, campaign, org])
 
+  // Short URL — path-based, no query string, no token. Recipient lands on
+  // the lock screen. See src/app/[slug]/page.tsx for the redirect logic.
+  const sourceShort = useMemo(() => {
+    const trimmed = slugify(source)
+    return SOURCE_SHORT[trimmed] ?? trimmed
+  }, [source])
+
+  const mediumShort = MEDIUM_SHORT[medium]
+
+  const defaultDescriptor = useMemo(() => {
+    if (!org) return ''
+    const orgSlug = slugify(org)
+    const dateShort = compactDate(date)
+    // If the source already encodes the company (e.g. source="okta", org="Okta"),
+    // drop the org from the descriptor to avoid duplication.
+    if (orgSlug === sourceShort || orgSlug === slugify(source)) {
+      return dateShort
+    }
+    return [orgSlug, dateShort].filter(Boolean).join('-')
+  }, [org, date, source, sourceShort])
+
+  const effectiveDescriptor = (descriptorOverride.trim() || defaultDescriptor)
+    .toLowerCase()
+    .replace(/[^a-z0-9-]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+
+  const shortSlug = useMemo(() => {
+    if (!effectiveDescriptor || !sourceShort || !mediumShort) return ''
+    return `${sourceShort}-${mediumShort}-${effectiveDescriptor}`
+  }, [sourceShort, mediumShort, effectiveDescriptor])
+
+  const shortUrl = useMemo(() => {
+    if (!shortSlug) return ''
+    return `${SITE_ORIGIN}/${shortSlug}`
+  }, [shortSlug])
+
   const ledgerRow = useMemo(() => {
     if (!campaign) return ''
     const headers = ['campaign', 'org', 'role', 'source', 'medium', 'applied_at', 'first_visit', 'duration', 'notes']
@@ -104,7 +174,7 @@ export default function LinkBuilderPage() {
     return headers.join('\t') + '\n' + values.join('\t')
   }, [campaign, org, role, source, medium, date])
 
-  const copyText = async (text: string, kind: 'url' | 'row') => {
+  const copyText = async (text: string, kind: CopyKind) => {
     if (!text) return
     try {
       await navigator.clipboard.writeText(text)
@@ -153,13 +223,19 @@ export default function LinkBuilderPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <Field label="Source">
-              <select value={source} onChange={(e) => setSource(e.target.value as (typeof SOURCES)[number])} className={inputClass}>
-                {SOURCES.map((s) => (
-                  <option key={s} value={s}>
-                    {s}
-                  </option>
+              <input
+                type="text"
+                list="source-suggestions"
+                value={source}
+                onChange={(e) => setSource(e.target.value)}
+                placeholder="linkedin, okta, etc."
+                className={inputClass}
+              />
+              <datalist id="source-suggestions">
+                {SOURCE_SUGGESTIONS.map((s) => (
+                  <option key={s} value={s} />
                 ))}
-              </select>
+              </datalist>
             </Field>
 
             <Field label="Medium">
@@ -189,6 +265,16 @@ export default function LinkBuilderPage() {
             </Field>
           </div>
 
+          <Field label={`Short URL descriptor (defaults to "${defaultDescriptor || 'org-MMDD'}")`}>
+            <input
+              type="text"
+              value={descriptorOverride}
+              onChange={(e) => setDescriptorOverride(e.target.value)}
+              placeholder={defaultDescriptor || 'e.g. 2026 or acme-pm'}
+              className={inputClass}
+            />
+          </Field>
+
           <div className="flex items-center gap-2 mt-2">
             <input
               id="with-token"
@@ -199,7 +285,7 @@ export default function LinkBuilderPage() {
               className="w-4 h-4"
             />
             <label htmlFor="with-token" className="font-sans text-[14px] text-[#1a1a1a]">
-              Include token (silent access — recipient skips the password gate)
+              Include token on the long URL (silent access — recipient skips the password gate)
             </label>
           </div>
 
@@ -236,7 +322,16 @@ export default function LinkBuilderPage() {
 
         {/* Output */}
         <div className="mt-10 flex flex-col gap-5">
-          <OutputBlock label="Generated URL" onCopy={() => copyText(url, 'url')} copied={copyState === 'url'} disabled={!url}>
+          <OutputBlock
+            label="Short URL (path-based · password gate)"
+            onCopy={() => copyText(shortUrl, 'short')}
+            copied={copyState === 'short'}
+            disabled={!shortUrl}
+          >
+            {shortUrl || <span className="text-[#b0b0b0]">Enter an organization name…</span>}
+          </OutputBlock>
+
+          <OutputBlock label="Long URL (with UTM query params)" onCopy={() => copyText(url, 'url')} copied={copyState === 'url'} disabled={!url}>
             {url || <span className="text-[#b0b0b0]">Enter an organization name…</span>}
           </OutputBlock>
 
