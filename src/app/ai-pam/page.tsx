@@ -110,7 +110,7 @@ export default function AiPamCaseStudy() {
         <div>
           <p className="text-[14px] font-serif text-[#9e9e9e] mb-[8px]">Role</p>
           <p className="text-[14px] leading-[1.6] font-serif">
-            Sole designer (sometimes wearing PM hat)
+            Lead designer (sometimes wearing PM hat)
           </p>
         </div>
         <div>
@@ -122,7 +122,7 @@ export default function AiPamCaseStudy() {
         <div>
           <p className="text-[14px] font-serif text-[#9e9e9e] mb-[8px]">Scope</p>
           <p className="text-[14px] leading-[1.6] font-serif">
-            Designing the AI terminal and system-wide guardrails for an agentic PAM product. Joined before scope was defined. Shipped through three customer-facing iterations.
+            Designed the AI terminal and system wide guardrails for an agentic PAM product, joining before scope was defined and leading discovery alongside the AI labs team while they ran technical exploration. The work shipped across three customer facing iterations.
           </p>
         </div>
       </section>
@@ -140,10 +140,10 @@ export default function AiPamCaseStudy() {
         </h2>
         <div className="text-[14px] leading-[1.6] font-serif flex flex-col gap-[18px] max-w-[760px]">
           <p>
-            Identity and access management at MSPs runs on tickets, tab switching, and tribal knowledge. A technician managing 30 to 50 client organizations spends more time gathering context than making decisions.
+            Identity and access management at MSPs runs on tickets, tab switching, and tribal knowledge, which means a technician managing 30 to 50 client organizations spends more time gathering context than making decisions. The cost shows up across ticket SLAs, end user wait times, and the higher value security work that gets pushed to next week.
           </p>
           <p>
-            CyberQP is the PAM platform that 1000+ MSPs use to manage that complexity. I led the design for the AI terminal: a natural language interface that lets technicians run identity and access workflows without writing scripts or switching tools.
+            CyberQP is the PAM platform 1000+ MSPs use to manage that complexity. I led the design for the AI terminal, a natural language interface that lets technicians run identity and access workflows without scripts or tool switching.
           </p>
         </div>
       </section>
@@ -157,15 +157,15 @@ export default function AiPamCaseStudy() {
           What I shaped
         </h2>
         <p className="text-[14px] leading-[1.6] font-serif mb-[30px] max-w-[760px]">
-          Four architectural calls survived from the first design exploration to the third customer-facing iteration.
+          Below are selected foundational decisions and guidelines that survived from the first design exploration to the third customer facing iteration.
         </p>
         <div className="bg-white rounded-figure-card shadow-[0_1px_3px_rgba(0,0,0,0.06)] overflow-hidden mb-[40px]">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-x lg:divide-y-0 divide-divider-grey/20">
             {[
-              { title: 'Read only by default', desc: 'The agent never writes to source systems without explicit human confirmation.' },
-              { title: 'Four-gate human in the loop', desc: 'Each gate is a distinct trust moment, not a generic confirmation step.' },
-              { title: 'Confidence-weighted disambiguation', desc: 'The system pauses on low certainty matches rather than guessing.' },
-              { title: 'One workflow per session', desc: 'Scope is enforced by design, not by user discipline.' },
+              { title: 'Read only by default', desc: 'The agent reads what’s there before it writes anything. Source systems only get changed after a technician has seen the findings and confirmed the action.' },
+              { title: 'The four trust gates', desc: 'Each of the four gates captures a different trust moment in the workflow. The technician confirms the AI’s interpretation, the policy authorization, the query plan, and the final action separately, not as a single click through.' },
+              { title: 'Confidence weighted disambiguation', desc: 'When confidence is low, the system pauses on the match. The technician sees the candidate options and picks the right one, rather than letting the AI guess and continue.' },
+              { title: 'One workflow per session', desc: 'The terminal handles one workflow at a time. Restricting scope this way keeps the model’s execution accurate and predictable, and it keeps runtime costs in check.' },
             ].map((item) => (
               <div key={item.title} className="p-[20px] md:p-[24px]">
                 <h4 className="text-[14px] leading-[1.4] font-serif font-semibold mb-[10px]">{item.title}</h4>
@@ -175,13 +175,17 @@ export default function AiPamCaseStudy() {
           </div>
         </div>
 
+        <p className="text-[14px] leading-[1.6] font-serif mb-[30px] max-w-[760px]">
+          Working with stakeholders and cross functional teams, I held several hypotheses through discovery and design. The one below carried the most weight, and the rest of the case study walks through the solutions it produced.
+        </p>
+
         {/* Hypothesis — nested inside What I shaped */}
         <div className="border-l-[3px] border-accent-yellow pl-[24px] md:pl-[36px] py-[4px]">
           <p className="text-[11px] uppercase tracking-[0.15em] font-serif font-medium text-accent-yellow mb-[14px]">
             Hypothesis
           </p>
           <p className="font-serif italic text-[20px] md:text-[22px] leading-[1.4] max-w-[760px]">
-            Specialists will adopt agentic AI in regulated workflows only when the system reads before it writes, and asks before every irreversible change. Read-only by default is the trust contract that makes the rest of the design possible.
+            Specialists will adopt agentic AI in regulated workflows only when the system reads before it writes, and asks before every irreversible change. Read only by default is the trust contract that makes the rest of the design possible.
           </p>
         </div>
       </section>
@@ -192,7 +196,7 @@ export default function AiPamCaseStudy() {
           Research
         </h2>
         <p className="text-[14px] leading-[1.6] font-serif mb-[24px] max-w-[760px]">
-          I joined the AI initiative before scope was defined. Discovery ran across three cohorts.
+          While the AI labs team focused on technical research and model testing, I led user discovery across three cohorts alongside the Director of Product and Product Manager.
         </p>
 
         {/* Cohorts */}
@@ -200,8 +204,8 @@ export default function AiPamCaseStudy() {
           <div className="flex flex-col divide-y divide-divider-grey/20">
             {[
               { num: '01', title: 'MSP technicians using competitor PAM products', desc: 'What they were trying to automate, what their internal n8n workarounds looked like, where those workarounds broke.' },
-              { num: '02', title: 'L1 to L3 specialists at customers already on CyberQP', desc: 'Where time was actually going during a typical week. Where they escalated and why.' },
-              { num: '03', title: 'Partner advisory council representing seven mid-sized MSP operations', desc: 'Strategic-level input on what would and would not survive in regulated environments.' },
+              { num: '02', title: 'L1 to L3 specialists at customers already on CyberQP', desc: 'Where the time actually went during a typical week, and where they escalated and why.' },
+              { num: '03', title: 'Partner advisory council representing seven midsize MSP operations', desc: 'Strategic level input on what would and would not survive in regulated environments.' },
             ].map((cohort) => (
               <div key={cohort.num} className="flex gap-[16px] md:gap-[28px] p-[20px] md:p-[24px]">
                 <p className="text-[12px] font-serif font-medium text-[#9e9e9e] min-w-[28px] pt-[4px]">{cohort.num}</p>
@@ -218,14 +222,14 @@ export default function AiPamCaseStudy() {
         <div className="flex flex-col md:flex-row gap-[38px] items-start">
           <div className="order-2 md:order-1 flex-1 md:py-[24px] flex flex-col gap-[18px]">
             <p className="text-[14px] leading-[1.6] font-serif">
-              The opportunity solution tree mapped each unmet need to a use case the model could be trained on, rather than a feature that needed its own screen. That mapping changed how the team prioritized: opportunities became use cases the terminal could absorb, not separate items in a roadmap queue.
+              I owned the opportunity solution tree, mapping unmet needs and assumptions across the three cohorts while working with product and engineering leaders to prioritize the work. The prioritized opportunities also became the source for a prompt and use case document the AI labs team used to train the model. That mapping changed how the team thought about scope: opportunities became use cases the terminal could absorb, not separate items in a roadmap queue.
             </p>
             <p className="text-[14px] leading-[1.6] font-serif">
-              Additionally, several themes were clearly visible across all three cohorts.
+              Three themes held across all three cohorts:
             </p>
             <ul className="text-[14px] leading-[1.6] font-serif list-disc ml-[20px] flex flex-col gap-[10px]">
               <li>Cleanup spans 3+ tools every quarter.</li>
-              <li>L1 access-request triage escalates to L3.</li>
+              <li>L1 access request triage escalates to L3.</li>
               <li>Inline access workflows are the top productivity ask.</li>
             </ul>
           </div>
@@ -245,7 +249,7 @@ export default function AiPamCaseStudy() {
           Design outcomes
         </h2>
         <p className="text-[14px] leading-[1.6] font-serif mb-[30px] max-w-[760px]">
-          An outcome of this work was a set of operating principles I drafted alongside product, engineering, and leadership. The team committed to them in the new AI-driven product to anchor decision making and reduce bias, since we were maintaining a legacy app while building the new AI app in parallel.
+          Discovery surfaced more than opportunities. It also produced operating principles I drafted with product, engineering, and leadership to anchor the design of the new AI driven product.
         </p>
         <div className="bg-white rounded-figure-card shadow-[0_1px_3px_rgba(0,0,0,0.06)] overflow-hidden mb-[40px]">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-x lg:divide-y-0 divide-divider-grey/20">
@@ -263,29 +267,32 @@ export default function AiPamCaseStudy() {
           </div>
         </div>
         <p className="text-[14px] leading-[1.6] font-serif max-w-[760px] mb-[30px]">
-          These principles were co-owned with engineering, marketing, and customer success, giving the team a shared operating language across functions. They also became the foundation for content writing on the new product platform, covering voice, terminology, and terminal-specific copy patterns.
+          These principles were co-owned with engineering, marketing, and customer success, giving the team a shared operating language across functions. They also became the foundation for content writing on the new product platform, covering voice, terminology, and the copy patterns specific to the terminal.
         </p>
         <img
           src="/assets/content-guidelines.svg"
           alt="Confluence principles document and AI terminal content guidelines"
           className="w-full aspect-[2770/850] rounded-figure-banner object-contain"
         />
+        <p className="text-[14px] leading-[1.6] font-serif max-w-[760px] mt-[30px]">
+          Principles only matter if they hold under pressure. The four decisions below are where these got tested, including the one I expected to ship and ended up reversing entirely.
+        </p>
       </section>
 
-      {/* Decision 1: Read-only by default — text only for now, image to follow */}
+      {/* Decision 1: Read only by default — text only for now, image to follow */}
       <section className="mb-[50px]">
         <div className="mb-4">
           <p className="text-[11px] uppercase tracking-[0.15em] font-serif font-medium text-accent-yellow mb-[8px]">
             Decision 01
           </p>
           <h3 className="text-[18px] leading-[1.52] font-serif font-semibold">
-            Why we shipped read-only by default
+            Why we shipped read only by default
           </h3>
         </div>
         <div className="text-[14px] leading-[1.6] font-serif flex flex-col gap-[18px]">
-          <p>The first prototype gave the agent write access to source systems by default. That choice was not careless. It was the obvious starting point, modeled on how technicians work today: identify a problem, fix it, move on.</p>
+          <p>The first prototype gave the agent write access to source systems by default, and that choice was not careless. It was the obvious starting point, modeled on how technicians work today: identify a problem, fix it, move on.</p>
           <p>Partner advisory feedback in the second sandbox session was direct. An agent that acts on source systems before the technician sees what it&apos;s doing breaks the trust contract that makes PAM viable in regulated environments.</p>
-          <p>We flipped the default. The agent reads first, names what it found, and waits. Writes only happen after explicit human review at four sequential gates.</p>
+          <p>We flipped the default. The agent now reads first, names what it found, and waits for explicit human review at four sequential gates before any write executes.</p>
         </div>
       </section>
 
@@ -311,7 +318,7 @@ export default function AiPamCaseStudy() {
             </div>
             <div className="text-[14px] leading-[1.6] font-serif flex flex-col gap-[18px]">
               <p>
-                Early sandbox sessions showed that one confirmation gate was not enough. Technicians approved the action plan but then felt surprised by what the system actually queried. They wanted to verify the AI interpretation before it started planning, not just before it executed.
+                Early sandbox sessions showed that one confirmation gate was not enough. Technicians approved the action plan but then felt surprised by what the system actually queried, and they wanted to verify the AI interpretation before it started planning rather than just before it executed.
               </p>
               <p>
                 The result is four sequential gates: intent confirmation, policy authorization, query plan review, and workflow approval. Each one is a distinct trust moment, not a generic confirmation step.
@@ -321,7 +328,7 @@ export default function AiPamCaseStudy() {
           <ImageLightbox
             thumbnailSrc="/assets/hitl-gates-thumbnail.svg"
             detailedSrc="/assets/hitl-gates-detailed.svg"
-            alt="Four sequential human-in-the-loop gates: intent confirmation, policy authorization, query plan review, workflow approval"
+            alt="Four sequential human in the loop gates: intent confirmation, policy authorization, query plan review, workflow approval"
             wrapperClassName="order-1 md:order-2 relative w-full md:w-[592px] aspect-[592/357] bg-[#FFF7EF] shrink-0 overflow-hidden rounded-figure-card"
             thumbnailClassName="absolute inset-0 w-full h-full object-cover"
           />
@@ -360,7 +367,7 @@ export default function AiPamCaseStudy() {
                 The first version showed nothing when the system was about to act at a source level. The second version interrupted the flow with a confirmation gate every time. Partner feedback was clear: it created anxiety rather than confidence on recurring workflows.
               </p>
               <p>
-                The third version moved consent to the connector configuration layer. The technician decides once what the AI is permitted to do. At execution time, an inline note confirms the action is covered.
+                This third version moved consent to the connector configuration layer, where the technician decides once what the AI is permitted to do. At execution time, an inline note confirms the action is covered.
               </p>
             </div>
           </div>
@@ -389,7 +396,7 @@ export default function AiPamCaseStudy() {
             </div>
             <div className="text-[14px] leading-[1.6] font-serif flex flex-col gap-[18px]">
               <p>
-                In PAM, partial execution is more dangerous than no execution. When a connector goes offline mid-workflow, the system stops and names the connector rather than continuing. When a query returns an unusually large result set, the system surfaces the discrepancy and asks the technician to confirm scope.
+                In PAM, partial execution is more dangerous than no execution. When a connector goes offline mid workflow, the system stops and names the connector rather than continuing. When a query returns an unusually large result set, the system surfaces the discrepancy and asks the technician to confirm scope.
               </p>
               <p>
                 Every error state follows the same structure: what happened, why, what to do next.
@@ -412,7 +419,7 @@ export default function AiPamCaseStudy() {
           Business impact
         </h2>
         <p className="text-[14px] leading-[1.6] font-serif mb-[24px] max-w-[760px]">
-          The terminal shipped as the first agentic capability in CyberQP&apos;s PAM suite. Three measurable outcomes are tracked across the partner cohort.
+          These design decisions held through to release. The terminal shipped as the first agentic capability in CyberQP&apos;s PAM suite, and three measurable outcomes are tracked across the partner cohort.
         </p>
         <div className="flex flex-col">
           {[
@@ -436,23 +443,11 @@ export default function AiPamCaseStudy() {
         <h2 className="font-serif font-normal text-[26px] md:text-[34px] leading-[1.2] mb-[20px]">
           What&apos;s still open
         </h2>
-        <p className="text-[14px] leading-[1.6] font-serif mb-[24px] max-w-[760px]">
-          Three problems are open as the terminal moves into multi-agent territory.
+        <p className="text-[14px] leading-[1.6] font-serif max-w-[760px]">
+          As the terminal moves into multi agent territory, cross workflow memory becomes the next open problem: one workflow per session is the right constraint today, but it will not hold when technicians are running three coordinated workflows for the same incident.
         </p>
-        <div className="flex flex-col">
-          {[
-            { label: 'Source authority by context', text: 'Identity sources rarely carry equal weight on the same decision. The next problem is surfacing context-dependent source authority: naming which source is canonical for which kind of decision, per client, without burying the technician in setup screens.' },
-            { label: 'Scope confidence above threshold', text: 'The current "scope unusually large" gate fires on volume. The next iteration tests whether scope confidence can be modeled on intent rather than volume alone.' },
-            { label: 'Cross-workflow memory', text: 'One workflow per session is the right constraint today. It will not be the right constraint when technicians are running three coordinated workflows for the same incident.' },
-          ].map((row) => (
-            <div key={row.label} className="grid grid-cols-1 md:grid-cols-[320px_1fr] gap-[8px] md:gap-[32px] py-[20px] border-b border-divider-grey/30">
-              <p className="text-[18px] leading-[1.52] font-serif font-semibold md:whitespace-nowrap">{row.label}</p>
-              <p className="text-[14px] leading-[1.6] font-serif">{row.text}</p>
-            </div>
-          ))}
-        </div>
         <p className="text-[16px] leading-[1.52] font-serif italic text-[#4F4F4F] mt-[24px] max-w-[640px]">
-          The terminal is one surface in an agentic system that&apos;s continuously evolving. The trust patterns from this work are the contract for what evolves next.
+          The terminal is one surface in an agentic system that&apos;s continuously evolving. Whatever ships next inherits its gates, its scoping, and its commitment to never failing silently.
         </p>
       </section>
     </ProjectPageLayout>
