@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# /eos session-management scaffolding (local-only, not part of the public portfolio)
+/agent-memory.md
+/memory.sh
+/primer.md
+/CONTENT_PROMPT.md
+/CONTENT_LOG.md
+/assets/
