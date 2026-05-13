@@ -14,6 +14,8 @@ export default function RefineryCaseStudy() {
         poster: '/assets/portfolio%20list%20page/The%20refinery%20project.png',
         alt: 'Demo of the Refinery dashboard: pixel-art office where agents animate as scans run',
       }}
+      nextHref="/portfolio"
+      nextLabel="All projects"
     >
       {/* Meta: scope + stack + repo */}
       <section className="grid grid-cols-1 md:grid-cols-3 gap-[30px] md:gap-[40px] mb-[56px]">

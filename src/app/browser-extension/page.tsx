@@ -4,7 +4,6 @@ import { ProjectPageLayout } from '@/components/layout/ProjectPageLayout'
 import { MetaStrip } from '@/components/case-study/MetaStrip'
 import { SectionDivider } from '@/components/case-study/SectionDivider'
 import { StakesSection } from '@/components/case-study/StakesSection'
-import { HypothesisBlock } from '@/components/case-study/HypothesisBlock'
 import { CardGrid } from '@/components/case-study/CardGrid'
 import { CardStack } from '@/components/case-study/CardStack'
 import { DecisionRow } from '@/components/case-study/DecisionRow'
@@ -27,15 +26,15 @@ export default function BrowserExtensionCaseStudy() {
           Not all aspects of the design are shown here given the sensitive nature of this work. Happy to walk through the full picture in conversation.
         </p>
       }
-      nextHref="/figma-buddy"
-      nextLabel="Figma Buddy"
+      nextHref="/refinery"
+      nextLabel="Refinery"
     >
       {/* Meta strip */}
       <MetaStrip
         columns={[
+          { label: 'Scope', value: 'Designed and shipped the CyberQP browser extension so technicians could access privileged identities, organizational secrets, and just in time accounts from one tool, replacing the multiple tools they had been switching between. Three use cases shipped in sequence.' },
           { label: 'Role', value: 'Lead designer' },
           { label: 'Team', value: 'Product Manager, four engineers, one designer' },
-          { label: 'Scope', value: 'Browser extension interaction design, from the first just in time release through Vault credentials and the planned end user ID verification workflow.' },
         ]}
       />
 
@@ -43,10 +42,10 @@ export default function BrowserExtensionCaseStudy() {
 
       {/* Stakes */}
       <StakesSection
-        heading="A half hour of context loss per technician, every day"
+        heading="Credentials in one extension, privileged accounts in another"
         paragraphs={[
-          'An MSP technician switches between five tools to complete a single sign in. The password manager. The documentation tool. The PAM dashboard. The PSA. The application they are actually signing into. Each switch costs 25 to 30 seconds, and across dozens of sign ins per day, that adds up to a half hour of context loss per technician.',
-          'CyberQP is the PAM platform 1000+ MSPs use to manage privileged access. I led the design for putting privileged account access and just in time activation directly inside the sign in pages technicians work in every day, so credentials and activation controls show up where the work actually happens.',
+          'For an MSP technician, getting into a client system is rarely a single step. Vault credentials sit in a consumer browser extension, privileged accounts sit inside the CyberQP dashboard, and documentation lives in a third tool. Each sign in becomes a small consolidation problem the technician has to solve manually, dozens of times a day.',
+          'The browser extension was a strategic priority on CyberQP’s product roadmap. The goal was to consolidate privileged account management and organization secrets into one extension that technicians could use day to day, and to retire features that depended on third party integrations as that consolidation happened.',
         ]}
       />
 
@@ -58,22 +57,20 @@ export default function BrowserExtensionCaseStudy() {
           What I shaped
         </h2>
         <p className="text-[14px] leading-[1.6] font-serif mb-[30px] max-w-[760px]">
-          Below are selected foundational decisions and guidelines that survived from the first release through Vault credentials and into the third use case shipping now.
+          The three calls below set the interaction model for the extension, and each new use case absorbed into them without changing the surface.
         </p>
         <div className="mb-[40px]">
           <CardGrid
             items={[
-              { title: 'In page injection over toolbar popup', description: 'The extension lives inside the sign in page itself, not in a popup adjacent to it. The first prototype tested both, and the in page version cut measurably more friction than the toolbar version did.' },
-              { title: 'Customer first, account second', description: 'MSP technicians manage dozens of client organizations, and a flat account list would have meant scrolling past every other org to find the right one. The activation flow scopes by customer first, then account, then action, matching how technicians think rather than how the data is structured.' },
-              { title: 'One pattern, three workflows', description: 'Just in time activation, Vault credentials, and ID verification all run on the same interaction model. The technician learns the pattern once and applies it three times, without each new use case demanding a new mental model.' },
-              { title: 'Visible time on time bound credentials', description: 'A live countdown sits next to every time bound credential so the technician always knows exactly how long they have. Without that visibility, time bound credentials end up feeling less safe, not more.' },
+              { title: 'JIT and vault accounts share the same surfaces', description: 'Vault credentials and just in time accounts live in the same two places. The toolbar lists everything, and a Suggested Accounts dropdown surfaces a focused set inline on the sign in page itself.' },
+              { title: 'Customer first, account second', description: 'Every workflow scopes by customer first, then account, then action. The order matches how technicians think, not how the data is stored.' },
+              { title: 'One pattern, three workflows', description: 'Just in time access, Vault credentials, and ID verification all run on the same interaction model. The technician learns it once and applies it across all three.' },
             ]}
           />
         </div>
         <p className="text-[14px] leading-[1.6] font-serif mb-[30px] max-w-[760px]">
-          Working with stakeholders and cross functional teams, I held several hypotheses through discovery and design. The one below carried the most weight, and the rest of the case study walks through the solutions it produced.
+          Working with stakeholders through discovery and design, I held and managed several hypotheses across the project. Each one defined what success would look like and shaped which solutions we prioritized to test against those metrics.
         </p>
-        <HypothesisBlock body="Privileged access tools that ask technicians to switch tabs lose the time they were meant to save. The extension is viable only if it lives where the sign in happens, not in a popup adjacent to it." />
       </section>
 
       {/* Research */}
@@ -82,7 +79,7 @@ export default function BrowserExtensionCaseStudy() {
           Research
         </h2>
         <p className="text-[14px] leading-[1.6] font-serif mb-[24px] max-w-[760px]">
-          While engineering scoped the technical surface and integration points, I led user discovery across three cohorts alongside the Product Manager.
+          User discovery for the browser extension ran in three directions at once. I owned the work with the Product Manager, while engineering scoped the technical surface and integration points in parallel.
         </p>
 
         <div className="mb-[40px]">
@@ -102,8 +99,8 @@ export default function BrowserExtensionCaseStudy() {
         {/* Quote stickies */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-[16px] mb-[40px]">
           {[
-            { quote: 'By the time I have looked up the PSA, the directory, and the credential, I have spent more time on the lookup than on the actual sign-in. We do this dozens of times a day.', attr: 'Technician, regional MSP' },
-            { quote: 'I open three browser tabs and a desktop app to verify one user. The user is on hold the whole time.', attr: 'Help desk lead, multi-tenant MSP' },
+            { quote: 'By the time I have looked up the PSA, the directory, and the credential, I have spent more time on the lookup than on the actual sign in. We do this dozens of times a day.', attr: 'Technician, regional MSP' },
+            { quote: 'I open three browser tabs and a desktop app to verify one user. The user is on hold the whole time.', attr: 'Help desk lead, multi tenant MSP' },
             { quote: 'When will we have access requests in the browser extension? This would be a tremendous boost to our productivity.', attr: 'Partner advisory council member' },
           ].map((q, i) => (
             <div key={i} className="bg-amber-50 border border-amber-200/60 rounded-figure-card p-[20px]">
@@ -152,14 +149,13 @@ export default function BrowserExtensionCaseStudy() {
           Solution elements
         </h2>
         <p className="text-[14px] leading-[1.6] font-serif mb-[30px] max-w-[760px]">
-          Discovery surfaced more than the friction of switching tabs. It also produced four design elements I drafted with product and engineering, and they held from the first release through two more iterations.
+          Through discovery, three design principles took shape. I drafted them with product and engineering, and they describe how the extension behaves under any new workflow added to its surface, not just the three already shipped.
         </p>
         <CardGrid
           items={[
-            { title: 'Access belongs where work happens', description: 'The closer access sits to where the technician is actually working, the less friction it creates. A popup adjacent to the sign in page is still adjacent, and that is still a context switch the extension was meant to remove.' },
-            { title: 'Customer first, account second', description: 'Scoping by customer first, account second holds across every workflow the extension supports. Each new use case picks up the same order automatically because the order matches the technician’s mental model rather than the data model underneath.' },
+            { title: 'Access belongs where work happens', description: 'The toolbar holds everything, and the sign in page surfaces a focused list inline. Vault credentials and just in time access both live in the same surfaces, so neither one pulls the technician away from where they are working.' },
+            { title: 'Customer first, account second', description: 'Scoping by customer first, account second holds across every workflow. New use cases adopt the same order because it matches how the technician thinks, not how the data is structured.' },
             { title: 'One pattern across many workflows', description: 'One interaction model absorbs many workflows. New use cases adopt the same scoping, placement, and trust signals, so the extension keeps working the same way as it grows.' },
-            { title: 'Time bound credentials need visible time', description: 'Visibility is what makes short lived credentials safer in practice, not the short lifespan on its own. The live countdown is the element that turns a security claim into a usable interaction.' },
           ]}
         />
         <p className="text-[14px] leading-[1.6] font-serif mt-[30px] max-w-[760px]">
@@ -173,16 +169,16 @@ export default function BrowserExtensionCaseStudy() {
       {/* Decision 01 */}
       <DecisionRow
         eyebrow="Decision 01"
-        heading="Why we put the extension inside the page, not in a toolbar popup"
+        heading="Why technicians got just in time access before vault credentials"
         paragraphs={[
-          'The first design call was where the extension lives. A popup anchored to the browser toolbar was the obvious starting point, since every consumer password manager works that way and the pattern would be familiar to technicians.',
-          'But a popup still meant a click away from the sign in field, plus a focus shift, plus a context switch from the page they were working on. That is the same tab switching problem the extension was supposed to solve. We tested both, and while the popup was rated as cleaner, the in page injection was rated as faster.',
-          'Faster won. The extension surfaces a Suggested Accounts list directly inside the sign in page, with just in time activation inline and a live countdown next to the one time code.',
+          'We started with the vault. Building a password manager for MSP technicians was the obvious first step, and the team scoped a vault credential workflow that worked from both the toolbar and inline on sign in pages, modeled on consumer password manager patterns. Discovery changed the order.',
+          'Across all three cohorts, technicians named just in time account access as the bigger unmet need. Vault credentials were already handled by 1Password, Keeper, and LastPass, well enough that switching from them was not the priority. JIT was the gap. No consumer password manager issues temporary privileged credentials for client systems, and that workflow happens dozens of times a day for an MSP technician.',
+          'We pivoted. The first release shipped just in time account access for Microsoft 365, with the vault credential workflow following six months later. The dual surface (toolbar plus inline Suggested Accounts dropdown) carried across both, so the order of release did not change how the extension works for either kind of account.',
         ]}
         media={{
           type: 'image',
           src: '/assets/browser-ext-access-inline.svg',
-          alt: 'Microsoft sign in page with Suggested Accounts surfaced inline by the extension',
+          alt: 'Microsoft sign in page with the extension panel showing Suggested Accounts inline',
         }}
       />
 
@@ -207,7 +203,7 @@ export default function BrowserExtensionCaseStudy() {
         heading="Why one pattern absorbed three workflows"
         paragraphs={[
           'The first release covered just in time activation for Microsoft 365. Vault credentials for apps outside M365 shipped as the second use case six months later, and end user ID verification is the third, shipping with PSA connector integration.',
-          'Three workflows, three different jobs to be done, but the interaction model did not change between any of them. Same scoping (customer first, account second). Same placement (inline, not popup). Same trust signals (live countdown on time bound credentials). The technician learns the pattern once and applies it three times.',
+          'Three workflows, three different jobs to be done, but the interaction model did not change between any of them. Same scoping (customer first, account second). Same placement (toolbar plus inline Suggested Accounts dropdown). Same trust signals (live countdown on time bound credentials). The technician learns the pattern once and applies it three times.',
           'The decision that made this hold was treating the extension as one surface with multiple modes, not three feature areas that happened to share a window.',
         ]}
         media={{
@@ -223,7 +219,7 @@ export default function BrowserExtensionCaseStudy() {
           Business impact
         </h2>
         <p className="text-[14px] leading-[1.6] font-serif mb-[24px] max-w-[760px]">
-          These decisions held through release. The browser extension shipped publicly in early 2024 and has run as the most adopted CyberQP product launch since, with three measurable outcomes carrying the case.
+          The browser extension shipped publicly in early 2024 and has run as the most adopted CyberQP product launch since. Three outcomes carry the case.
         </p>
         <ImpactRow
           rows={[
@@ -258,7 +254,7 @@ export default function BrowserExtensionCaseStudy() {
           ID verification ships next with PSA connector integration, and the open question is whether the pattern that worked for one help desk team holds when a single MSP runs 50 verification calls a day across 30 client organizations, each with different policies and different end user populations.
         </p>
         <ItalicCoda>
-          Two more access management surfaces follow this one. Each starts from the in page injection model, the customer first scoping, and the visible countdown that earned trust here.
+          Two more access management surfaces follow this one. Each starts from the same dual surface model and the customer first scoping that held through three workflows here.
         </ItalicCoda>
       </section>
     </ProjectPageLayout>

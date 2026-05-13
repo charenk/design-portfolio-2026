@@ -189,16 +189,16 @@ export default function BlackberryCaseStudy() {
       {/* Meta strip */}
       <MetaStrip
         columns={[
+          {
+            label: 'Tenure',
+            value:
+              'Designed for CylancePROTECT and CylanceGATEWAY across XDR and MDR products. Fourteen months end to end.',
+          },
           { label: 'Role', value: 'Product Designer' },
           {
             label: 'Team',
             value:
               'Collaborated with external designers from Poland and Argentina. Reported into product, engineering, and director-level stakeholders across the Cylance suite.',
-          },
-          {
-            label: 'Tenure',
-            value:
-              'Designed for CylancePROTECT and CylanceGATEWAY across XDR and MDR products. Fourteen months end to end.',
           },
         ]}
       />

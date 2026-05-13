@@ -135,9 +135,9 @@ export default function CopilotCaseStudy() {
       {/* Meta strip */}
       <MetaStrip
         columns={[
+          { label: 'Stakeholders', value: 'VP Product (ShareGate), VP Design, Partner lead' },
           { label: 'Role', value: 'Senior Product Designer' },
           { label: 'Team', value: 'Product Manager, Designer, Engineering, Engineering Manager' },
-          { label: 'Stakeholders', value: 'VP Product (ShareGate), VP Design, Partner lead' },
         ]}
       />
 

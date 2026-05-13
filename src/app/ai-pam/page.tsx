@@ -105,8 +105,14 @@ export default function AiPamCaseStudy() {
       nextHref="/browser-extension"
       nextLabel="Browser extension"
     >
-      {/* Meta strip — Role / Team / Scope */}
+      {/* Meta strip, Scope / Role / Team */}
       <section className="grid grid-cols-1 md:grid-cols-3 gap-[30px] md:gap-[40px] mb-[56px]">
+        <div>
+          <p className="text-[14px] font-serif text-[#9e9e9e] mb-[8px]">Scope</p>
+          <p className="text-[14px] leading-[1.6] font-serif">
+            Designed the AI terminal and system wide guardrails for an agentic PAM product, joining before scope was defined and leading discovery alongside the AI labs team while they ran technical exploration. The work shipped across three customer facing iterations.
+          </p>
+        </div>
         <div>
           <p className="text-[14px] font-serif text-[#9e9e9e] mb-[8px]">Role</p>
           <p className="text-[14px] leading-[1.6] font-serif">
@@ -117,12 +123,6 @@ export default function AiPamCaseStudy() {
           <p className="text-[14px] font-serif text-[#9e9e9e] mb-[8px]">Team</p>
           <p className="text-[14px] leading-[1.6] font-serif">
             Director of Product, two product and engineering squads, AI labs team led by the founder, partner advisory council
-          </p>
-        </div>
-        <div>
-          <p className="text-[14px] font-serif text-[#9e9e9e] mb-[8px]">Scope</p>
-          <p className="text-[14px] leading-[1.6] font-serif">
-            Designed the AI terminal and system wide guardrails for an agentic PAM product, joining before scope was defined and leading discovery alongside the AI labs team while they ran technical exploration. The work shipped across three customer facing iterations.
           </p>
         </div>
       </section>
@@ -424,7 +424,7 @@ export default function AiPamCaseStudy() {
         <div className="flex flex-col">
           {[
             { label: 'Activation', text: 'Terminal activation rate is the primary adoption indicator from day one. Partner advisory council named the work as a top three product investment for the next renewal cycle.' },
-            { label: 'Specialist enablement', text: 'L1 technicians completed triage workflows previously gated to L3, removing a long-standing escalation bottleneck. The follow-on work on a trust and confidence score for L1 decisions ships next.' },
+            { label: 'Specialist enablement', text: 'L1 technicians completed triage workflows previously gated to L3, removing a persistent escalation bottleneck. The follow on, a trust and confidence score for L1 decisions, ships next.' },
             { label: 'Continuous learning loop', text: 'HITL override rate per scenario became the primary design feedback signal the AI labs team uses for model refinement. A dedicated feedback action was instrumented from launch to capture edge cases the override metric alone does not surface.' },
           ].map((row) => (
             <div key={row.label} className="grid grid-cols-1 md:grid-cols-[320px_1fr] gap-[8px] md:gap-[32px] py-[20px] border-b border-divider-grey/30">
