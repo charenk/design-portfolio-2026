@@ -10,7 +10,7 @@ const TRACKED_SLUGS = new Set(['ai-pam', 'browser-extension', 'figma-buddy', 'wo
 
 type HeroMedia =
   | { type: 'video'; youtubeId: string; thumbnailAlt: string }
-  | { type: 'video-file'; src: string; poster?: string; alt: string }
+  | { type: 'video-file'; src: string; poster?: string; alt: string; autoPlayOnce?: boolean; aspectClass?: string }
   | { type: 'image'; src: string; alt: string }
   | { type: 'placeholder' }
 
@@ -25,6 +25,135 @@ interface ProjectPageLayoutProps {
   children?: React.ReactNode
   nextHref?: string
   nextLabel?: string
+}
+
+function AutoplayOnceVideo({
+  src,
+  poster,
+  alt,
+  aspectClass,
+}: {
+  src: string
+  poster?: string
+  alt: string
+  aspectClass?: string
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const [showControls, setShowControls] = useState(false)
+  const [showOverlay, setShowOverlay] = useState(false)
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
+    const handleEnded = () => {
+      setShowControls(true)
+      setShowOverlay(true)
+    }
+    const handlePlay = () => setShowOverlay(false)
+
+    video.addEventListener('ended', handleEnded)
+    video.addEventListener('play', handlePlay)
+
+    const playPromise = video.play()
+    if (playPromise && typeof playPromise.catch === 'function') {
+      playPromise.catch(() => setShowControls(true))
+    }
+
+    return () => {
+      video.removeEventListener('ended', handleEnded)
+      video.removeEventListener('play', handlePlay)
+    }
+  }, [])
+
+  const handleKeepReading = () => {
+    setShowOverlay(false)
+    const rect = videoRef.current?.getBoundingClientRect()
+    if (rect) {
+      window.scrollTo({ top: window.scrollY + rect.bottom - 80, behavior: 'smooth' })
+    }
+  }
+
+  const handleReplay = () => {
+    setShowOverlay(false)
+    const video = videoRef.current
+    if (!video) return
+    video.currentTime = 0
+    void video.play()
+  }
+
+  return (
+    <div className={`relative w-full ${aspectClass ?? 'aspect-video'} rounded-figure-banner overflow-hidden mb-[50px] bg-black`}>
+      <video
+        ref={videoRef}
+        src={src}
+        poster={poster}
+        muted
+        playsInline
+        preload="metadata"
+        controls={showControls}
+        aria-label={alt}
+        className="w-full h-full object-cover"
+      />
+      {showOverlay && (
+        <div className="absolute inset-0 flex items-end md:items-center justify-center bg-gradient-to-t from-black/60 via-black/30 to-transparent md:bg-black/30 backdrop-blur-[2px] px-6 pb-[60px] md:pb-0 text-center">
+          <button
+            onClick={() => setShowOverlay(false)}
+            aria-label="Dismiss"
+            className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/40 hover:bg-black/60 text-white flex items-center justify-center transition-colors"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 6l12 12M18 6L6 18" />
+            </svg>
+          </button>
+          <div className="max-w-[520px] flex flex-col items-center gap-[16px]">
+            <h2 className="font-serif text-[24px] md:text-[32px] leading-tight text-white">
+              That&apos;s the demo.
+            </h2>
+            <p className="font-serif text-[14px] md:text-[16px] leading-[1.5] text-white/85">
+              Read the full case study below, or reach out if you want to dig in.
+            </p>
+            <div className="flex flex-col items-center gap-[14px] mt-[4px]">
+              <div className="flex items-center gap-[10px]">
+                <button
+                  onClick={handleKeepReading}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-white text-[#1a1a1a] font-sans text-[14px] font-medium hover:bg-white/90 transition-colors"
+                >
+                  Keep reading
+                </button>
+                <button
+                  onClick={handleReplay}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-sans text-[14px] font-medium transition-colors border border-white/30"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v6h6M20 20v-6h-6M4 10a8 8 0 0114-3M20 14a8 8 0 01-14 3" />
+                  </svg>
+                  Replay
+                </button>
+              </div>
+              <div className="flex items-center gap-[20px] text-[13px] font-sans">
+                <a
+                  href="https://www.linkedin.com/in/charenk/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/90 underline underline-offset-4 hover:text-white"
+                >
+                  LinkedIn
+                </a>
+                <span aria-hidden className="text-white/50">·</span>
+                <a
+                  href="mailto:charen.k@gmail.com"
+                  className="text-white/90 underline underline-offset-4 hover:text-white"
+                >
+                  Email
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
 }
 
 function VideoHero({ youtubeId, thumbnailAlt }: { youtubeId: string; thumbnailAlt: string }) {
@@ -169,7 +298,15 @@ export function ProjectPageLayout({
           {hero.type === 'video' && (
             <VideoHero youtubeId={hero.youtubeId} thumbnailAlt={hero.thumbnailAlt} />
           )}
-          {hero.type === 'video-file' && (
+          {hero.type === 'video-file' && hero.autoPlayOnce && (
+            <AutoplayOnceVideo
+              src={hero.src}
+              poster={hero.poster}
+              alt={hero.alt}
+              aspectClass={hero.aspectClass}
+            />
+          )}
+          {hero.type === 'video-file' && !hero.autoPlayOnce && (
             <video
               src={hero.src}
               poster={hero.poster}
@@ -177,7 +314,7 @@ export function ProjectPageLayout({
               playsInline
               preload="metadata"
               aria-label={hero.alt}
-              className="w-full aspect-video object-cover rounded-figure-banner mb-[50px] bg-black"
+              className={`w-full ${hero.aspectClass ?? 'aspect-video'} object-cover rounded-figure-banner mb-[50px] bg-black`}
             />
           )}
           {hero.type === 'image' && (
