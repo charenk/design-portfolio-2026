@@ -96,7 +96,7 @@ export default function AiPamCaseStudy() {
     <ProjectPageLayout
       title="Agentic Privileged Access Management Platform"
       titleColorClass="text-accent-yellow"
-      hero={{ type: 'image', src: '/ai-pam-banner.svg', alt: 'Agentic Privileged Access Management Platform banner' }}
+      hero={{ type: 'video-file', src: '/ai-pam-banner.mp4', alt: 'Agentic Privileged Access Management Platform banner', autoPlayOnce: true, aspectClass: 'aspect-[3700/2160]' }}
       disclaimer={
         <p className="text-[14px] leading-[1.6] font-serif italic">
           Not all aspects of the design are shown here given the sensitive nature of this work. Happy to walk through the full picture in conversation.
