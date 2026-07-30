@@ -2,13 +2,14 @@
 
 import { cookies } from 'next/headers'
 
+// Mirrors the gated routes in the middleware matcher. Public routes are
+// omitted: they never redirect to the lock page, so they can never be a
+// legitimate post-unlock destination.
 const ALLOWED_RETURN_PATHS = [
   '/portfolio',
   '/workato',
   '/ai-pam',
   '/browser-extension',
-  '/figma-buddy',
-  '/refinery',
   '/copilot',
   '/blackberry',
 ]

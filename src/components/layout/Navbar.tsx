@@ -49,11 +49,11 @@ export function Navbar({ activePage = 'home' }: NavbarProps) {
             Home
           </Link>
           <Link
-            href="/#projects"
+            href="/portfolio"
             className={`nav-pill ${activePage === 'works' ? 'nav-pill-active' : ''}`}
-            aria-label="Go to works"
+            aria-label="Go to all works"
           >
-            Works
+            All Works
           </Link>
           <a
             href="https://www.linkedin.com/in/charenk/"
@@ -93,9 +93,10 @@ export function Navbar({ activePage = 'home' }: NavbarProps) {
           <Link
             href="/portfolio"
             className={`nav-pill ${activePage === 'works' ? 'nav-pill-active' : ''}`}
+            aria-label="Go to all works"
             onClick={() => setMobileMenuOpen(false)}
           >
-            Works
+            All Works
           </Link>
           <a
             href="https://www.linkedin.com/in/charenk/"
