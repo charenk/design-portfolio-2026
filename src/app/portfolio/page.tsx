@@ -1,135 +1,50 @@
 "use client"
 
-import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { Navbar } from '@/components/layout/Navbar'
 import { ProjectCard, type ProjectCardProps } from '@/components/ui/ProjectCard'
+import { useGridFade } from '@/lib/hooks/useGridFade'
+import { getProject, type Project } from '@/data/projects'
 
 // Default size tokens for the portfolio scrapbook layout.
 // Tweak these to scale every small/large card together.
 const SMALL_WIDTH = 'w-[33%]'
 const LARGE_WIDTH = 'w-[62%]'
 
+// Per-card presentation for the scrapbook grid: aspect ratio + rotation.
+const CARD_STYLES: Record<string, { aspect: string; rotate: string }> = {
+  'browser-extension': { aspect: 'aspect-[16/9]', rotate: '-rotate-[1deg]' },
+  'ai-pam': { aspect: 'aspect-[16/10]', rotate: 'rotate-[1deg]' },
+  onboarding: { aspect: 'aspect-[16/10]', rotate: '-rotate-[1deg]' },
+  refinery: { aspect: 'aspect-[5/4]', rotate: 'rotate-[1.5deg]' },
+  blackberry: { aspect: 'aspect-[4/3]', rotate: 'rotate-[1deg]' },
+  copilot: { aspect: 'aspect-[16/10]', rotate: '-rotate-[1.5deg]' },
+}
+
+function toCardProps(project: Project): ProjectCardProps {
+  const style = CARD_STYLES[project.slug]
+  return {
+    title: project.title,
+    tags: project.tags,
+    href: project.href,
+    badge: project.badge,
+    aspect: style.aspect,
+    placeholder: project.placeholder,
+    rotate: style.rotate,
+    svgSrc: project.bannerImage,
+    imageFit: project.imageFit,
+  }
+}
+
 export default function PortfolioPage() {
-  const [gridOpacity, setGridOpacity] = useState(1)
-  const pageBackgroundRef = useRef<HTMLDivElement>(null)
+  const pageBackgroundRef = useGridFade({ hideAfter: null })
 
-  useEffect(() => {
-    const updateGridOpacity = () => {
-      const scrollY = window.scrollY
-      const docHeight = document.documentElement.scrollHeight
-      const viewportHeight = window.innerHeight
-      const maxScroll = docHeight - viewportHeight
-      const progress = maxScroll > 0 ? scrollY / maxScroll : 0
-
-      let opacity = 1
-      if (progress <= 0.30) {
-        const fadeProgress = progress / 0.30
-        const easedProgress = 1 - Math.pow(1 - fadeProgress, 3)
-        opacity = 1 - easedProgress
-      } else {
-        opacity = 0
-      }
-
-      opacity = Math.max(0, Math.min(1, opacity))
-      setGridOpacity(opacity)
-    }
-
-    let ticking = false
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          updateGridOpacity()
-          ticking = false
-        })
-        ticking = true
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    updateGridOpacity()
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  useEffect(() => {
-    if (pageBackgroundRef.current) {
-      pageBackgroundRef.current.style.setProperty('--gridOpacity', String(gridOpacity))
-    }
-  }, [gridOpacity])
-
-  // Row 1 — small left + large right (uses original case-study banners)
-  const browserExt: ProjectCardProps = {
-    title: 'CyberQP Browser Extension',
-    tags: 'Vault · Just-in-Time accounts',
-    href: '/browser-extension',
-    aspect: 'aspect-[16/9]',
-    placeholder: '#e8dded',
-    rotate: '-rotate-[1deg]',
-    svgSrc: '/assets/portfolio%20list%20page/CyberQP%20browser%20extension.svg',
-    imageFit: 'cover',
-  }
-
-  const aiPam: ProjectCardProps = {
-    title: 'AI-powered privileged access management',
-    tags: 'Enterprise SaaS · Identity',
-    href: '/ai-pam',
-    badge: 'CyberQP',
-    aspect: 'aspect-[16/10]',
-    placeholder: '#dde4ed',
-    rotate: 'rotate-[1deg]',
-    svgSrc: '/assets/portfolio%20list%20page/ai-pam-portfolio-page-banner.svg',
-    imageFit: 'cover',
-  }
-
-  // Row 2 — large left + small right (reversed)
-  const onboarding: ProjectCardProps = {
-    title: 'Rethinking CyberQP user activation and discovery',
-    tags: 'Activation · Discovery',
-    href: '#',
-    badge: 'Coming soon',
-    aspect: 'aspect-[16/10]',
-    placeholder: '#f4dde0',
-    rotate: '-rotate-[1deg]',
-    svgSrc: '/assets/portfolio%20list%20page/CyberQP%20growth.svg',
-    imageFit: 'cover',
-  }
-
-  const refinery: ProjectCardProps = {
-    title: 'Multi agent experiment to monitor TFSA holdings',
-    tags: 'Experiment · Agentic',
-    href: '/refinery',
-    badge: 'Solo project',
-    aspect: 'aspect-[5/4]',
-    placeholder: '#edeadd',
-    rotate: 'rotate-[1.5deg]',
-    svgSrc: '/assets/portfolio%20list%20page/The%20refinery%20project.png',
-    imageFit: 'cover',
-  }
-
-  // Row 3 — small left + large right (matches row 1 pattern)
-  const placeholderSmall: ProjectCardProps = {
-    title: 'Endpoint protection platform',
-    tags: 'Security · Endpoints',
-    href: '#',
-    badge: 'Coming soon',
-    aspect: 'aspect-[4/3]',
-    placeholder: '#dee9e0',
-    rotate: 'rotate-[1deg]',
-    svgSrc: '/assets/portfolio%20list%20page/Blackberry.svg',
-    imageFit: 'cover',
-  }
-
-  const placeholderLarge: ProjectCardProps = {
-    title: 'Copilot tenant assessment',
-    tags: 'MSP, Enterprises SaaS, M365 Governance',
-    href: '#',
-    badge: 'Coming soon',
-    aspect: 'aspect-[16/10]',
-    placeholder: '#e7dde9',
-    rotate: '-rotate-[1.5deg]',
-    svgSrc: '/assets/portfolio%20list%20page/Tenant%20assessment.svg',
-    imageFit: 'cover',
-  }
+  const browserExt = toCardProps(getProject('browser-extension')!)
+  const aiPam = toCardProps(getProject('ai-pam')!)
+  const onboarding = toCardProps(getProject('onboarding')!)
+  const refinery = toCardProps(getProject('refinery')!)
+  const placeholderSmall = toCardProps(getProject('blackberry')!)
+  const placeholderLarge = toCardProps(getProject('copilot')!)
 
   return (
     <div className="pageBackground" ref={pageBackgroundRef}>

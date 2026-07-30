@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
 import { Navbar } from '@/components/layout/Navbar'
 import { markViewed } from '@/lib/viewedTracker'
+import { useGridFade } from '@/lib/hooks/useGridFade'
 
 const TRACKED_SLUGS = new Set(['ai-pam', 'browser-extension', 'figma-buddy', 'workato', 'copilot', 'blackberry', 'refinery'])
 
@@ -206,8 +207,7 @@ export function ProjectPageLayout({
 }: ProjectPageLayoutProps) {
   const router = useRouter()
   const pathname = usePathname()
-  const [gridOpacity, setGridOpacity] = useState(1)
-  const pageBackgroundRef = useRef<HTMLDivElement>(null)
+  const pageBackgroundRef = useGridFade()
 
   useEffect(() => {
     const slug = pathname?.replace(/^\//, '').split('/')[0] ?? ''
@@ -221,54 +221,6 @@ export function ProjectPageLayout({
       router.push(backHref)
     }
   }
-
-  useEffect(() => {
-    const updateGridOpacity = () => {
-      const scrollY = window.scrollY
-      const docHeight = document.documentElement.scrollHeight
-      const viewportHeight = window.innerHeight
-      const maxScroll = docHeight - viewportHeight
-      const progress = maxScroll > 0 ? scrollY / maxScroll : 0
-
-      let opacity = 1
-      if (progress <= 0.30) {
-        const fadeProgress = progress / 0.30
-        const easedProgress = 1 - Math.pow(1 - fadeProgress, 3)
-        opacity = 1 - easedProgress
-      } else {
-        opacity = 0
-      }
-
-      if (progress > 0.85) {
-        opacity = 0
-      }
-
-      opacity = Math.max(0, Math.min(1, opacity))
-      setGridOpacity(opacity)
-    }
-
-    let ticking = false
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          updateGridOpacity()
-          ticking = false
-        })
-        ticking = true
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    updateGridOpacity()
-
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  useEffect(() => {
-    if (pageBackgroundRef.current) {
-      pageBackgroundRef.current.style.setProperty('--gridOpacity', String(gridOpacity))
-    }
-  }, [gridOpacity])
 
   return (
     <div className="pageBackground" ref={pageBackgroundRef}>

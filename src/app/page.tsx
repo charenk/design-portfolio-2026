@@ -1,63 +1,14 @@
 "use client"
 
-import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { WorkGallery } from '@/components/ui/WorkGallery'
+import { useGridFade } from '@/lib/hooks/useGridFade'
 
 export default function Home() {
-  const [gridOpacity, setGridOpacity] = useState(1)
-  const pageBackgroundRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const updateGridOpacity = () => {
-      const scrollY = window.scrollY
-      const docHeight = document.documentElement.scrollHeight
-      const viewportHeight = window.innerHeight
-      const maxScroll = docHeight - viewportHeight
-      const progress = maxScroll > 0 ? scrollY / maxScroll : 0
-
-      let opacity = 1
-      if (progress <= 0.30) {
-        const fadeProgress = progress / 0.30
-        const easedProgress = 1 - Math.pow(1 - fadeProgress, 3)
-        opacity = 1 - easedProgress
-      } else {
-        opacity = 0
-      }
-
-      if (progress > 0.85) {
-        opacity = 0
-      }
-
-      opacity = Math.max(0, Math.min(1, opacity))
-      setGridOpacity(opacity)
-    }
-
-    let ticking = false
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          updateGridOpacity()
-          ticking = false
-        })
-        ticking = true
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    updateGridOpacity()
-
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  useEffect(() => {
-    if (pageBackgroundRef.current) {
-      pageBackgroundRef.current.style.setProperty('--gridOpacity', String(gridOpacity))
-    }
-  }, [gridOpacity])
+  const pageBackgroundRef = useGridFade()
 
   return (
     <div className="pageBackground" ref={pageBackgroundRef}>

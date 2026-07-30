@@ -1,0 +1,568 @@
+/*
+ * V1 Kinetic Editorial. Every rule is nested under .dir-kinetic: this file is
+ * globally loaded by Next, the scope class is the isolation. Flat, sharp,
+ * print-inspired. Cream, ink, one magenta accent. No gradients, no glass.
+ *
+ * Hidden initial animation states live in GSAP (gsap.from / gsap.set), never
+ * here, so no-JS visitors always see the full page.
+ */
+
+.dir-kinetic {
+  --k-bg: #fff7ef;
+  --k-ink: #1a1a1a;
+  --k-ink-soft: rgba(26, 26, 26, 0.62);
+  --k-magenta: #ab0782;
+  --k-grid-line: rgba(171, 7, 130, 0.08);
+  --k-serif: var(--font-instrument-serif), 'Instrument Serif', Georgia, serif;
+  --k-sans: var(--font-montserrat), 'Montserrat', system-ui, sans-serif;
+  --k-gutter: clamp(20px, 5vw, 72px);
+
+  background: var(--k-bg);
+  color: var(--k-ink);
+  font-family: var(--k-sans);
+  overflow-x: clip;
+
+  & ::selection {
+    background: var(--k-magenta);
+    color: var(--k-bg);
+  }
+
+  & a:focus-visible,
+  & button:focus-visible {
+    outline: 2px solid var(--k-magenta);
+    outline-offset: 3px;
+  }
+
+  & a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* ---------- shared ---------- */
+
+  & .k-container {
+    max-width: 1600px;
+    margin-inline: auto;
+    padding-inline: var(--k-gutter);
+  }
+
+  & .k-label {
+    font-family: var(--k-sans);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    line-height: 1.4;
+  }
+
+  & .k-rule-ink {
+    height: 1px;
+    background: var(--k-ink);
+  }
+
+  /* ---------- nav ---------- */
+
+  & .k-nav {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: clamp(18px, 3vh, 28px);
+  }
+
+  & .k-wordmark {
+    font-family: var(--k-serif);
+    font-style: italic;
+    font-size: 24px;
+    line-height: 1;
+  }
+
+  & .k-nav-links {
+    display: flex;
+    align-items: center;
+    gap: clamp(20px, 3vw, 40px);
+  }
+
+  /* Underline sweep: rests hidden at the right, sweeps in from the left on
+     hover, sweeps out to the right on leave (transform-origin swap). */
+  & .k-navlink {
+    position: relative;
+    padding-block: 4px;
+  }
+
+  & .k-navlink::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: var(--k-magenta);
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform 0.35s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  & .k-navlink:hover::after,
+  & .k-navlink:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+
+  /* ---------- hero ---------- */
+
+  & .k-hero {
+    position: relative;
+    overflow: clip;
+    min-height: calc(100svh - 76px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: clamp(2rem, 6vh, 4rem);
+    padding-top: clamp(1.5rem, 4vh, 3rem);
+    padding-bottom: clamp(2.25rem, 6vh, 4.5rem);
+  }
+
+  /* Faint magenta Swiss grid, hero only. GSAP parallaxes it slower than
+     scroll; the negative inset gives it room to drift without gaps. */
+  & .k-hero-grid {
+    position: absolute;
+    inset: -25% 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(to right, var(--k-grid-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--k-grid-line) 1px, transparent 1px);
+    background-size: 80px 80px;
+  }
+
+  & .k-hero-meta {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px clamp(24px, 4vw, 64px);
+    justify-content: space-between;
+    color: var(--k-ink-soft);
+  }
+
+  & .k-hero-meta strong {
+    font-weight: 600;
+    color: var(--k-ink);
+  }
+
+  & .k-hero-bottom {
+    position: relative;
+    z-index: 1;
+  }
+
+  & .k-hero-hl {
+    font-family: var(--k-serif);
+    font-weight: 400;
+    font-size: clamp(2.85rem, 11vw, 10.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  & .k-hl-line {
+    display: block;
+  }
+
+  & .k-hl-accent {
+    font-style: italic;
+    color: var(--k-magenta);
+  }
+
+  & .k-hero-intro {
+    margin-top: clamp(1.75rem, 4vh, 3rem);
+    margin-left: auto;
+    max-width: 38ch;
+    font-size: clamp(14px, 1.1vw, 16px);
+    line-height: 1.65;
+    color: var(--k-ink-soft);
+  }
+
+  & .k-hero-rule {
+    margin-top: clamp(1.75rem, 4vh, 3rem);
+    height: 2px;
+    background: var(--k-magenta);
+  }
+
+  /* ---------- marquee ---------- */
+
+  & .k-marquee {
+    overflow: hidden;
+    border-block: 1px solid var(--k-ink);
+    padding-block: clamp(0.9rem, 2.5vh, 1.6rem);
+  }
+
+  & .k-marquee-track {
+    display: flex;
+    width: max-content;
+    white-space: nowrap;
+  }
+
+  & .k-marquee-half {
+    display: block;
+    flex: none;
+    padding-right: 0.35em;
+    font-family: var(--k-serif);
+    font-style: italic;
+    font-size: clamp(2.1rem, 6vw, 4.6rem);
+    line-height: 1.1;
+  }
+
+  & .k-marquee-half em {
+    font-style: inherit;
+    color: var(--k-magenta);
+  }
+
+  /* ---------- work index ---------- */
+
+  & .k-work {
+    padding-top: clamp(4.5rem, 12vh, 9rem);
+    padding-bottom: clamp(4.5rem, 12vh, 9rem);
+  }
+
+  & .k-work-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: clamp(1.5rem, 4vh, 2.75rem);
+    color: var(--k-ink-soft);
+  }
+
+  & .k-wi-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  & .k-wi-row {
+    display: grid;
+    grid-template-areas: 'num main side';
+    grid-template-columns: clamp(3.25rem, 8vw, 7rem) minmax(0, 1fr) auto;
+    align-items: baseline;
+    column-gap: clamp(12px, 2.5vw, 40px);
+    padding-block: clamp(1.4rem, 3.5vh, 2.6rem);
+    transition: opacity 0.35s ease;
+  }
+
+  & .k-wi-row.is-soon {
+    opacity: 0.45;
+    cursor: default;
+  }
+
+  & .k-wi-num {
+    grid-area: num;
+    font-weight: 300;
+    font-size: clamp(14px, 1.6vw, 22px);
+    letter-spacing: 0.08em;
+    color: var(--k-ink-soft);
+  }
+
+  & .k-wi-main {
+    grid-area: main;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-width: 0;
+  }
+
+  & .k-wi-title {
+    flex: 1;
+    min-width: 0;
+    font-family: var(--k-serif);
+    font-weight: 400;
+    font-size: clamp(1.45rem, 4vw, 3.4rem);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  & .k-wi-side {
+    grid-area: side;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    text-align: right;
+    color: var(--k-ink-soft);
+  }
+
+  & .k-wi-badge {
+    border: 1px solid var(--k-ink);
+    padding: 3px 9px;
+    color: var(--k-ink);
+  }
+
+  & .k-wi-row.is-soon .k-wi-badge {
+    border-color: var(--k-magenta);
+    color: var(--k-magenta);
+  }
+
+  /* Inline thumbnail: mobile / touch replacement for the cursor preview. */
+  & .k-wi-thumb {
+    flex: none;
+    width: 84px;
+    aspect-ratio: 8 / 5;
+    overflow: hidden;
+    background: rgba(26, 26, 26, 0.05);
+  }
+
+  & .k-wi-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Desktop hover: dim siblings, shift + skew the hovered title. */
+  @media (hover: hover) and (pointer: fine) and (min-width: 768px) {
+    & .k-wi-thumb {
+      display: none;
+    }
+
+    & .k-wi-list:hover .k-wi-row {
+      opacity: 0.35;
+    }
+
+    & .k-wi-list:hover .k-wi-row:hover {
+      opacity: 1;
+    }
+
+    & .k-wi-row:not(.is-soon):hover .k-wi-title {
+      transform: translateX(16px) skewX(-3deg);
+    }
+  }
+
+  @media (max-width: 767px) {
+    & .k-wi-row {
+      grid-template-areas:
+        'num side'
+        'main main';
+      grid-template-columns: auto 1fr;
+      row-gap: 12px;
+    }
+
+    & .k-wi-side {
+      flex-direction: row;
+      align-items: baseline;
+      gap: 12px;
+    }
+  }
+
+  /* Floating cursor preview. Hidden at rest in CSS too (it is decorative,
+     duplicate imagery), GSAP animates it in on hover, desktop only. */
+  & .k-wi-preview {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 40;
+    width: clamp(280px, 26vw, 420px);
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    background: rgba(26, 26, 26, 0.04);
+  }
+
+  & .k-wi-preview img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+  }
+
+  @media (max-width: 767px), (hover: none), (pointer: coarse) {
+    & .k-wi-preview {
+      display: none;
+    }
+  }
+
+  /* ---------- about strip ---------- */
+
+  & .k-about {
+    border-top: 1px solid var(--k-ink);
+    padding-top: clamp(3.5rem, 9vh, 6.5rem);
+    padding-bottom: clamp(3.5rem, 9vh, 6.5rem);
+  }
+
+  & .k-about-statement {
+    font-family: var(--k-serif);
+    font-weight: 400;
+    font-size: clamp(1.7rem, 4.4vw, 3.9rem);
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    max-width: 24ch;
+    margin-top: clamp(1.25rem, 3vh, 2rem);
+  }
+
+  & .k-about-statement em {
+    font-style: italic;
+    color: var(--k-magenta);
+  }
+
+  & .k-about-logos {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: clamp(24px, 4vw, 48px);
+    margin-top: clamp(2.25rem, 6vh, 4rem);
+  }
+
+  & .k-about-logos img {
+    height: 26px;
+    width: auto;
+    filter: grayscale(1);
+    opacity: 0.6;
+  }
+
+  /* ---------- footer ---------- */
+
+  & .k-footer {
+    border-top: 1px solid var(--k-ink);
+    padding-top: clamp(4rem, 11vh, 8rem);
+    padding-bottom: clamp(2rem, 5vh, 3.5rem);
+  }
+
+  & .k-footer-hl {
+    font-family: var(--k-serif);
+    font-weight: 400;
+    font-size: clamp(2.5rem, 8.5vw, 7.5rem);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+  }
+
+  & .k-footer-hl em {
+    font-style: italic;
+    color: var(--k-magenta);
+  }
+
+  & .k-footer-mail {
+    position: relative;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4em;
+    margin-top: clamp(2rem, 5vh, 3.5rem);
+    padding-bottom: 6px;
+    font-size: clamp(1.15rem, 2.6vw, 1.9rem);
+    font-weight: 400;
+  }
+
+  /* Ink underline sweeps out to the right while a magenta one sweeps in
+     from the left: the transform-origin swap. */
+  & .k-footer-mail::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: currentColor;
+    transform-origin: right center;
+    transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  & .k-footer-mail::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: var(--k-magenta);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1) 0.08s;
+  }
+
+  & .k-footer-mail:hover::after,
+  & .k-footer-mail:focus-visible::after {
+    transform: scaleX(0);
+  }
+
+  & .k-footer-mail:hover::before,
+  & .k-footer-mail:focus-visible::before {
+    transform: scaleX(1);
+  }
+
+  & .k-footer-arrow {
+    color: var(--k-magenta);
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  & .k-footer-mail:hover .k-footer-arrow,
+  & .k-footer-mail:focus-visible .k-footer-arrow {
+    transform: translateX(8px);
+  }
+
+  & .k-footer-base {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px 32px;
+    margin-top: clamp(3rem, 8vh, 5.5rem);
+    padding-top: 20px;
+    border-top: 1px solid rgba(26, 26, 26, 0.18);
+    color: var(--k-ink-soft);
+  }
+
+  & .k-footer-base .k-navlink {
+    color: var(--k-ink);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    & *,
+    & *::before,
+    & *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ---------- read / see mode switch ---------- */
+
+.dir-kinetic {
+  & .mode-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    margin-left: clamp(8px, 2vw, 24px);
+    border: 1px solid rgba(26, 26, 26, 0.35);
+    border-radius: 999px;
+    padding: 3px;
+  }
+
+  & .mode-opt {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #1a1a1a;
+    padding: 5px 12px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  & .mode-opt.is-active {
+    background: #1a1a1a;
+    color: #fff7ef;
+  }
+
+  & .mode-opt:not(.is-active):hover {
+    color: #ab0782;
+  }
+}

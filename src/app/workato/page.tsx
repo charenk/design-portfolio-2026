@@ -1,15 +1,15 @@
 "use client"
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { markViewed } from '@/lib/viewedTracker'
+import { useGridFade } from '@/lib/hooks/useGridFade'
 
 export default function WorkatoPage() {
   const router = useRouter()
-  const [gridOpacity, setGridOpacity] = useState(1)
 
   const handleBack = () => {
     if (window.history.length > 1) {
@@ -19,59 +19,11 @@ export default function WorkatoPage() {
     }
   }
   const [activeTab, setActiveTab] = useState('pam')
-  const pageBackgroundRef = useRef<HTMLDivElement>(null)
+  const pageBackgroundRef = useGridFade()
 
   useEffect(() => {
     markViewed('workato')
   }, [])
-
-  useEffect(() => {
-    const updateGridOpacity = () => {
-      const scrollY = window.scrollY
-      const docHeight = document.documentElement.scrollHeight
-      const viewportHeight = window.innerHeight
-      const maxScroll = docHeight - viewportHeight
-      const progress = maxScroll > 0 ? scrollY / maxScroll : 0
-
-      let opacity = 1
-      if (progress <= 0.30) {
-        const fadeProgress = progress / 0.30
-        const easedProgress = 1 - Math.pow(1 - fadeProgress, 3)
-        opacity = 1 - easedProgress
-      } else {
-        opacity = 0
-      }
-
-      if (progress > 0.85) {
-        opacity = 0
-      }
-
-      opacity = Math.max(0, Math.min(1, opacity))
-      setGridOpacity(opacity)
-    }
-
-    let ticking = false
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          updateGridOpacity()
-          ticking = false
-        })
-        ticking = true
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    updateGridOpacity()
-
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  useEffect(() => {
-    if (pageBackgroundRef.current) {
-      pageBackgroundRef.current.style.setProperty('--gridOpacity', String(gridOpacity))
-    }
-  }, [gridOpacity])
 
   const tabs = [
     { id: 'pam', label: 'AI powered Privileged access management' },

@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { motion, AnimatePresence, type Variants } from 'framer-motion'
 import { useRouter } from 'next/navigation'
 import { LastViewedBadge } from './LastViewedBadge'
+import { FEATURED_PROJECTS } from '@/data/projects'
 
 function slugFromHref(href: string): string {
   return href.replace(/^\//, '').split('/')[0] ?? ''
@@ -280,11 +281,25 @@ function ViewAllWrapper({
 
 // ─── Gallery ──────────────────────────────────────────────────────────────────
 
-const DEFAULT_ITEMS: WorkItem[] = [
-  { id: 1, title: 'Agentic Privileged Access Management suite', href: '/ai-pam',            placeholder: '#dde4ed', direction: 'left',  svgSrc: '/Agentic-Pam.svg'      },
-  { id: 2, title: 'CyberQP browser extension',                  href: '/browser-extension', placeholder: '#e8dded', direction: 'left',  svgSrc: '/Browser-extension.svg' },
-  { id: 3, title: 'Multi agent experiment to monitor TFSA holdings', href: '/refinery', placeholder: '#edeadd', direction: 'right', svgSrc: '/assets/portfolio%20list%20page/The%20refinery%20project.png', imageFit: 'cover' },
-]
+// Fan directions for the first three featured projects, in order.
+const FAN_DIRECTIONS: Array<'left' | 'right'> = ['left', 'left', 'right']
+
+const DEFAULT_ITEMS: WorkItem[] = FEATURED_PROJECTS.slice(0, 3).map(
+  (project, i) => ({
+    id: i + 1,
+    title:
+      project.slug === 'ai-pam'
+        ? 'Agentic Privileged Access Management suite'
+        : project.slug === 'browser-extension'
+          ? 'CyberQP browser extension'
+          : project.title,
+    href: project.href,
+    placeholder: project.placeholder,
+    direction: FAN_DIRECTIONS[i],
+    svgSrc: project.fanImage,
+    imageFit: project.slug === 'refinery' ? project.imageFit : undefined,
+  })
+)
 
 export function WorkGallery({
   items = DEFAULT_ITEMS,
