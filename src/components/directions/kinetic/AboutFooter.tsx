@@ -96,7 +96,7 @@ export function AboutFooter() {
         </div>
       </section>
 
-      <footer id="contact" className="k-footer k-container">
+      <footer id="contact-read" className="k-footer k-container">
         <h2 className="k-footer-hl">
           <RevealText
             as="span"

@@ -63,12 +63,27 @@
   /* ---------- nav ---------- */
 
   & .k-nav {
-    position: relative;
-    z-index: 3;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    padding-block: clamp(14px, 2.5vh, 22px);
+    transition: background-color 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  & .k-nav-scrolled {
+    background: rgba(255, 247, 239, 0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 1px 0 rgba(26, 26, 26, 0.12);
+  }
+
+  & .k-nav-inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-block: clamp(18px, 3vh, 28px);
+    width: 100%;
   }
 
   & .k-wordmark {
@@ -115,12 +130,12 @@
   & .k-hero {
     position: relative;
     overflow: clip;
-    min-height: calc(100svh - 76px);
+    min-height: 100svh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     gap: clamp(2rem, 6vh, 4rem);
-    padding-top: clamp(1.5rem, 4vh, 3rem);
+    padding-top: calc(64px + clamp(1.5rem, 4vh, 3rem));
     padding-bottom: clamp(2.25rem, 6vh, 4.5rem);
   }
 
@@ -319,10 +334,12 @@
     object-fit: cover;
   }
 
-  /* Desktop hover: dim siblings, shift + skew the hovered title. */
+  /* Desktop hover: dim siblings, shift + skew the hovered title. The inline
+     thumb stays visible at every size: it is the Flip morph target that the
+     polaroid photos collapse into when switching from see to read. */
   @media (hover: hover) and (pointer: fine) and (min-width: 768px) {
     & .k-wi-thumb {
-      display: none;
+      width: 120px;
     }
 
     & .k-wi-list:hover .k-wi-row {
@@ -564,5 +581,71 @@
 
   & .mode-opt:not(.is-active):hover {
     color: #ab0782;
+  }
+}
+
+/* ---------- experiments index ---------- */
+
+.dir-kinetic {
+  & .k-experiments {
+    padding-top: clamp(60px, 8vw, 110px);
+    padding-bottom: clamp(60px, 8vw, 110px);
+  }
+
+  & .k-ex-rule {
+    height: 1px;
+    background: var(--k-ink);
+  }
+
+  & .k-ex-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+    padding: clamp(22px, 3vw, 36px) 0;
+  }
+
+  @media (min-width: 768px) {
+    & .k-ex-row {
+      grid-template-columns: 240px minmax(0, 1fr) auto;
+      gap: clamp(20px, 4vw, 56px);
+      align-items: baseline;
+    }
+  }
+
+  & .k-ex-title {
+    font-family: var(--k-serif);
+    font-size: clamp(26px, 3vw, 38px);
+    line-height: 1.05;
+    font-weight: 400;
+  }
+
+  & .k-ex-copy {
+    font-size: clamp(14px, 1.3vw, 16px);
+    line-height: 1.6;
+    color: var(--k-ink-soft);
+    max-width: 56ch;
+  }
+
+  & .k-ex-links {
+    display: inline-flex;
+    gap: 18px;
+    white-space: nowrap;
+  }
+
+  & .k-ex-link {
+    color: var(--k-ink);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1px;
+    transition: color 0.2s ease;
+  }
+
+  & .k-ex-link:hover {
+    color: var(--k-magenta);
+  }
+
+  & .k-ex-nudge {
+    margin-top: 22px;
+    color: var(--k-ink-soft);
   }
 }

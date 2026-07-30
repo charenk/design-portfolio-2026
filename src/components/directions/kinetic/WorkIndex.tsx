@@ -138,7 +138,7 @@ export function WorkIndex() {
   )
 
   return (
-    <section ref={sectionRef} id="work" className="k-work k-container">
+    <section ref={sectionRef} id="work-read" className="k-work k-container">
       <div className="k-work-head">
         <h2 className="k-label">Selected Work</h2>
         <span className="k-label">{ALL_PROJECTS.length} Projects, 2019 to 2026</span>
@@ -164,7 +164,11 @@ export function WorkIndex() {
                   {project.title}
                 </RevealText>
                 {project.bannerImage && (
-                  <span className="k-wi-thumb" aria-hidden="true">
+                  <span
+                    className="k-wi-thumb"
+                    data-flip-id={`proj-${project.slug}`}
+                    aria-hidden="true"
+                  >
                     <Image
                       src={project.bannerImage}
                       alt=""

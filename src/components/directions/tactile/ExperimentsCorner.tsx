@@ -76,6 +76,18 @@ export function ExperimentsCorner() {
             </div>
           </article>
         </div>
+
+        <p className="tc-caveat tc-exp-nudge">
+          more of this at{' '}
+          <a
+            href="https://www.makenlab.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="tc-exp-nudge-link"
+          >
+            Maken Lab
+          </a>
+        </p>
       </div>
     </section>
   )

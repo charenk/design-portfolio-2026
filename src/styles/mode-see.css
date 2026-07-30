@@ -884,3 +884,18 @@
     padding: 3px 9px;
   }
 }
+
+/* ---------- experiments nudge ---------- */
+
+.dir-tactile .tc-exp-nudge {
+  margin-top: 26px;
+  font-size: 22px;
+  color: rgba(34, 31, 26, 0.62);
+  rotate: -1deg;
+}
+
+.dir-tactile .tc-exp-nudge-link {
+  color: var(--tc-magenta);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

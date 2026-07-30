@@ -1,7 +1,5 @@
 import type { Metadata } from 'next'
 import { IBM_Plex_Mono } from 'next/font/google'
-import { SmoothScrollProvider } from '@/components/motion/SmoothScrollProvider'
-import { DirectionSwitcher } from '@/components/directions/DirectionSwitcher'
 import './v2.css'
 
 const plexMono = IBM_Plex_Mono({
@@ -15,13 +13,12 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 }
 
+/**
+ * Archived direction prototype, kept for reference. Lenis comes from the
+ * root layout now.
+ */
 export default function V2Layout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  return (
-    <div className={`dir-command ${plexMono.variable}`}>
-      <SmoothScrollProvider>{children}</SmoothScrollProvider>
-      <DirectionSwitcher />
-    </div>
-  )
+  return <div className={`dir-command ${plexMono.variable}`}>{children}</div>
 }

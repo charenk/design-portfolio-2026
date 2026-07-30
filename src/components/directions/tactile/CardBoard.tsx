@@ -220,6 +220,7 @@ export function CardBoard() {
                     <span className="tc-tape" aria-hidden="true" />
                     <div
                       className="tc-polaroid-photo"
+                      data-flip-id={`proj-${project.slug}`}
                       style={{ backgroundColor: project.placeholder }}
                     >
                       {project.bannerImage ? (
