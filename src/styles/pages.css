@@ -1,0 +1,640 @@
+/* Portfolio, workato, and lock page styles for the tactile redesign.
+   Every rule is scoped under .pf-page, .wk-page, or .lk-page so nothing can
+   leak into other routes. Pages also carry .dir-tactile, which provides the
+   paper background, grain, tokens (--tc-*), focus rings, and shared bits like
+   .tc-tape, .tc-btn, and .tc-caveat from mode-see.css. Static rotations use
+   the CSS `rotate` property so GSAP can own the `transform` channel. */
+
+/* ==================================================================
+   /portfolio: Selected works
+   ================================================================== */
+
+.pf-page .pf-main {
+  padding: 140px 20px 72px;
+}
+
+.pf-page .pf-inner {
+  max-width: 1160px;
+  margin: 0 auto;
+}
+
+/* ---------- header ---------- */
+
+.pf-page .pf-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 26px;
+  margin-bottom: clamp(44px, 6vw, 72px);
+}
+
+.pf-page .pf-back {
+  font-size: 13px;
+  padding: 10px 20px;
+}
+
+.pf-page .pf-back-icon {
+  width: 15px;
+  height: 15px;
+}
+
+.pf-page .pf-title {
+  font-size: clamp(38px, 5.5vw, 56px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+/* ---------- scrapbook grid ---------- */
+
+.pf-page .pf-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 44px;
+}
+
+.pf-page .pf-card {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Mobile stack: live-feeling large cards first, matching the old order. */
+@media (max-width: 767px) {
+  .pf-page .pf-card-lg {
+    order: 0;
+  }
+
+  .pf-page .pf-card-sm {
+    order: 1;
+  }
+}
+
+@media (min-width: 768px) {
+  .pf-page .pf-main {
+    padding: 176px 48px 96px;
+  }
+
+  .pf-page .pf-grid {
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: clamp(24px, 3.5vw, 44px);
+    row-gap: clamp(64px, 8vw, 110px);
+    align-items: start;
+  }
+
+  .pf-page .pf-card-sm {
+    grid-column: span 4;
+    margin-top: clamp(56px, 10vw, 150px);
+  }
+
+  .pf-page .pf-card-lg {
+    grid-column: span 8;
+  }
+}
+
+/* ---------- polaroid frame ---------- */
+
+.pf-page .pf-polaroid {
+  position: relative;
+  background: #fff;
+  border-radius: 16px;
+  padding: 14px 14px 10px;
+  rotate: var(--rot, 0deg);
+  box-shadow: var(--tc-shadow-soft);
+  transition: translate 0.3s ease, rotate 0.3s ease;
+}
+
+/* Deeper hover shadow faded in via opacity only, never box-shadow tweens. */
+.pf-page .pf-polaroid::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  box-shadow: var(--tc-shadow-lift);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.pf-page .pf-card-live:hover .pf-polaroid,
+.pf-page .pf-card-live:focus-visible .pf-polaroid {
+  translate: 0 -10px;
+  rotate: 0deg;
+}
+
+.pf-page .pf-card-live:hover .pf-polaroid::after,
+.pf-page .pf-card-live:focus-visible .pf-polaroid::after {
+  opacity: 1;
+}
+
+.pf-page .pf-photo {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.pf-page .pf-card-lg .pf-photo {
+  aspect-ratio: 16 / 10;
+}
+
+.pf-page .pf-photo-img {
+  object-fit: cover;
+}
+
+/* Badge sticker on the photo corner. Live badges are white stickers,
+   coming-soon badges are magenta so they read as a different state. */
+.pf-page .pf-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  background: #fff;
+  color: var(--tc-ink);
+  border: 2px solid var(--tc-ink);
+  border-radius: 999px;
+  padding: 2px 13px;
+  font-size: 17px;
+  font-weight: 700;
+  rotate: 5deg;
+  box-shadow: 0 2px 6px rgba(34, 31, 26, 0.2);
+}
+
+.pf-page .pf-badge-soon {
+  background: var(--tc-magenta);
+  color: #fff;
+  border-color: var(--tc-magenta);
+}
+
+.pf-page .pf-caption {
+  padding: 12px 6px 6px;
+}
+
+.pf-page .pf-caption-title {
+  font-size: clamp(21px, 2vw, 26px);
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.pf-page .pf-card-live:hover .pf-caption-title {
+  color: var(--tc-magenta);
+}
+
+.pf-page .pf-caption-tags {
+  margin-top: 4px;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(34, 31, 26, 0.55);
+}
+
+/* Coming-soon cards: pinned flat, dimmed, and not interactive. */
+.pf-page .pf-card-soon {
+  cursor: default;
+}
+
+.pf-page .pf-card-soon .pf-polaroid {
+  rotate: 0deg;
+  opacity: 0.72;
+  filter: saturate(0.75);
+  box-shadow: 0 1px 2px rgba(34, 31, 26, 0.08), 0 6px 14px rgba(34, 31, 26, 0.08);
+}
+
+/* ---------- CTA card ---------- */
+
+.pf-page .pf-cta {
+  max-width: 880px;
+  margin: clamp(96px, 14vw, 190px) auto 0;
+  padding: 0 20px;
+}
+
+.pf-page .pf-cta-card {
+  position: relative;
+  background: #fff;
+  border-radius: 20px;
+  padding: clamp(40px, 6vw, 64px) clamp(28px, 6vw, 64px);
+  box-shadow: var(--tc-shadow-soft);
+  rotate: -1deg;
+}
+
+.pf-page .pf-cta-tape-left {
+  left: 36px;
+  translate: 0 0;
+  rotate: -7deg;
+}
+
+.pf-page .pf-cta-tape-right {
+  top: auto;
+  bottom: -14px;
+  left: auto;
+  right: 36px;
+  translate: 0 0;
+  rotate: -7deg;
+}
+
+.pf-page .pf-cta-title {
+  font-size: clamp(26px, 3.6vw, 38px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+}
+
+.pf-page .pf-cta-sub {
+  margin-top: 12px;
+  max-width: 520px;
+  font-size: clamp(14px, 1.4vw, 16px);
+  font-weight: 500;
+  line-height: 1.6;
+  color: rgba(34, 31, 26, 0.72);
+}
+
+.pf-page .pf-cta-btn {
+  margin-top: 28px;
+}
+
+/* ---------- bottom credit ---------- */
+
+.pf-page .pf-credit {
+  margin-top: clamp(120px, 18vw, 220px);
+  padding: 0 20px;
+  text-align: center;
+}
+
+.pf-page .pf-credit p {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+/* ==================================================================
+   /workato: work samples
+   ================================================================== */
+
+/* Nothing toggles .is-visible on this page anymore, so neutralise the
+   legacy scroll-reveal class and let content render. */
+.wk-page .fade-in-up {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+.wk-page .workato-intro p {
+  font-family: var(--font-instrument-serif), Georgia, serif;
+  color: var(--tc-ink);
+}
+
+/* ---------- back buttons ---------- */
+
+.wk-page .wk-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--tc-ink);
+  color: var(--tc-paper);
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 20px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: var(--tc-shadow-soft);
+  cursor: pointer;
+  transition: translate 0.2s ease;
+}
+
+.wk-page .wk-back:hover {
+  translate: 0 -2px;
+}
+
+.wk-page .wk-back svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* ---------- sticker tabs ---------- */
+
+.wk-page .tabs-list {
+  border-bottom: 0;
+  gap: 12px;
+  padding: 6px 2px 14px;
+}
+
+@media (min-width: 768px) {
+  .wk-page .tabs-list {
+    flex-wrap: wrap;
+    overflow: visible;
+  }
+}
+
+.wk-page .tab-trigger {
+  background: #fff;
+  border: 2px solid var(--tc-ink);
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--tc-ink);
+  box-shadow: var(--tc-shadow-soft);
+  rotate: -0.8deg;
+  transition: rotate 0.25s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.wk-page .tab-trigger:nth-child(even) {
+  rotate: 0.8deg;
+}
+
+.wk-page .tab-trigger:hover {
+  color: var(--tc-magenta);
+  rotate: 0deg;
+}
+
+.wk-page .tab-trigger.tab-active {
+  background: var(--tc-ink);
+  color: var(--tc-paper);
+  rotate: 0deg;
+}
+
+/* ---------- content cards ---------- */
+
+.wk-page .pam-hero-image,
+.wk-page .pam-feature-image {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: var(--tc-shadow-soft);
+}
+
+.wk-page .pam-info-grid,
+.wk-page .pam-feature,
+.wk-page .pam-footer {
+  color: var(--tc-ink);
+}
+
+.wk-page .tab-content hr {
+  border-color: rgba(34, 31, 26, 0.18);
+}
+
+/* ==================================================================
+   /portfolio/lock: taped-note password gate
+   ================================================================== */
+
+.lk-page .lk-main {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.lk-page .lk-card {
+  position: relative;
+  width: min(400px, 100%);
+  background: #fff;
+  border-radius: 18px;
+  padding: 44px 32px 36px;
+  box-shadow: var(--tc-shadow-soft);
+  rotate: -1.5deg;
+}
+
+.lk-page .lk-eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tc-magenta);
+  margin-bottom: 12px;
+}
+
+.lk-page .lk-title {
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 10px;
+}
+
+.lk-page .lk-sub {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.6;
+  color: rgba(34, 31, 26, 0.72);
+  margin-bottom: 28px;
+}
+
+.lk-page .lk-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.lk-page .lk-input {
+  width: 100%;
+  background: var(--tc-paper);
+  border: 2px solid rgba(34, 31, 26, 0.25);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--tc-ink);
+  transition: border-color 0.2s ease;
+}
+
+.lk-page .lk-input::placeholder {
+  color: rgba(34, 31, 26, 0.4);
+}
+
+.lk-page .lk-input:hover {
+  border-color: rgba(34, 31, 26, 0.45);
+}
+
+.lk-page .lk-input:focus-visible {
+  outline: 2px solid var(--tc-magenta);
+  outline-offset: 2px;
+  border-color: var(--tc-ink);
+}
+
+.lk-page .lk-error {
+  font-size: 14px;
+  font-weight: 600;
+  color: #b42318;
+}
+
+.lk-page .lk-submit {
+  width: 100%;
+  background: var(--tc-ink);
+  color: var(--tc-paper);
+  border: 0;
+  border-radius: 999px;
+  padding: 13px 20px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--tc-shadow-soft);
+  transition: translate 0.2s ease;
+}
+
+.lk-page .lk-submit:hover:not(:disabled) {
+  translate: 0 -2px;
+}
+
+.lk-page .lk-submit:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.lk-page .lk-annotation {
+  margin-top: 28px;
+  font-size: 22px;
+  font-weight: 500;
+  color: rgba(34, 31, 26, 0.7);
+  rotate: -2deg;
+}
+
+/* ==================================================================
+   READ MODE: workato + lock
+   Editorial re-skin applied when html[data-mode='read'] is set.
+   Markup keeps .dir-tactile; these higher-specificity overrides swap
+   the tactile look (tape, rotation, soft shadows, grain) for cream
+   paper, ink text, hairline rules, and Instrument Serif headings.
+   ================================================================== */
+
+/* ---------- workato ---------- */
+
+html[data-mode='read'] .wk-page.dir-tactile {
+  background: #fff7ef;
+}
+
+html[data-mode='read'] .wk-page.dir-tactile::after {
+  content: none;
+}
+
+html[data-mode='read'] .wk-page .workato-intro p {
+  color: #1a1a1a;
+  font-size: 19px;
+}
+
+html[data-mode='read'] .wk-page .tabs-list {
+  border-bottom: 1px solid rgba(26, 26, 26, 0.18);
+  gap: 0;
+}
+
+html[data-mode='read'] .wk-page .tab-trigger {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  rotate: 0deg;
+  padding: 12px 18px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(26, 26, 26, 0.62);
+}
+
+html[data-mode='read'] .wk-page .tab-trigger:hover {
+  color: #ab0782;
+}
+
+html[data-mode='read'] .wk-page .tab-trigger.tab-active {
+  background: transparent;
+  color: #1a1a1a;
+  box-shadow: 0 2px 0 0 #1a1a1a;
+}
+
+html[data-mode='read'] .wk-page .wk-back {
+  background: transparent;
+  color: #1a1a1a;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding-left: 0;
+  padding-right: 0;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+html[data-mode='read'] .wk-page .wk-back:hover {
+  color: #ab0782;
+  translate: none;
+}
+
+html[data-mode='read'] .wk-page .pam-hero-image,
+html[data-mode='read'] .wk-page .pam-feature-image {
+  background: #fffdf9;
+  border: 1px solid rgba(26, 26, 26, 0.18);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* ---------- lock ---------- */
+
+html[data-mode='read'] .lk-page.dir-tactile {
+  background: #fff7ef;
+}
+
+html[data-mode='read'] .lk-page.dir-tactile::after {
+  content: none;
+}
+
+html[data-mode='read'] .lk-page .tc-tape {
+  display: none;
+}
+
+html[data-mode='read'] .lk-page .lk-card {
+  background: #fffdf9;
+  border: 1px solid rgba(26, 26, 26, 0.18);
+  border-radius: 0;
+  box-shadow: none;
+  rotate: 0deg;
+}
+
+html[data-mode='read'] .lk-page .lk-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #ab0782;
+  rotate: 0deg;
+}
+
+html[data-mode='read'] .lk-page .lk-title {
+  font-family: var(--font-instrument-serif), Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(30px, 4vw, 40px);
+  letter-spacing: 0;
+  color: #1a1a1a;
+}
+
+html[data-mode='read'] .lk-page .lk-input {
+  background: #fff;
+  border: 1px solid rgba(26, 26, 26, 0.3);
+  border-radius: 0;
+  color: #1a1a1a;
+}
+
+html[data-mode='read'] .lk-page .lk-input:hover {
+  border-color: rgba(26, 26, 26, 0.5);
+}
+
+html[data-mode='read'] .lk-page .lk-submit {
+  background: #1a1a1a;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+html[data-mode='read'] .lk-page .lk-submit:hover:not(:disabled) {
+  translate: none;
+  background: #ab0782;
+}
+
+html[data-mode='read'] .lk-page .lk-annotation {
+  font-family: var(--font-instrument-serif), Georgia, serif;
+  font-style: italic;
+  font-size: 17px;
+  font-weight: 400;
+  color: rgba(26, 26, 26, 0.62);
+  rotate: 0deg;
+}

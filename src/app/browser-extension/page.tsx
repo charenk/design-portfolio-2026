@@ -104,8 +104,8 @@ export default function BrowserExtensionCaseStudy() {
             { quote: 'When will we have access requests in the browser extension? This would be a tremendous boost to our productivity.', attr: 'Partner advisory council member' },
           ].map((q, i) => (
             <div key={i} className="bg-amber-50 border border-amber-200/60 rounded-figure-card p-[20px]">
-              <p className="text-[14px] leading-[1.55] font-serif italic mb-[12px] text-[#2C2820]">&ldquo;{q.quote}&rdquo;</p>
-              <p className="text-[12px] font-serif text-[#6B6757] pt-[8px] border-t border-dashed border-amber-300/60">{q.attr}</p>
+              <p className="text-[14px] leading-[1.55] font-serif italic mb-[12px] text-[var(--cs-ink)]">&ldquo;{q.quote}&rdquo;</p>
+              <p className="text-[12px] font-serif text-[var(--cs-ink-soft)] pt-[8px] border-t border-dashed border-amber-300/60">{q.attr}</p>
             </div>
           ))}
         </div>

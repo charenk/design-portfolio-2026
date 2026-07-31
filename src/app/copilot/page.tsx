@@ -22,14 +22,14 @@ function ReadinessDashboardMock() {
   ] as const
 
   return (
-    <div className="bg-white rounded-[8px] border border-divider-grey/30 p-[18px] shadow-[0_12px_40px_rgba(0,0,0,0.08)]">
+    <div className="bg-[var(--cs-surface)] rounded-[8px] border border-divider-grey/30 p-[18px] shadow-[0_12px_40px_rgba(0,0,0,0.08)]">
       <div className="flex justify-between items-center mb-[14px] pb-[10px] border-b border-divider-grey/20">
         <p className="text-[13px] font-serif font-semibold">Acme Corporation · Readiness</p>
-        <span className="text-[10px] font-serif text-[#6B6757] bg-[#F8F5EE] px-[8px] py-[3px] rounded-[4px] tracking-[0.04em]">
+        <span className="text-[10px] font-serif text-[var(--cs-ink-soft)] bg-[#F8F5EE] px-[8px] py-[3px] rounded-[4px] tracking-[0.04em]">
           Score: 72
         </span>
       </div>
-      <p className="text-[10px] uppercase tracking-[0.08em] font-serif text-[#9e9e9e] mb-[8px]">Issues to address</p>
+      <p className="text-[10px] uppercase tracking-[0.08em] font-serif text-[var(--cs-ink-faint)] mb-[8px]">Issues to address</p>
       {gaps.map((g) => (
         <div
           key={g.title}
@@ -44,7 +44,7 @@ function ReadinessDashboardMock() {
           </div>
           <div className="flex-1">
             <p className="text-[11px] font-serif font-semibold leading-[1.3]">{g.title}</p>
-            <p className="text-[9px] font-serif text-[#9e9e9e] mt-[2px]">{g.detail}</p>
+            <p className="text-[9px] font-serif text-[var(--cs-ink-faint)] mt-[2px]">{g.detail}</p>
           </div>
           <span className="text-[11px] font-serif font-semibold tracking-[0.02em]">{g.count}</span>
         </div>
@@ -55,13 +55,13 @@ function ReadinessDashboardMock() {
 
 function BeforeAfterMock() {
   return (
-    <div className="bg-white rounded-[8px] border border-divider-grey/30 p-[18px] shadow-[0_12px_40px_rgba(0,0,0,0.08)]">
-      <p className="text-[10px] uppercase tracking-[0.08em] font-serif text-[#9e9e9e] mb-[8px]">Before · Score-led</p>
+    <div className="bg-[var(--cs-surface)] rounded-[8px] border border-divider-grey/30 p-[18px] shadow-[0_12px_40px_rgba(0,0,0,0.08)]">
+      <p className="text-[10px] uppercase tracking-[0.08em] font-serif text-[var(--cs-ink-faint)] mb-[8px]">Before · Score-led</p>
       <div className="text-center py-[18px] bg-[#FAF7EF] rounded-[6px] mb-[14px]">
         <p className="font-serif text-[48px] font-medium leading-none">72</p>
-        <p className="text-[10px] font-serif text-[#9e9e9e] mt-[4px]">Readiness score</p>
+        <p className="text-[10px] font-serif text-[var(--cs-ink-faint)] mt-[4px]">Readiness score</p>
       </div>
-      <p className="text-[10px] uppercase tracking-[0.08em] font-serif text-[#9e9e9e] mb-[8px]">After · Gap-led</p>
+      <p className="text-[10px] uppercase tracking-[0.08em] font-serif text-[var(--cs-ink-faint)] mb-[8px]">After · Gap-led</p>
       {[
         { tone: 'alert', title: 'External sharing · 18,724 groups', detail: 'Recommended: review and reduce to need-only' },
         { tone: 'warn', title: 'Document classification · 62% unset', detail: 'Recommended: classify HR, Finance, Legal first' },
@@ -79,7 +79,7 @@ function BeforeAfterMock() {
           </div>
           <div className="flex-1">
             <p className="text-[11px] font-serif font-semibold leading-[1.3]">{g.title}</p>
-            <p className="text-[9px] font-serif text-[#9e9e9e] mt-[2px]">{g.detail}</p>
+            <p className="text-[9px] font-serif text-[var(--cs-ink-faint)] mt-[2px]">{g.detail}</p>
           </div>
         </div>
       ))}
@@ -95,7 +95,7 @@ function SourceAttributionMock() {
   ]
 
   return (
-    <div className="bg-white rounded-[8px] border border-divider-grey/30 p-[18px] shadow-[0_12px_40px_rgba(0,0,0,0.08)]">
+    <div className="bg-[var(--cs-surface)] rounded-[8px] border border-divider-grey/30 p-[18px] shadow-[0_12px_40px_rgba(0,0,0,0.08)]">
       {rows.map((r, i) => (
         <div
           key={r.label}
@@ -105,7 +105,7 @@ function SourceAttributionMock() {
             <p className="text-[11px] font-serif font-semibold">{r.label}</p>
             <p className="font-serif text-[18px] font-medium">{r.value}</p>
           </div>
-          <p className="text-[9px] uppercase tracking-[0.08em] font-serif text-[#9e9e9e] flex items-center gap-[6px]">
+          <p className="text-[9px] uppercase tracking-[0.08em] font-serif text-[var(--cs-ink-faint)] flex items-center gap-[6px]">
             <span className="w-[6px] h-[6px] bg-blue-600 rounded-[1px] inline-block" />
             {r.source}
           </p>
@@ -206,8 +206,8 @@ export default function CopilotCaseStudy() {
             { quote: 'There’s always going to be that compliance-driven need to keep certain data, even if it’s inactive, so labeling everything red isn’t helpful.', attr: 'Robert Bostrom, Consultant' },
           ].map((q, i) => (
             <div key={i} className="bg-amber-50 border border-amber-200/60 rounded-figure-card p-[20px]">
-              <p className="text-[14px] leading-[1.55] font-serif italic mb-[12px] text-[#2C2820]">&ldquo;{q.quote}&rdquo;</p>
-              <p className="text-[12px] font-serif text-[#6B6757] pt-[8px] border-t border-dashed border-amber-300/60">{q.attr}</p>
+              <p className="text-[14px] leading-[1.55] font-serif italic mb-[12px] text-[var(--cs-ink)]">&ldquo;{q.quote}&rdquo;</p>
+              <p className="text-[12px] font-serif text-[var(--cs-ink-soft)] pt-[8px] border-t border-dashed border-amber-300/60">{q.attr}</p>
             </div>
           ))}
         </div>

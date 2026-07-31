@@ -1,51 +1,40 @@
 "use client"
 
-import { CircularRevealHeading } from "@/components/ui/circular-reveal-heading"
+const WORDS = ['SYSTEMS', 'AI', 'SECURITY', 'ENTERPRISE', 'GROWTH']
 
-const items = [
-  {
-    text: "SYSTEMS",
-    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&h=400&fit=crop"
-  },
-  {
-    text: "AI",
-    image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400&h=400&fit=crop"
-  },
-  {
-    text: "SECURITY",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=400&fit=crop"
-  },
-  {
-    text: "ENTERPRISE",
-    image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=400&fit=crop"
-  },
-  {
-    text: "GROWTH",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=400&fit=crop"
-  }
-]
-
+/**
+ * Sitewide footer for inner pages, tactile studio theme: paper band with a
+ * hairline top, contact links as pills, and the identity words as a cluster
+ * of rotated sticker pills that straighten on hover.
+ */
 export function Footer() {
   return (
-    <footer className="footer">
-      <div className="footer-inner">
-        <div className="footer-contact">
-          <h2 className="footer-heading">Interested in collaborating? Let&apos;s connect</h2>
-          <div className="footer-links">
-            <a href="mailto:charen@gmail.com" className="footer-link">charen@gmail.com</a>
-            <a href="tel:+12269215640" className="footer-link">+1 226 921 5640</a>
+    <footer className="site-footer">
+      <div className="site-footer-inner">
+        <div className="site-footer-contact">
+          <h2 className="site-footer-heading">
+            Interested in collaborating? Let&apos;s connect
+          </h2>
+          <div className="site-footer-links">
+            <a href="mailto:charen.k@gmail.com" className="site-footer-link">
+              charen.k@gmail.com
+            </a>
+            <a href="tel:+12269215640" className="site-footer-link">
+              +1 226 921 5640
+            </a>
           </div>
         </div>
-        <div className="hidden md:block flex-shrink-0">
-          <CircularRevealHeading
-            items={items}
-            centerText={
-              <div className="text-xl font-bold text-[#444444]">
-                CHAREN
-              </div>
-            }
-            size="xs"
-          />
+
+        <div className="site-footer-words" aria-label="Focus areas">
+          {WORDS.map((word, i) => (
+            <span
+              key={word}
+              className="site-footer-word"
+              style={{ rotate: `${(i % 2 === 0 ? -1 : 1) * (2 + (i % 3))}deg` }}
+            >
+              {word}
+            </span>
+          ))}
         </div>
       </div>
     </footer>

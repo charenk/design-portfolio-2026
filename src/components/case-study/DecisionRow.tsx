@@ -15,30 +15,30 @@ interface DecisionRowProps {
 function MediaPanel({ media }: { media: DecisionMedia }) {
   if (media.type === 'image') {
     return (
-      <div className="order-1 md:order-2 relative w-full md:w-[592px] aspect-[592/357] bg-[#FFF7EF] shrink-0 overflow-hidden rounded-figure-card">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={media.src}
-          alt={media.alt}
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+      <div className="cs-figure cs-tilt-r order-1 md:order-2 w-full md:w-[560px] shrink-0" data-cs-figure>
+        <span className="cs-tape" aria-hidden />
+        <div className="cs-figure-media aspect-[592/357]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={media.src} alt={media.alt} className="cs-figure-img" />
+        </div>
       </div>
     )
   }
   if (media.type === 'placeholder') {
     return (
-      <div className="order-1 md:order-2 relative w-full md:w-[592px] aspect-[592/357] bg-[#FFF7EF] shrink-0 overflow-hidden rounded-figure-card border border-dashed border-divider-grey/40 flex items-center justify-center text-center px-[24px]">
-        <div>
-          <p className="text-[12px] uppercase tracking-[0.15em] font-serif font-medium text-accent-yellow mb-[10px]">
-            {media.label}
-          </p>
-          <p className="text-[14px] font-serif text-[#4F4F4F]">{media.description}</p>
+      <div className="cs-figure cs-tilt-r order-1 md:order-2 w-full md:w-[560px] shrink-0" data-cs-figure>
+        <span className="cs-tape" aria-hidden />
+        <div className="cs-figure-empty aspect-[592/357]">
+          <div>
+            <p className="cs-figure-empty-label">{media.label}</p>
+            <p className="cs-figure-empty-desc">{media.description}</p>
+          </div>
         </div>
       </div>
     )
   }
   return (
-    <div className="order-1 md:order-2 relative w-full md:w-[592px] shrink-0">
+    <div className="order-1 md:order-2 relative w-full md:w-[560px] shrink-0" data-cs-figure>
       {media.node}
     </div>
   )
@@ -46,24 +46,20 @@ function MediaPanel({ media }: { media: DecisionMedia }) {
 
 export function DecisionRow({ eyebrow, heading, paragraphs, media }: DecisionRowProps) {
   return (
-    <section className="mb-[50px]">
+    <section className="cs-decision">
       {/* Mobile heading: appears above the image */}
       <div className="md:hidden mb-4">
-        <p className="text-[11px] uppercase tracking-[0.15em] font-serif font-medium text-accent-yellow mb-[8px]">
-          {eyebrow}
-        </p>
-        <h3 className="text-[18px] leading-[1.52] font-serif font-semibold">{heading}</h3>
+        <p className="cs-eyebrow">{eyebrow}</p>
+        <h3 className="cs-h3">{heading}</h3>
       </div>
       <div className="flex flex-col md:flex-row gap-[38px] items-start">
-        <div className="order-2 md:order-1 flex-1 md:py-[37px]">
+        <div className="order-2 md:order-1 flex-1 md:py-[30px]">
           {/* Desktop heading: appears alongside the image */}
-          <div className="hidden md:block mb-2">
-            <p className="text-[11px] uppercase tracking-[0.15em] font-serif font-medium text-accent-yellow mb-[8px]">
-              {eyebrow}
-            </p>
-            <h3 className="text-[18px] leading-[1.52] font-serif font-semibold">{heading}</h3>
+          <div className="hidden md:block mb-4">
+            <p className="cs-eyebrow">{eyebrow}</p>
+            <h3 className="cs-h3">{heading}</h3>
           </div>
-          <div className="text-[14px] leading-[1.6] font-serif flex flex-col gap-[18px]">
+          <div className="cs-body">
             {paragraphs.map((p, i) => (
               <p key={i}>{p}</p>
             ))}

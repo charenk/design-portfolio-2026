@@ -1,11 +1,13 @@
 "use client"
 
-import { useState, useTransition } from 'react'
+import { useRef, useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
+import { gsap, useGSAP, FULL_MOTION, REDUCED_MOTION } from '@/lib/motion/gsap'
 import { verifyPassword } from '../actions'
 
 export function LockForm({ returnUrl }: { returnUrl: string }) {
   const router = useRouter()
+  const rootRef = useRef<HTMLDivElement>(null)
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [isPending, startTransition] = useTransition()
@@ -28,41 +30,76 @@ export function LockForm({ returnUrl }: { returnUrl: string }) {
     })
   }
 
-  return (
-    <div className="min-h-screen bg-[#FFF7EF] flex items-center justify-center px-8">
-      <div className="w-full max-w-[360px]">
-        <p className="font-sans text-[13px] font-medium tracking-widest uppercase text-[#9e9e9e] mb-4">
-          Private access
-        </p>
-        <h1 className="font-sans font-light text-[32px] leading-tight text-[#1a1a1a] mb-2">
-          Charen&apos;s portfolio
-        </h1>
-        <p className="font-sans text-[15px] text-[#6b6b6b] mb-10 leading-relaxed">
-          This page is password protected. Enter the password to continue.
-        </p>
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia()
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <input
-            type="password"
-            data-private
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            autoFocus
-            className="w-full border border-[#d4d4d4] bg-white rounded px-4 py-3 font-sans text-[15px] text-[#1a1a1a] placeholder-[#b0b0b0] outline-none focus:border-[#1a1a1a] transition-colors"
-          />
-          {error && (
-            <p className="font-sans text-[13px] text-red-500">{error}</p>
-          )}
-          <button
-            type="submit"
-            disabled={isPending || !password}
-            className="w-full bg-black text-white font-sans font-medium text-[15px] py-3 rounded hover:bg-[#333] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-          >
-            {isPending ? 'Checking…' : 'Unlock'}
-          </button>
-        </form>
-      </div>
+      // Single gentle drop-in: the note falls onto the desk and its
+      // rotation settles into the CSS resting tilt.
+      mm.add(FULL_MOTION, () => {
+        gsap.from('.lk-card', {
+          autoAlpha: 0,
+          y: -48,
+          rotation: -3,
+          duration: 0.8,
+          ease: 'back.out(1.4)',
+        })
+        gsap.from('.lk-annotation', {
+          autoAlpha: 0,
+          y: 10,
+          duration: 0.5,
+          delay: 0.45,
+          ease: 'power3.out',
+        })
+      })
+
+      // Reduced motion: no tweens, the note renders in place.
+      mm.add(REDUCED_MOTION, () => {})
+
+      return () => mm.revert()
+    },
+    { scope: rootRef }
+  )
+
+  return (
+    <div ref={rootRef} className="lk-page dir-tactile">
+      <main className="lk-main">
+        <div className="lk-card">
+          <span className="tc-tape" aria-hidden="true" />
+
+          <p className="lk-eyebrow">Private access</p>
+          <h1 className="lk-title">Charen&apos;s portfolio</h1>
+          <p className="lk-sub">
+            This page is password protected. Enter the password to continue.
+          </p>
+
+          <form onSubmit={handleSubmit} className="lk-form">
+            <input
+              type="password"
+              data-private
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoFocus
+              className="lk-input"
+            />
+            {error && (
+              <p className="lk-error">{error}</p>
+            )}
+            <button
+              type="submit"
+              disabled={isPending || !password}
+              className="lk-submit"
+            >
+              {isPending ? 'Checking…' : 'Unlock'}
+            </button>
+          </form>
+        </div>
+
+        <p className="tc-caveat lk-annotation">
+          psst, check your invite for the password
+        </p>
+      </main>
     </div>
   )
 }

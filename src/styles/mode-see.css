@@ -1,0 +1,901 @@
+/* V3 Tactile Studio. Every rule is scoped under .dir-tactile so this
+   stylesheet cannot leak into other routes. Static rotations use the CSS
+   `rotate` property so GSAP can own the `transform` channel (x, y, rotation)
+   without the two fighting each other. */
+
+.dir-tactile {
+  --tc-paper: #faf3e9;
+  --tc-ink: #221f1a;
+  --tc-tape: #f7e08e;
+  --tc-magenta: #ab0782;
+  --tc-blue: #3a4cba;
+  --tc-card-w: clamp(220px, 23vw, 284px);
+  --tc-shadow-soft: 0 1px 2px rgba(34, 31, 26, 0.08), 0 12px 28px rgba(34, 31, 26, 0.12);
+  --tc-shadow-lift: 0 4px 10px rgba(34, 31, 26, 0.12), 0 22px 48px rgba(34, 31, 26, 0.22);
+
+  position: relative;
+  min-height: 100vh;
+  background-color: var(--tc-paper);
+  color: var(--tc-ink);
+  font-family: var(--font-montserrat), system-ui, sans-serif;
+  overflow-x: clip;
+}
+
+/* Paper grain: tiny SVG turbulence tile, multiplied at very low opacity. */
+.dir-tactile::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  mix-blend-mode: multiply;
+  opacity: 0.05;
+}
+
+.dir-tactile a:focus-visible,
+.dir-tactile button:focus-visible {
+  outline: 2px solid var(--tc-magenta);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Hide the OS cursor only where the custom cursor shows an affordance, and
+   only in the exact conditions where the custom cursor is actually running. */
+@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .dir-tactile [data-cursor],
+  .dir-tactile [data-cursor] a {
+    cursor: none;
+  }
+}
+
+/* ---------- shared bits ---------- */
+
+.dir-tactile .tc-caveat {
+  font-family: var(--font-caveat), cursive;
+}
+
+.dir-tactile .tc-eyebrow {
+  display: inline-block;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--tc-magenta);
+  rotate: -1.5deg;
+  margin-bottom: 8px;
+}
+
+.dir-tactile .tc-h2 {
+  font-size: clamp(30px, 4.5vw, 46px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+  margin-bottom: clamp(28px, 4vw, 46px);
+}
+
+.dir-tactile .tc-section {
+  padding: clamp(64px, 9vw, 120px) 20px;
+}
+
+.dir-tactile .tc-section-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.dir-tactile .tc-tape {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  translate: -50% 0;
+  rotate: -4deg;
+  width: 96px;
+  height: 28px;
+  background: rgba(247, 224, 142, 0.88);
+  box-shadow: 0 2px 6px rgba(34, 31, 26, 0.14);
+  clip-path: polygon(3% 0, 97% 6%, 100% 88%, 94% 100%, 4% 96%, 0 12%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.dir-tactile .tc-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--tc-ink);
+  color: var(--tc-paper);
+  border-radius: 999px;
+  padding: 12px 22px;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  box-shadow: var(--tc-shadow-soft);
+  cursor: pointer;
+  will-change: transform;
+}
+
+.dir-tactile .tc-btn-ghost {
+  background: #fff;
+  color: var(--tc-ink);
+  border: 2px solid var(--tc-ink);
+}
+
+.dir-tactile .tc-btn-big {
+  position: relative;
+  background: #fff;
+  color: var(--tc-ink);
+  font-size: clamp(16px, 2vw, 19px);
+  font-weight: 800;
+  padding: 18px 38px;
+}
+
+.dir-tactile .tc-btn-tape {
+  top: -13px;
+  left: -20px;
+  translate: 0 0;
+  rotate: -34deg;
+  width: 72px;
+  height: 24px;
+}
+
+/* ---------- custom cursor ---------- */
+
+.dir-tactile .tc-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9990;
+  pointer-events: none;
+}
+
+.dir-tactile .tc-cursor-dot {
+  position: absolute;
+  width: 10px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--tc-ink);
+  translate: -50% -50%;
+}
+
+.dir-tactile .tc-cursor-bubble {
+  position: absolute;
+  width: 66px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--tc-ink);
+  color: var(--tc-paper);
+  display: grid;
+  place-items: center;
+  translate: -50% -50%;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+
+/* ---------- top nav ---------- */
+
+.dir-tactile .tc-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  padding: 12px 20px;
+  transition: background-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.dir-tactile .tc-nav-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dir-tactile .tc-nav-scrolled {
+  background: rgba(250, 243, 233, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 1px 0 rgba(34, 31, 26, 0.08), 0 10px 24px rgba(34, 31, 26, 0.07);
+}
+
+.dir-tactile .tc-nav-wordmark {
+  display: inline-block;
+  background: #fff;
+  border: 2px solid var(--tc-ink);
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--tc-ink);
+  text-decoration: none;
+  rotate: -2deg;
+  box-shadow: var(--tc-shadow-soft);
+  transition: rotate 0.25s ease;
+}
+
+.dir-tactile .tc-nav-wordmark:hover {
+  rotate: 2deg;
+}
+
+.dir-tactile .tc-nav-links {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 3vw, 30px);
+}
+
+.dir-tactile .tc-nav-link {
+  position: relative;
+  padding: 6px 2px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--tc-ink);
+  text-decoration: none;
+}
+
+.dir-tactile .tc-nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 2px;
+  height: 2.5px;
+  border-radius: 2px;
+  background: var(--tc-magenta);
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.25s ease;
+}
+
+.dir-tactile .tc-nav-link:hover::after,
+.dir-tactile .tc-nav-link:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+@media (max-width: 767px) {
+  .dir-tactile .tc-nav {
+    padding: 10px 14px;
+  }
+
+  .dir-tactile .tc-nav-wordmark {
+    font-size: 13px;
+    padding: 5px 12px;
+  }
+
+  .dir-tactile .tc-nav-link {
+    font-size: 12px;
+  }
+}
+
+/* ---------- hero ---------- */
+
+.dir-tactile .tc-hero {
+  position: relative;
+  padding: clamp(88px, 15vh, 168px) 20px clamp(80px, 10vw, 130px);
+}
+
+.dir-tactile .tc-hero-inner {
+  position: relative;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.dir-tactile .tc-headline {
+  font-size: clamp(44px, 8.5vw, 100px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  margin-bottom: clamp(30px, 4.5vw, 52px);
+  max-width: 14ch;
+}
+
+.dir-tactile .tc-headline-sticker {
+  display: inline-block;
+  background: #fff;
+  border: 3px solid var(--tc-ink);
+  border-radius: 999px;
+  padding: 0.02em 0.32em 0.06em;
+  rotate: -2deg;
+  box-shadow: var(--tc-shadow-soft);
+}
+
+.dir-tactile .tc-note-row {
+  position: relative;
+  width: min(560px, 100%);
+}
+
+.dir-tactile .tc-note {
+  position: relative;
+  background: #fff;
+  border-radius: 16px;
+  padding: 36px 30px 28px;
+  rotate: -1.6deg;
+  box-shadow: var(--tc-shadow-soft);
+}
+
+.dir-tactile .tc-note p {
+  font-size: clamp(16px, 1.6vw, 19px);
+  line-height: 1.65;
+  font-weight: 500;
+}
+
+.dir-tactile .tc-annotation {
+  margin-top: 26px;
+  max-width: 270px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.dir-tactile .tc-annotation-arrow {
+  flex: 0 0 auto;
+  width: 78px;
+  height: 58px;
+  transform: scaleY(-1);
+}
+
+.dir-tactile .tc-annotation-arrow path {
+  stroke: var(--tc-ink);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+.dir-tactile .tc-annotation p {
+  font-size: 21px;
+  font-weight: 500;
+  line-height: 1.25;
+  color: rgba(34, 31, 26, 0.82);
+  rotate: -1.5deg;
+}
+
+@media (min-width: 1024px) {
+  .dir-tactile .tc-annotation {
+    position: absolute;
+    left: calc(100% + 30px);
+    top: 4px;
+    width: 300px;
+    max-width: none;
+    margin-top: 0;
+  }
+
+  .dir-tactile .tc-annotation-arrow {
+    width: 110px;
+    height: 82px;
+    transform: none;
+  }
+}
+
+.dir-tactile .tc-sticker {
+  position: absolute;
+  z-index: 3;
+}
+
+.dir-tactile .tc-sticker-inner {
+  display: grid;
+  place-items: center;
+  text-align: center;
+  filter: drop-shadow(0 2px 3px rgba(34, 31, 26, 0.1)) drop-shadow(0 12px 20px rgba(34, 31, 26, 0.14));
+}
+
+.dir-tactile .tc-sticker-cyberqp {
+  top: 12%;
+  right: 5%;
+}
+
+.dir-tactile .tc-sticker-cyberqp .tc-sticker-inner {
+  width: clamp(84px, 9vw, 122px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--tc-blue);
+  color: #fff;
+  border: 3px solid #fff;
+  font-size: clamp(11px, 1.1vw, 14px);
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  rotate: 7deg;
+}
+
+.dir-tactile .tc-sticker-star {
+  top: 70%;
+  right: 5%;
+}
+
+.dir-tactile .tc-sticker-star .tc-sticker-inner {
+  position: relative;
+  width: clamp(104px, 11vw, 142px);
+  aspect-ratio: 1;
+  rotate: -6deg;
+}
+
+.dir-tactile .tc-sticker-star svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.dir-tactile .tc-sticker-star span {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(10px, 1vw, 12px);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  max-width: 70%;
+  line-height: 1.3;
+}
+
+.dir-tactile .tc-sticker-smiley {
+  top: 2%;
+  right: 24%;
+}
+
+.dir-tactile .tc-sticker-smiley .tc-sticker-inner {
+  width: clamp(54px, 6vw, 72px);
+  aspect-ratio: 1;
+  background: #fff;
+  border-radius: 14px;
+  rotate: -6deg;
+  padding: 9px;
+}
+
+.dir-tactile .tc-sticker-smiley svg {
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 767px) {
+  .dir-tactile .tc-sticker-cyberqp {
+    top: 2%;
+    right: 2%;
+  }
+
+  /* Keep the star clear of the handwritten annotation on small screens. */
+  .dir-tactile .tc-annotation {
+    max-width: 230px;
+  }
+
+  .dir-tactile .tc-sticker-star {
+    top: auto;
+    bottom: 0;
+    right: 2%;
+  }
+
+  .dir-tactile .tc-sticker-smiley {
+    top: 0;
+    right: 38%;
+  }
+}
+
+/* ---------- card board ---------- */
+
+.dir-tactile .tc-board-wrap {
+  position: relative;
+}
+
+.dir-tactile .tc-board-note {
+  position: absolute;
+  top: -36px;
+  right: 96px;
+  z-index: 4;
+  rotate: 2deg;
+  font-size: 21px;
+  font-weight: 500;
+  color: rgba(34, 31, 26, 0.72);
+}
+
+.dir-tactile .tc-reset {
+  position: absolute;
+  top: -46px;
+  right: 0;
+  z-index: 5;
+  font-family: var(--font-caveat), cursive;
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--tc-ink);
+  background: #fff;
+  border: 2.5px solid var(--tc-ink);
+  border-radius: 999px;
+  padding: 3px 18px;
+  rotate: 1.5deg;
+  box-shadow: var(--tc-shadow-soft);
+  cursor: pointer;
+}
+
+.dir-tactile .tc-board {
+  /* Approximate rendered polaroid height: 4/3 photo inside the frame padding
+     plus the caption block. Keeps the board hugging its two rows at any
+     viewport instead of leaving dead space below. */
+  --tc-card-h: calc((var(--tc-card-w) - 24px) * 0.75 + 80px);
+  position: relative;
+  height: calc(var(--tc-card-h) * 2 + 130px);
+  border-radius: 18px;
+  border: 2px dashed rgba(34, 31, 26, 0.16);
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.dir-tactile .tc-polaroid {
+  position: absolute;
+  width: var(--tc-card-w);
+  left: calc((100% - var(--tc-card-w)) * var(--fx));
+  top: calc((100% - var(--tc-card-h) - 48px) * var(--fy) + 24px);
+  cursor: grab;
+  touch-action: none;
+}
+
+.dir-tactile .tc-polaroid:active {
+  cursor: grabbing;
+}
+
+.dir-tactile .tc-polaroid.is-soon {
+  cursor: default;
+}
+
+.dir-tactile .tc-polaroid-inner {
+  position: relative;
+  background: #fff;
+  border-radius: 14px;
+  padding: 12px 12px 8px;
+  rotate: var(--rot);
+  box-shadow: var(--tc-shadow-soft);
+}
+
+/* Deeper shadow on grab, faded in via opacity only. */
+.dir-tactile .tc-polaroid-inner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  box-shadow: var(--tc-shadow-lift);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.dir-tactile .tc-polaroid.is-lifted .tc-polaroid-inner::after {
+  opacity: 1;
+}
+
+.dir-tactile .tc-polaroid-photo {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.dir-tactile .tc-polaroid-img {
+  object-fit: cover;
+}
+
+.dir-tactile .tc-soon {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  background: var(--tc-magenta);
+  color: #fff;
+  border-radius: 999px;
+  padding: 5px 13px;
+  font-size: 18px;
+  font-weight: 700;
+  rotate: 8deg;
+  box-shadow: 0 2px 6px rgba(34, 31, 26, 0.2);
+}
+
+.dir-tactile .tc-polaroid-caption {
+  margin-top: 10px;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.15;
+  text-align: center;
+  padding-bottom: 4px;
+}
+
+.dir-tactile .tc-polaroid-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.dir-tactile .tc-polaroid-link:hover {
+  color: var(--tc-magenta);
+}
+
+.dir-tactile .tc-muted {
+  color: rgba(34, 31, 26, 0.45);
+  font-weight: 500;
+  font-size: 17px;
+}
+
+@media (max-width: 767px) {
+  .dir-tactile .tc-board-note,
+  .dir-tactile .tc-reset {
+    display: none;
+  }
+
+  .dir-tactile .tc-board {
+    height: auto;
+    display: flex;
+    gap: 18px;
+    overflow-x: auto;
+    padding: 26px 18px 30px;
+    scroll-snap-type: x mandatory;
+    border: none;
+    background: transparent;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .dir-tactile .tc-polaroid {
+    position: static;
+    flex: 0 0 auto;
+    width: 248px;
+    scroll-snap-align: center;
+    cursor: default;
+    touch-action: auto;
+  }
+}
+
+/* ---------- about note ---------- */
+
+.dir-tactile .tc-about {
+  padding-top: clamp(24px, 4vw, 48px);
+}
+
+.dir-tactile .tc-about-note {
+  position: relative;
+  max-width: 720px;
+  background: #fff;
+  border-radius: 16px;
+  padding: clamp(28px, 4vw, 44px) clamp(24px, 4vw, 48px);
+  box-shadow: var(--tc-shadow-soft);
+  rotate: -1deg;
+}
+
+.dir-tactile .tc-about-text {
+  font-size: clamp(19px, 2.2vw, 26px);
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.dir-tactile .tc-about-text strong {
+  font-weight: 800;
+  color: var(--tc-magenta);
+}
+
+.dir-tactile .tc-about-aside {
+  margin-top: 18px;
+  margin-left: clamp(24px, 30vw, 420px);
+  font-size: 22px;
+  color: rgba(34, 31, 26, 0.62);
+  rotate: -2deg;
+}
+
+/* ---------- shipped shelf ---------- */
+
+.dir-tactile .tc-shelf-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: clamp(18px, 4vw, 40px);
+  padding-bottom: 20px;
+}
+
+.dir-tactile .tc-badge {
+  background: #fff;
+  border-radius: 16px;
+  padding: 18px 26px;
+  box-shadow: var(--tc-shadow-soft);
+  rotate: -1deg;
+  transition: rotate 0.3s ease;
+}
+
+.dir-tactile .tc-badge:nth-child(2) {
+  rotate: 1.2deg;
+}
+
+.dir-tactile .tc-badge:nth-child(3) {
+  rotate: -0.6deg;
+}
+
+.dir-tactile .tc-badge:hover {
+  rotate: 2.6deg;
+}
+
+.dir-tactile .tc-badge-logo {
+  position: relative;
+  width: clamp(104px, 13vw, 148px);
+  height: 44px;
+}
+
+.dir-tactile .tc-badge-logo img {
+  object-fit: contain;
+}
+
+.dir-tactile .tc-shelf-line {
+  display: block;
+  width: min(640px, 100%);
+  height: 14px;
+  overflow: visible;
+}
+
+.dir-tactile .tc-shelf-line path {
+  stroke: rgba(34, 31, 26, 0.6);
+  stroke-width: 3;
+  stroke-linecap: round;
+  fill: none;
+}
+
+/* ---------- experiments ---------- */
+
+.dir-tactile .tc-exp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+  gap: clamp(24px, 3.5vw, 42px);
+}
+
+.dir-tactile .tc-index-card {
+  position: relative;
+  background: #fff;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 31px,
+    rgba(58, 76, 186, 0.1) 31px,
+    rgba(58, 76, 186, 0.1) 32px
+  );
+  border-radius: 16px;
+  padding: 42px 30px 30px;
+  rotate: -1deg;
+  box-shadow: var(--tc-shadow-soft);
+}
+
+.dir-tactile .tc-index-card:nth-child(2) {
+  rotate: 1.2deg;
+}
+
+.dir-tactile .tc-index-copy {
+  font-size: 16.5px;
+  line-height: 1.7;
+  font-weight: 500;
+  margin-bottom: 24px;
+}
+
+.dir-tactile .tc-index-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* ---------- tape footer ---------- */
+
+.dir-tactile .tc-footer {
+  position: relative;
+  background: var(--tc-ink);
+  color: var(--tc-paper);
+  margin-top: clamp(40px, 8vw, 90px);
+}
+
+.dir-tactile .tc-torn {
+  display: block;
+  width: 100%;
+  height: clamp(22px, 4vw, 40px);
+}
+
+.dir-tactile .tc-footer-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: clamp(56px, 8vw, 110px) 20px clamp(44px, 6vw, 76px);
+  text-align: center;
+}
+
+.dir-tactile .tc-footer-h {
+  font-size: clamp(34px, 6vw, 72px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+  margin-bottom: 18px;
+}
+
+.dir-tactile .tc-footer-sub {
+  font-size: clamp(21px, 2.6vw, 27px);
+  font-weight: 500;
+  color: rgba(250, 243, 233, 0.85);
+  margin-bottom: 40px;
+  rotate: -0.8deg;
+}
+
+.dir-tactile .tc-footer-end {
+  margin-top: clamp(52px, 7vw, 84px);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: rgba(250, 243, 233, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.dir-tactile .tc-heart {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  background: #fff;
+  border-radius: 8px;
+  rotate: 8deg;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.dir-tactile .tc-heart svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* ---------- read / see mode switch ---------- */
+
+.dir-tactile .mode-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: clamp(6px, 2vw, 22px);
+  background: #fff;
+  border: 2px solid var(--tc-ink);
+  border-radius: 999px;
+  padding: 3px;
+  box-shadow: var(--tc-shadow-soft);
+  rotate: 1.5deg;
+}
+
+.dir-tactile .mode-opt {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--tc-ink);
+  padding: 4px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.dir-tactile .mode-opt.is-active {
+  background: var(--tc-ink);
+  color: #fff;
+}
+
+.dir-tactile .mode-opt:not(.is-active):hover {
+  color: var(--tc-magenta);
+}
+
+@media (max-width: 520px) {
+  /* Make room for the mode switch on small screens. */
+  .dir-tactile .tc-nav-link[href='#experiments'] {
+    display: none;
+  }
+
+  .dir-tactile .mode-opt {
+    font-size: 11px;
+    padding: 3px 9px;
+  }
+}
+
+/* ---------- experiments nudge ---------- */
+
+.dir-tactile .tc-exp-nudge {
+  margin-top: 26px;
+  font-size: 22px;
+  color: rgba(34, 31, 26, 0.62);
+  rotate: -1deg;
+}
+
+.dir-tactile .tc-exp-nudge-link {
+  color: var(--tc-magenta);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
