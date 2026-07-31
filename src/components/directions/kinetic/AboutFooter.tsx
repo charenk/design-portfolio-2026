@@ -123,8 +123,8 @@ export function AboutFooter() {
           </RevealText>
         </h2>
 
-        <a href="mailto:charen@gmail.com" className="k-footer-mail">
-          charen@gmail.com
+        <a href="mailto:charen.k@gmail.com" className="k-footer-mail">
+          charen.k@gmail.com
           <span className="k-footer-arrow" aria-hidden="true">
             &rarr;
           </span>

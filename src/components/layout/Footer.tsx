@@ -16,8 +16,8 @@ export function Footer() {
             Interested in collaborating? Let&apos;s connect
           </h2>
           <div className="site-footer-links">
-            <a href="mailto:charen@gmail.com" className="site-footer-link">
-              charen@gmail.com
+            <a href="mailto:charen.k@gmail.com" className="site-footer-link">
+              charen.k@gmail.com
             </a>
             <a href="tel:+12269215640" className="site-footer-link">
               +1 226 921 5640

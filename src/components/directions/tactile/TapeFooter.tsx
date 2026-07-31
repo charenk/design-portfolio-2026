@@ -63,7 +63,7 @@ export function TapeFooter() {
         </p>
 
         <span className="tc-footer-reveal" style={{ display: 'inline-block' }}>
-          <MagneticButton href="mailto:charen@gmail.com" className="tc-btn tc-btn-big">
+          <MagneticButton href="mailto:charen.k@gmail.com" className="tc-btn tc-btn-big">
             <span className="tc-tape tc-btn-tape" aria-hidden="true" />
             Get in touch
           </MagneticButton>

@@ -271,7 +271,7 @@ export default function PortfolioPage() {
               <p className="pf-cta-sub">
                 If you have an idea worth shipping, I&apos;d love to hear from you.
               </p>
-              <MagneticButton href="mailto:charen@gmail.com" className="tc-btn pf-cta-btn">
+              <MagneticButton href="mailto:charen.k@gmail.com" className="tc-btn pf-cta-btn">
                 Get in touch
                 <span aria-hidden="true">→</span>
               </MagneticButton>
@@ -311,7 +311,7 @@ export default function PortfolioPage() {
             <p className="pfr-cta-sub">
               If you have an idea worth shipping, I&apos;d love to hear from you.
             </p>
-            <a href="mailto:charen@gmail.com" className="pfr-mail">
+            <a href="mailto:charen.k@gmail.com" className="pfr-mail">
               Get in touch
               <span className="pfr-mail-arrow" aria-hidden="true">→</span>
             </a>
