@@ -111,5 +111,8 @@ export function RevealText({
     { scope: ref }
   )
 
+  // Passing the ref object as a prop is standard React; the compiler lint
+  // misreads it as a render-time ref read.
+  // eslint-disable-next-line react-hooks/refs
   return createElement(as, { ref, className }, children)
 }

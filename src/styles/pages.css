@@ -491,3 +491,150 @@
   color: rgba(34, 31, 26, 0.7);
   rotate: -2deg;
 }
+
+/* ==================================================================
+   READ MODE: workato + lock
+   Editorial re-skin applied when html[data-mode='read'] is set.
+   Markup keeps .dir-tactile; these higher-specificity overrides swap
+   the tactile look (tape, rotation, soft shadows, grain) for cream
+   paper, ink text, hairline rules, and Instrument Serif headings.
+   ================================================================== */
+
+/* ---------- workato ---------- */
+
+html[data-mode='read'] .wk-page.dir-tactile {
+  background: #fff7ef;
+}
+
+html[data-mode='read'] .wk-page.dir-tactile::after {
+  content: none;
+}
+
+html[data-mode='read'] .wk-page .workato-intro p {
+  color: #1a1a1a;
+  font-size: 19px;
+}
+
+html[data-mode='read'] .wk-page .tabs-list {
+  border-bottom: 1px solid rgba(26, 26, 26, 0.18);
+  gap: 0;
+}
+
+html[data-mode='read'] .wk-page .tab-trigger {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  rotate: 0deg;
+  padding: 12px 18px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(26, 26, 26, 0.62);
+}
+
+html[data-mode='read'] .wk-page .tab-trigger:hover {
+  color: #ab0782;
+}
+
+html[data-mode='read'] .wk-page .tab-trigger.tab-active {
+  background: transparent;
+  color: #1a1a1a;
+  box-shadow: 0 2px 0 0 #1a1a1a;
+}
+
+html[data-mode='read'] .wk-page .wk-back {
+  background: transparent;
+  color: #1a1a1a;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding-left: 0;
+  padding-right: 0;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+html[data-mode='read'] .wk-page .wk-back:hover {
+  color: #ab0782;
+  translate: none;
+}
+
+html[data-mode='read'] .wk-page .pam-hero-image,
+html[data-mode='read'] .wk-page .pam-feature-image {
+  background: #fffdf9;
+  border: 1px solid rgba(26, 26, 26, 0.18);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* ---------- lock ---------- */
+
+html[data-mode='read'] .lk-page.dir-tactile {
+  background: #fff7ef;
+}
+
+html[data-mode='read'] .lk-page.dir-tactile::after {
+  content: none;
+}
+
+html[data-mode='read'] .lk-page .tc-tape {
+  display: none;
+}
+
+html[data-mode='read'] .lk-page .lk-card {
+  background: #fffdf9;
+  border: 1px solid rgba(26, 26, 26, 0.18);
+  border-radius: 0;
+  box-shadow: none;
+  rotate: 0deg;
+}
+
+html[data-mode='read'] .lk-page .lk-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #ab0782;
+  rotate: 0deg;
+}
+
+html[data-mode='read'] .lk-page .lk-title {
+  font-family: var(--font-instrument-serif), Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(30px, 4vw, 40px);
+  letter-spacing: 0;
+  color: #1a1a1a;
+}
+
+html[data-mode='read'] .lk-page .lk-input {
+  background: #fff;
+  border: 1px solid rgba(26, 26, 26, 0.3);
+  border-radius: 0;
+  color: #1a1a1a;
+}
+
+html[data-mode='read'] .lk-page .lk-input:hover {
+  border-color: rgba(26, 26, 26, 0.5);
+}
+
+html[data-mode='read'] .lk-page .lk-submit {
+  background: #1a1a1a;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+html[data-mode='read'] .lk-page .lk-submit:hover:not(:disabled) {
+  translate: none;
+  background: #ab0782;
+}
+
+html[data-mode='read'] .lk-page .lk-annotation {
+  font-family: var(--font-instrument-serif), Georgia, serif;
+  font-style: italic;
+  font-size: 17px;
+  font-weight: 400;
+  color: rgba(26, 26, 26, 0.62);
+  rotate: 0deg;
+}

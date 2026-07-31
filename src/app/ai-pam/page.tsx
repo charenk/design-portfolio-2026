@@ -64,7 +64,7 @@ function ImageLightbox({
               className="absolute inset-0 cursor-zoom-out bg-black/70"
             />
             <motion.div
-              className="relative z-[1] max-w-[92vw] max-h-[92vh] rounded-[16px] bg-[#FFF7EF] shadow-[0_24px_48px_rgba(0,0,0,0.4)] p-6"
+              className="relative z-[1] max-w-[92vw] max-h-[92vh] rounded-[16px] bg-[var(--cs-well)] shadow-[0_24px_48px_rgba(0,0,0,0.4)] p-6"
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.98 }}
@@ -108,19 +108,19 @@ export default function AiPamCaseStudy() {
       {/* Meta strip, Scope / Role / Team */}
       <section className="grid grid-cols-1 md:grid-cols-3 gap-[30px] md:gap-[40px] mb-[56px]">
         <div>
-          <p className="text-[14px] font-serif text-[#9e9e9e] mb-[8px]">Scope</p>
+          <p className="text-[14px] font-serif text-[var(--cs-ink-faint)] mb-[8px]">Scope</p>
           <p className="text-[14px] leading-[1.6] font-serif">
             Designed the AI terminal and system wide guardrails for an agentic PAM product, joining before scope was defined and leading discovery alongside the AI labs team while they ran technical exploration. The work shipped across three customer facing iterations.
           </p>
         </div>
         <div>
-          <p className="text-[14px] font-serif text-[#9e9e9e] mb-[8px]">Role</p>
+          <p className="text-[14px] font-serif text-[var(--cs-ink-faint)] mb-[8px]">Role</p>
           <p className="text-[14px] leading-[1.6] font-serif">
             Lead designer (sometimes wearing PM hat)
           </p>
         </div>
         <div>
-          <p className="text-[14px] font-serif text-[#9e9e9e] mb-[8px]">Team</p>
+          <p className="text-[14px] font-serif text-[var(--cs-ink-faint)] mb-[8px]">Team</p>
           <p className="text-[14px] leading-[1.6] font-serif">
             Director of Product, two product and engineering squads, AI labs team led by the founder, partner advisory council
           </p>
@@ -159,7 +159,7 @@ export default function AiPamCaseStudy() {
         <p className="text-[14px] leading-[1.6] font-serif mb-[30px] max-w-[760px]">
           Below are selected foundational decisions and guidelines that survived from the first design exploration to the third customer facing iteration.
         </p>
-        <div className="bg-white rounded-figure-card shadow-[0_1px_3px_rgba(0,0,0,0.06)] overflow-hidden mb-[40px]">
+        <div className="bg-[var(--cs-surface)] rounded-figure-card shadow-[0_1px_3px_rgba(0,0,0,0.06)] overflow-hidden mb-[40px]">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-x lg:divide-y-0 divide-divider-grey/20">
             {[
               { title: 'Read only by default', desc: 'The agent reads what’s there before it writes anything. Source systems only get changed after a technician has seen the findings and confirmed the action.' },
@@ -169,7 +169,7 @@ export default function AiPamCaseStudy() {
             ].map((item) => (
               <div key={item.title} className="p-[20px] md:p-[24px]">
                 <h4 className="text-[14px] leading-[1.4] font-serif font-semibold mb-[10px]">{item.title}</h4>
-                <p className="text-[14px] leading-[1.6] font-serif text-[#4F4F4F]">{item.desc}</p>
+                <p className="text-[14px] leading-[1.6] font-serif text-[var(--cs-ink-soft)]">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -200,7 +200,7 @@ export default function AiPamCaseStudy() {
         </p>
 
         {/* Cohorts */}
-        <div className="bg-white rounded-figure-card shadow-[0_1px_3px_rgba(0,0,0,0.06)] overflow-hidden mb-[40px]">
+        <div className="bg-[var(--cs-surface)] rounded-figure-card shadow-[0_1px_3px_rgba(0,0,0,0.06)] overflow-hidden mb-[40px]">
           <div className="flex flex-col divide-y divide-divider-grey/20">
             {[
               { num: '01', title: 'MSP technicians using competitor PAM products', desc: 'What they were trying to automate, what their internal n8n workarounds looked like, where those workarounds broke.' },
@@ -208,10 +208,10 @@ export default function AiPamCaseStudy() {
               { num: '03', title: 'Partner advisory council representing seven midsize MSP operations', desc: 'Strategic level input on what would and would not survive in regulated environments.' },
             ].map((cohort) => (
               <div key={cohort.num} className="flex gap-[16px] md:gap-[28px] p-[20px] md:p-[24px]">
-                <p className="text-[12px] font-serif font-medium text-[#9e9e9e] min-w-[28px] pt-[4px]">{cohort.num}</p>
+                <p className="text-[12px] font-serif font-medium text-[var(--cs-ink-faint)] min-w-[28px] pt-[4px]">{cohort.num}</p>
                 <div className="flex-1">
                   <h4 className="text-[14px] leading-[1.4] font-serif font-semibold mb-[8px]">{cohort.title}</h4>
-                  <p className="text-[14px] leading-[1.6] font-serif text-[#4F4F4F]">{cohort.desc}</p>
+                  <p className="text-[14px] leading-[1.6] font-serif text-[var(--cs-ink-soft)]">{cohort.desc}</p>
                 </div>
               </div>
             ))}
@@ -233,7 +233,7 @@ export default function AiPamCaseStudy() {
               <li>Inline access workflows are the top productivity ask.</li>
             </ul>
           </div>
-          <div className="order-1 md:order-2 relative w-full md:w-[592px] aspect-[592/357] bg-[#FFF7EF] shrink-0 overflow-hidden rounded-figure-card">
+          <div className="order-1 md:order-2 relative w-full md:w-[592px] aspect-[592/357] bg-[var(--cs-well)] shrink-0 overflow-hidden rounded-figure-card">
             <img
               src="/assets/discovery-ost.svg"
               alt="Opportunity Solution Tree workshop output"
@@ -251,7 +251,7 @@ export default function AiPamCaseStudy() {
         <p className="text-[14px] leading-[1.6] font-serif mb-[30px] max-w-[760px]">
           Discovery surfaced more than opportunities. It also produced operating principles I drafted with product, engineering, and leadership to anchor the design of the new AI driven product.
         </p>
-        <div className="bg-white rounded-figure-card shadow-[0_1px_3px_rgba(0,0,0,0.06)] overflow-hidden mb-[40px]">
+        <div className="bg-[var(--cs-surface)] rounded-figure-card shadow-[0_1px_3px_rgba(0,0,0,0.06)] overflow-hidden mb-[40px]">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-x lg:divide-y-0 divide-divider-grey/20">
             {[
               { title: 'Read only by default', desc: 'The agent never writes to source systems without explicit human confirmation. Reading is free. Writing requires a gate.' },
@@ -261,7 +261,7 @@ export default function AiPamCaseStudy() {
             ].map((item) => (
               <div key={item.title} className="p-[20px] md:p-[24px]">
                 <h4 className="text-[14px] leading-[1.4] font-serif font-semibold mb-[10px]">{item.title}</h4>
-                <p className="text-[14px] leading-[1.6] font-serif text-[#4F4F4F]">{item.desc}</p>
+                <p className="text-[14px] leading-[1.6] font-serif text-[var(--cs-ink-soft)]">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -329,7 +329,7 @@ export default function AiPamCaseStudy() {
             thumbnailSrc="/assets/hitl-gates-thumbnail.svg"
             detailedSrc="/assets/hitl-gates-detailed.svg"
             alt="Four sequential human in the loop gates: intent confirmation, policy authorization, query plan review, workflow approval"
-            wrapperClassName="order-1 md:order-2 relative w-full md:w-[592px] aspect-[592/357] bg-[#FFF7EF] shrink-0 overflow-hidden rounded-figure-card"
+            wrapperClassName="order-1 md:order-2 relative w-full md:w-[592px] aspect-[592/357] bg-[var(--cs-well)] shrink-0 overflow-hidden rounded-figure-card"
             thumbnailClassName="absolute inset-0 w-full h-full object-cover"
           />
         </div>
@@ -346,7 +346,7 @@ export default function AiPamCaseStudy() {
           </h3>
         </div>
         <div className="flex flex-col md:flex-row gap-[38px] items-start">
-          <div className="order-1 md:order-2 relative w-full md:w-[592px] aspect-[592/357] bg-[#FFF7EF] shrink-0 overflow-hidden rounded-figure-card">
+          <div className="order-1 md:order-2 relative w-full md:w-[592px] aspect-[592/357] bg-[var(--cs-well)] shrink-0 overflow-hidden rounded-figure-card">
             <img
               src="/assets/consent-at-config-level.svg"
               alt="Diagram showing consent moved to the connector configuration layer"
@@ -403,7 +403,7 @@ export default function AiPamCaseStudy() {
               </p>
             </div>
           </div>
-          <div className="order-1 md:order-2 relative w-full md:w-[592px] aspect-[592/357] bg-[#FFF7EF] shrink-0 overflow-hidden rounded-figure-card">
+          <div className="order-1 md:order-2 relative w-full md:w-[592px] aspect-[592/357] bg-[var(--cs-well)] shrink-0 overflow-hidden rounded-figure-card">
             <img
               src="/assets/stopping-is-safer.svg"
               alt="Diagram showing how the system stops and surfaces errors rather than proceeding with partial data"
@@ -433,7 +433,7 @@ export default function AiPamCaseStudy() {
             </div>
           ))}
         </div>
-        <p className="text-[16px] leading-[1.52] font-serif italic text-[#4F4F4F] mt-[24px] max-w-[640px]">
+        <p className="text-[16px] leading-[1.52] font-serif italic text-[var(--cs-ink-soft)] mt-[24px] max-w-[640px]">
           Exact figures are not shared due to the competitive nature of this domain. Happy to walk through the specifics in conversation.
         </p>
       </section>
@@ -446,7 +446,7 @@ export default function AiPamCaseStudy() {
         <p className="text-[14px] leading-[1.6] font-serif max-w-[760px]">
           As the terminal moves into multi agent territory, cross workflow memory becomes the next open problem: one workflow per session is the right constraint today, but it will not hold when technicians are running three coordinated workflows for the same incident.
         </p>
-        <p className="text-[16px] leading-[1.52] font-serif italic text-[#4F4F4F] mt-[24px] max-w-[640px]">
+        <p className="text-[16px] leading-[1.52] font-serif italic text-[var(--cs-ink-soft)] mt-[24px] max-w-[640px]">
           The terminal is one surface in an agentic system that&apos;s continuously evolving. Whatever ships next inherits its gates, its scoping, and its commitment to never failing silently.
         </p>
       </section>

@@ -93,22 +93,22 @@ function CyberAttackMapMock() {
 
 function WidgetDiscoveryMock() {
   return (
-    <div className="bg-white rounded-[8px] p-[18px] shadow-[0_12px_40px_rgba(0,0,0,0.08)] border border-divider-grey/30">
+    <div className="bg-[var(--cs-surface)] rounded-[8px] p-[18px] shadow-[0_12px_40px_rgba(0,0,0,0.08)] border border-divider-grey/30">
       {/* Tabs */}
       <div className="flex border-b border-divider-grey/30 mb-[14px]">
         <span className="px-[12px] py-[6px] text-[10px] font-serif font-semibold text-accent-magenta border-b-2 border-accent-magenta">
           By audience
         </span>
-        <span className="px-[12px] py-[6px] text-[10px] font-serif text-[#6B6757]">By data source</span>
-        <span className="px-[12px] py-[6px] text-[10px] font-serif text-[#6B6757]">All widgets</span>
+        <span className="px-[12px] py-[6px] text-[10px] font-serif text-[var(--cs-ink-soft)]">By data source</span>
+        <span className="px-[12px] py-[6px] text-[10px] font-serif text-[var(--cs-ink-soft)]">All widgets</span>
       </div>
       {/* Search */}
-      <div className="bg-[#F8F5EE] border border-divider-grey/30 rounded-[4px] px-[10px] py-[6px] text-[11px] font-serif text-[#9e9e9e] mb-[12px]">
+      <div className="bg-[#F8F5EE] border border-divider-grey/30 rounded-[4px] px-[10px] py-[6px] text-[11px] font-serif text-[var(--cs-ink-faint)] mb-[12px]">
         Search widgets...
       </div>
 
       {/* Section: For SOC analysts */}
-      <p className="text-[9px] uppercase tracking-[0.08em] font-serif text-[#9e9e9e] mb-[8px]">
+      <p className="text-[9px] uppercase tracking-[0.08em] font-serif text-[var(--cs-ink-faint)] mb-[8px]">
         For SOC analysts
       </p>
       {[
@@ -124,7 +124,7 @@ function WidgetDiscoveryMock() {
           <div className="w-[22px] h-[22px] rounded-[4px] bg-gradient-to-br from-emerald-300 to-emerald-500 flex-shrink-0" />
           <div className="flex-1">
             <p className="text-[11px] font-serif font-semibold leading-[1.3]">{w.name}</p>
-            <div className="text-[9px] font-serif text-[#9e9e9e] flex gap-[8px] items-center mt-[2px]">
+            <div className="text-[9px] font-serif text-[var(--cs-ink-faint)] flex gap-[8px] items-center mt-[2px]">
               <span>{w.meta}</span>
               <span
                 className={`px-[5px] py-[1px] rounded-[3px] tracking-[0.04em] ${
@@ -139,7 +139,7 @@ function WidgetDiscoveryMock() {
       ))}
 
       {/* Section: For incident responders */}
-      <p className="text-[9px] uppercase tracking-[0.08em] font-serif text-[#9e9e9e] mt-[12px] mb-[8px]">
+      <p className="text-[9px] uppercase tracking-[0.08em] font-serif text-[var(--cs-ink-faint)] mt-[12px] mb-[8px]">
         For incident responders
       </p>
       {[
@@ -153,7 +153,7 @@ function WidgetDiscoveryMock() {
           <div className="w-[22px] h-[22px] rounded-[4px] bg-gradient-to-br from-emerald-300 to-emerald-500 flex-shrink-0" />
           <div className="flex-1">
             <p className="text-[11px] font-serif font-semibold leading-[1.3]">{w.name}</p>
-            <div className="text-[9px] font-serif text-[#9e9e9e] flex gap-[8px] items-center mt-[2px]">
+            <div className="text-[9px] font-serif text-[var(--cs-ink-faint)] flex gap-[8px] items-center mt-[2px]">
               <span>{w.meta}</span>
               <span
                 className={`px-[5px] py-[1px] rounded-[3px] tracking-[0.04em] ${
@@ -276,7 +276,7 @@ export default function BlackberryCaseStudy() {
                 { num: '03', name: 'Product Managers and Product Owners', detail: 'to validate design and implementation assumptions before shipping.' },
               ].map((c) => (
                 <li key={c.num} className="flex gap-[14px] py-[12px] text-[13px]">
-                  <span className="font-serif font-medium text-[#9e9e9e] min-w-[22px]">{c.num}</span>
+                  <span className="font-serif font-medium text-[var(--cs-ink-faint)] min-w-[22px]">{c.num}</span>
                   <span className="font-serif leading-[1.55]">
                     <strong className="font-semibold">{c.name}</strong> {c.detail}
                   </span>
@@ -293,8 +293,8 @@ export default function BlackberryCaseStudy() {
                 { quote: 'Will I be able to create new widgets? What’s a connector?', attr: 'Customer in established cohort' },
               ].map((q, i) => (
                 <div key={i} className="bg-amber-50 border border-amber-200/60 rounded-[8px] p-[14px]">
-                  <p className="text-[13px] leading-[1.5] font-serif italic mb-[8px] text-[#2C2820]">&ldquo;{q.quote}&rdquo;</p>
-                  <p className="text-[11px] font-serif text-[#6B6757] pt-[6px] border-t border-dashed border-amber-300/60">
+                  <p className="text-[13px] leading-[1.5] font-serif italic mb-[8px] text-[var(--cs-ink)]">&ldquo;{q.quote}&rdquo;</p>
+                  <p className="text-[11px] font-serif text-[var(--cs-ink-soft)] pt-[6px] border-t border-dashed border-amber-300/60">
                     {q.attr}
                   </p>
                 </div>

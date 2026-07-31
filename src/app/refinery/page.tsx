@@ -20,26 +20,26 @@ export default function RefineryCaseStudy() {
       {/* Meta: scope + stack + repo */}
       <section className="grid grid-cols-1 md:grid-cols-3 gap-[30px] md:gap-[40px] mb-[56px]">
         <div>
-          <p className="text-[14px] font-serif text-[#9e9e9e] mb-[8px]">Scope</p>
+          <p className="text-[14px] font-serif text-[var(--cs-ink-faint)] mb-[8px]">Scope</p>
           <p className="text-[14px] leading-[1.6] font-serif">
             An orchestrator and eight specialised agents, a Severance-style dashboard, and a morning brief delivered before market open. Observation only. No trades.
           </p>
         </div>
         <div>
-          <p className="text-[14px] font-serif text-[#9e9e9e] mb-[8px]">Stack</p>
-          <ul className="text-[14px] leading-[1.6] font-serif flex flex-col gap-[6px] list-disc pl-[18px] marker:text-[#9e9e9e]">
+          <p className="text-[14px] font-serif text-[var(--cs-ink-faint)] mb-[8px]">Stack</p>
+          <ul className="text-[14px] leading-[1.6] font-serif flex flex-col gap-[6px] list-disc pl-[18px] marker:text-[var(--cs-ink-faint)]">
             <li>Claude for building and testing</li>
             <li>TradingView for research</li>
             <li>Gmail SMTP for email notifications</li>
           </ul>
         </div>
         <div>
-          <p className="text-[14px] font-serif text-[#9e9e9e] mb-[8px]">Github repo</p>
+          <p className="text-[14px] font-serif text-[var(--cs-ink-faint)] mb-[8px]">Github repo</p>
           <a
             href="https://github.com/charenk/refinery"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#1a1a1a] text-white font-sans text-[13px] font-medium hover:bg-black transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--cs-ink)] text-white font-sans text-[13px] font-medium hover:bg-black transition-colors"
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
               <path fillRule="evenodd" clipRule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z" />
@@ -83,10 +83,10 @@ export default function RefineryCaseStudy() {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-[40px] md:gap-[60px]">
           <div>
-            <h3 className="text-[12px] uppercase tracking-[0.15em] font-serif font-medium text-[#9e9e9e] mb-[20px]">
+            <h3 className="text-[12px] uppercase tracking-[0.15em] font-serif font-medium text-[var(--cs-ink-faint)] mb-[20px]">
               Learnings
             </h3>
-            <ul className="text-[14px] leading-[1.6] font-serif flex flex-col gap-[14px] list-disc pl-[18px] marker:text-[#9e9e9e]">
+            <ul className="text-[14px] leading-[1.6] font-serif flex flex-col gap-[14px] list-disc pl-[18px] marker:text-[var(--cs-ink-faint)]">
               <li>
                 <span className="font-semibold">Observation-only is a feature.</span> No brokerage integration means no risk of accidental trades, simpler security, and full focus on signal quality.
               </li>
@@ -102,10 +102,10 @@ export default function RefineryCaseStudy() {
             </ul>
           </div>
           <div>
-            <h3 className="text-[12px] uppercase tracking-[0.15em] font-serif font-medium text-[#9e9e9e] mb-[20px]">
+            <h3 className="text-[12px] uppercase tracking-[0.15em] font-serif font-medium text-[var(--cs-ink-faint)] mb-[20px]">
               Next steps
             </h3>
-            <ul className="text-[14px] leading-[1.6] font-serif flex flex-col gap-[18px] list-disc pl-[18px] marker:text-[#9e9e9e]">
+            <ul className="text-[14px] leading-[1.6] font-serif flex flex-col gap-[18px] list-disc pl-[18px] marker:text-[var(--cs-ink-faint)]">
               <li>
                 <span className="font-semibold">Email brief readability.</span> The v1 emails assumed expert-level knowledge and leaned on abbreviations. For someone keeping up with a fast-moving market, the brief needs to be simple and informative. I tweaked the notification system to spell out terms, lead with the most important moves, and skip the jargon.
               </li>
@@ -119,7 +119,7 @@ export default function RefineryCaseStudy() {
 
 function SystemDiagram() {
   return (
-    <div className="bg-white rounded-figure-card shadow-[0_1px_3px_rgba(0,0,0,0.06)] p-[20px] md:p-[36px]">
+    <div className="bg-[var(--cs-surface)] rounded-figure-card shadow-[0_1px_3px_rgba(0,0,0,0.06)] p-[20px] md:p-[36px]">
       <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_2fr_auto_1fr] gap-[20px] md:gap-[24px] items-stretch">
         {/* Inputs column */}
         <DiagramColumn label="Inputs">
@@ -160,7 +160,7 @@ function SystemDiagram() {
 function DiagramColumn({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex flex-col gap-[10px]">
-      <p className="text-[11px] uppercase tracking-[0.15em] font-serif font-medium text-[#9e9e9e]">
+      <p className="text-[11px] uppercase tracking-[0.15em] font-serif font-medium text-[var(--cs-ink-faint)]">
         {label}
       </p>
       {children}
@@ -190,7 +190,7 @@ function DiagramTile({
 
 function FlowArrow() {
   return (
-    <div className="hidden md:flex items-center justify-center text-[#9e9e9e]" aria-hidden="true">
+    <div className="hidden md:flex items-center justify-center text-[var(--cs-ink-faint)]" aria-hidden="true">
       <svg width="22" height="14" viewBox="0 0 22 14" fill="none">
         <path d="M0 7 H18 M13 2 L18 7 L13 12" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
       </svg>

@@ -676,3 +676,132 @@
     letter-spacing: 0.08em;
   }
 }
+
+/* ---------- portfolio page, read presentation ---------- */
+
+.dir-kinetic {
+  /* Clears the fixed site nav; container width matches .k-container. */
+  & .pfr-main {
+    padding-top: clamp(110px, 15vh, 148px);
+    padding-bottom: clamp(2.5rem, 6vh, 4rem);
+    min-height: 100vh;
+  }
+
+  & .pfr-head {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: clamp(16px, 3vh, 28px);
+    padding-bottom: clamp(2.25rem, 6vh, 4rem);
+  }
+
+  /* Flat back link: plain underlined label, magenta on hover/focus. */
+  & .pfr-back {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.45em;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--k-ink);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1px;
+    transition: color 0.2s ease;
+  }
+
+  & .pfr-back:hover,
+  & .pfr-back:focus-visible {
+    color: var(--k-magenta);
+  }
+
+  & .pfr-title {
+    font-family: var(--k-serif);
+    font-weight: 400;
+    font-size: clamp(2.75rem, 7.5vw, 6.5rem);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+  }
+
+  /* ---------- editorial CTA ---------- */
+
+  & .pfr-cta {
+    border-top: 1px solid var(--k-ink);
+    margin-top: clamp(3rem, 8vh, 5.5rem);
+    padding-top: clamp(3.5rem, 9vh, 6.5rem);
+    padding-bottom: clamp(3rem, 8vh, 5.5rem);
+  }
+
+  & .pfr-cta-title {
+    font-family: var(--k-serif);
+    font-weight: 400;
+    font-size: clamp(2.1rem, 5.5vw, 4.75rem);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    max-width: 18ch;
+  }
+
+  & .pfr-cta-sub {
+    margin-top: clamp(1rem, 2.5vh, 1.5rem);
+    font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+    line-height: 1.6;
+    color: var(--k-ink-soft);
+    max-width: 44ch;
+  }
+
+  /* Underlined mailto: ink underline swaps to magenta on hover/focus. */
+  & .pfr-mail {
+    position: relative;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4em;
+    margin-top: clamp(1.75rem, 4.5vh, 3rem);
+    padding-bottom: 6px;
+    font-size: clamp(1.1rem, 2.4vw, 1.75rem);
+    font-weight: 400;
+    color: var(--k-ink);
+    transition: color 0.25s ease;
+  }
+
+  & .pfr-mail::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: currentColor;
+    transition: background-color 0.25s ease;
+  }
+
+  & .pfr-mail:hover,
+  & .pfr-mail:focus-visible {
+    color: var(--k-magenta);
+  }
+
+  & .pfr-mail-arrow {
+    color: var(--k-magenta);
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  & .pfr-mail:hover .pfr-mail-arrow,
+  & .pfr-mail:focus-visible .pfr-mail-arrow {
+    transform: translateX(8px);
+  }
+
+  /* Small-caps credit line. */
+  & .pfr-credit {
+    margin-top: clamp(1.5rem, 4vh, 2.5rem);
+    padding-top: 20px;
+    border-top: 1px solid rgba(26, 26, 26, 0.18);
+  }
+
+  & .pfr-credit p {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--k-ink-soft);
+  }
+}

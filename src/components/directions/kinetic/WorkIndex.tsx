@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRef } from 'react'
-import { ALL_PROJECTS } from '@/data/projects'
+import { ALL_PROJECTS, type Project } from '@/data/projects'
 import { RevealText } from '@/components/motion/RevealText'
 import {
   gsap,
@@ -15,12 +15,27 @@ import {
 /** Cursor preview only where it makes sense: motion-safe fine pointers. */
 const DESKTOP_HOVER = `${FULL_MOTION} and (hover: hover) and (pointer: fine) and (min-width: 768px)`
 
+interface WorkIndexProps {
+  projects?: Project[]
+  heading?: string
+  sub?: string
+  sectionId?: string
+}
+
 /**
- * Editorial index of all projects. Rules scaleX in on scroll, titles reveal
+ * Editorial index of projects. Rules scaleX in on scroll, titles reveal
  * as masked lines, and on desktop a floating banner preview lerps after the
  * cursor (gsap.quickTo) while hovering a row. Mobile shows inline thumbs.
+ * Defaults render the full homepage index; the portfolio page passes its
+ * curated list, labels and section id via props.
  */
-export function WorkIndex() {
+export function WorkIndex({
+  projects = ALL_PROJECTS,
+  heading = 'Selected Work',
+  sub,
+  sectionId = 'work-read',
+}: WorkIndexProps) {
+  const subLabel = sub ?? `${projects.length} Projects, 2019 to 2026`
   const sectionRef = useRef<HTMLElement>(null)
   const previewRef = useRef<HTMLDivElement>(null)
 
@@ -138,14 +153,14 @@ export function WorkIndex() {
   )
 
   return (
-    <section ref={sectionRef} id="work-read" className="k-work k-container">
+    <section ref={sectionRef} id={sectionId} className="k-work k-container">
       <div className="k-work-head">
-        <h2 className="k-label">Selected Work</h2>
-        <span className="k-label">{ALL_PROJECTS.length} Projects, 2019 to 2026</span>
+        <h2 className="k-label">{heading}</h2>
+        <span className="k-label">{subLabel}</span>
       </div>
 
       <ol className="k-wi-list">
-        {ALL_PROJECTS.map((project, index) => {
+        {projects.map((project, index) => {
           const number = String(index + 1).padStart(2, '0')
 
           const rowContent = (
@@ -212,7 +227,7 @@ export function WorkIndex() {
       <div className="k-wi-rule k-rule-ink" aria-hidden="true" />
 
       <div ref={previewRef} className="k-wi-preview" aria-hidden="true">
-        {ALL_PROJECTS.map(
+        {projects.map(
           (project) =>
             project.bannerImage && (
               <Image
