@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat, Caveat, Instrument_Serif } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { LogRocketInit } from "@/components/LogRocketInit";
+import { ModeProvider } from "@/components/mode/ModeProvider";
 import { SmoothScrollProvider } from "@/components/motion/SmoothScrollProvider";
 import "./globals.css";
 import "@/styles/mode-see.css";
@@ -48,11 +49,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    // suppressHydrationWarning: the inline script below mutates data-mode on
+    // <html> before hydration when a stored "read" preference exists.
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${montserrat.variable} ${caveat.variable} ${instrumentSerif.variable} antialiased`}
       >
-        <SmoothScrollProvider>{children}</SmoothScrollProvider>
+        <script
+          // Pre-paint mode restore: keeps read-mode CSS variants correct
+          // before hydration, with no flash of the "see" default.
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{if(localStorage.getItem('portfolio-mode')==='read')document.documentElement.dataset.mode='read'}catch(e){}",
+          }}
+        />
+        <ModeProvider>
+          <SmoothScrollProvider>{children}</SmoothScrollProvider>
+        </ModeProvider>
         <LogRocketInit />
       </body>
       <GoogleAnalytics gaId="G-BCJZTX3QTN" />

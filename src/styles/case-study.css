@@ -1218,3 +1218,47 @@
     justify-content: flex-end;
   }
 }
+
+/* ------------------------------------------------- site nav mode toggle */
+
+.site-nav .mode-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: 6px;
+  background: #fff;
+  border: 2px solid var(--cs-ink);
+  border-radius: 999px;
+  padding: 3px;
+  box-shadow: var(--cs-shadow-soft);
+}
+
+.site-nav .mode-opt {
+  border: 0;
+  background: transparent;
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--cs-ink);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.site-nav .mode-opt.is-active {
+  background: var(--cs-ink);
+  color: #fff;
+}
+
+.site-nav-mobile .mode-switch {
+  align-self: flex-start;
+  margin: 4px 0 0 4px;
+}
+
+/* Read variant: flat hairline group instead of the sticker pill. */
+html[data-mode='read'] .site-nav .mode-switch {
+  background: transparent;
+  border-width: 1px;
+  box-shadow: none;
+}

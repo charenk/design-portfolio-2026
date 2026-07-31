@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useMode } from '@/components/mode/ModeProvider'
+import { ModeToggle } from '@/components/home/ModeToggle'
 
 interface NavbarProps {
   activePage?: 'home' | 'works' | 'workato'
@@ -16,6 +18,7 @@ interface NavbarProps {
 export function Navbar({ activePage = 'home' }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const { mode, setMode } = useMode()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -72,6 +75,7 @@ export function Navbar({ activePage = 'home' }: NavbarProps) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
             </svg>
           </a>
+          <ModeToggle mode={mode} onChange={setMode} />
         </div>
 
         <button
@@ -114,6 +118,7 @@ export function Navbar({ activePage = 'home' }: NavbarProps) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
             </svg>
           </a>
+          <ModeToggle mode={mode} onChange={setMode} />
         </div>
       )}
     </nav>

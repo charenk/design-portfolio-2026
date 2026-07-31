@@ -291,3 +291,24 @@
     font-size: 18px;
   }
 }
+
+/* Pre-hydration mode correctness for pages that render both mode trees.
+   The inline script in layout.tsx sets html[data-mode='read'] before paint;
+   these rules override the [hidden] UA style so the correct tree shows even
+   before React hydrates. Intentional UA-override hacks: do not remove as
+   "unused". */
+html[data-mode='read'] .hx-see {
+  display: none;
+}
+
+html[data-mode='read'] .hx-read[hidden] {
+  display: block;
+}
+
+html[data-mode='read'] .pfx-see {
+  display: none;
+}
+
+html[data-mode='read'] .pfx-read[hidden] {
+  display: block;
+}

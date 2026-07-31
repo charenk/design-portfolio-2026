@@ -1,6 +1,8 @@
 'use client'
 
-export type PortfolioMode = 'read' | 'see'
+import type { PortfolioMode } from '@/components/mode/ModeProvider'
+
+export type { PortfolioMode }
 
 /**
  * The read / see control. Purely presentational: the merged homepage owns the

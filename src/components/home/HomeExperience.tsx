@@ -1,6 +1,6 @@
 'use client'
 
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { flushSync } from 'react-dom'
 import {
   gsap,
@@ -8,7 +8,7 @@ import {
   ScrollTrigger,
   prefersReducedMotion,
 } from '@/lib/motion/gsap'
-import type { PortfolioMode } from '@/components/home/ModeToggle'
+import { useMode, type PortfolioMode } from '@/components/mode/ModeProvider'
 
 import { CursorFollower } from '@/components/directions/tactile/CursorFollower'
 import { TactileNav } from '@/components/directions/tactile/TactileNav'
@@ -26,44 +26,25 @@ import { WorkIndex } from '@/components/directions/kinetic/WorkIndex'
 import { ExperimentsIndex } from '@/components/directions/kinetic/ExperimentsIndex'
 import { AboutFooter } from '@/components/directions/kinetic/AboutFooter'
 
-const PREF_KEY = 'portfolio-mode'
-
 /**
  * The merged homepage: one route, two presentations of the same content.
  * "see" is the tactile desk (default), "read" the editorial index. Both trees
  * stay mounted; the toggle hides one and Flip-morphs the project imagery
  * (matched by data-flip-id) between polaroids and index thumbnails while the
- * rest of the incoming layout rises in.
+ * rest of the incoming layout rises in. Mode state lives in the sitewide
+ * ModeProvider; this page registers the morph as its transition handler.
  */
 export function HomeExperience() {
-  const [mode, setMode] = useState<PortfolioMode>('see')
+  const { mode, setMode, registerTransition } = useMode()
   const rootRef = useRef<HTMLDivElement>(null)
   const morphing = useRef(false)
 
-  // Restore a stored preference before paint. The default is "see"; a stored
-  // "read" swaps instantly on first mount, with no morph.
-  useLayoutEffect(() => {
-    try {
-      if (window.localStorage.getItem(PREF_KEY) === 'read') {
-        // Pre-paint restore of the stored preference. SSR must render the
-        // "see" default, so this cannot move into the useState initializer
-        // without a hydration mismatch.
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setMode('read')
-      }
-    } catch {}
-    requestAnimationFrame(() => ScrollTrigger.refresh())
-  }, [])
-
-  const switchMode = (next: PortfolioMode) => {
-    if (next === mode || morphing.current) return
-    try {
-      window.localStorage.setItem(PREF_KEY, next)
-    } catch {}
+  const runMorph = (next: PortfolioMode, apply: () => void) => {
+    if (morphing.current) return
 
     const root = rootRef.current
     if (!root || prefersReducedMotion()) {
-      setMode(next)
+      apply()
       requestAnimationFrame(() => ScrollTrigger.refresh())
       return
     }
@@ -73,7 +54,7 @@ export function HomeExperience() {
       root.querySelectorAll('[data-flip-id]')
     )
 
-    flushSync(() => setMode(next))
+    flushSync(() => apply())
     ScrollTrigger.refresh()
 
     const incoming = root.querySelector<HTMLElement>(
@@ -113,12 +94,18 @@ export function HomeExperience() {
     })
   }
 
+  useEffect(() => {
+    requestAnimationFrame(() => ScrollTrigger.refresh())
+    // runMorph reads only refs and DOM; stable across renders.
+    return registerTransition(runMorph)
+  }, [registerTransition])
+
   return (
     <div ref={rootRef} className="home-experience" data-mode={mode}>
       <div className="dir-tactile hx-see" hidden={mode !== 'see'}>
         <main className="tc-main" id="top">
           <CursorFollower />
-          <TactileNav onModeChange={switchMode} />
+          <TactileNav onModeChange={setMode} />
           <StickerHero />
           <CardBoard />
           <ShippedShelf />
@@ -130,7 +117,7 @@ export function HomeExperience() {
 
       <div className="dir-kinetic hx-read" hidden={mode !== 'read'}>
         <main id="top-read">
-          <KineticNav onModeChange={switchMode} />
+          <KineticNav onModeChange={setMode} />
           <Hero />
           <Marquee />
           <WorkIndex />
