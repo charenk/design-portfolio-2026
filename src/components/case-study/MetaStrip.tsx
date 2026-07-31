@@ -10,11 +10,11 @@ interface MetaStripProps {
 
 export function MetaStrip({ columns }: MetaStripProps) {
   return (
-    <section className="grid grid-cols-1 md:grid-cols-3 gap-[30px] md:gap-[40px] mb-[56px]">
+    <section className="cs-meta grid grid-cols-1 md:grid-cols-3 gap-[30px] md:gap-[40px]">
       {columns.map((col) => (
         <div key={col.label}>
-          <p className="text-[14px] font-serif text-[#9e9e9e] mb-[8px]">{col.label}</p>
-          <p className="text-[14px] leading-[1.6] font-serif">{col.value}</p>
+          <p className="cs-meta-label">{col.label}</p>
+          <p className="cs-meta-value">{col.value}</p>
         </div>
       ))}
     </section>

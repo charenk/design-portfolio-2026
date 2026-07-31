@@ -649,3 +649,30 @@
     color: var(--k-ink-soft);
   }
 }
+
+/* ---------- compact nav on small screens ---------- */
+
+@media (max-width: 560px) {
+  .dir-kinetic .k-nav-links {
+    gap: 14px;
+  }
+
+  .dir-kinetic .k-navlink[href='#experiments-read'] {
+    display: none;
+  }
+
+  .dir-kinetic .k-wordmark {
+    font-size: 20px;
+  }
+
+  .dir-kinetic .mode-switch {
+    margin-left: 4px;
+    padding: 2px;
+  }
+
+  .dir-kinetic .mode-opt {
+    font-size: 10px;
+    padding: 4px 9px;
+    letter-spacing: 0.08em;
+  }
+}

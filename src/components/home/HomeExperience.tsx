@@ -45,6 +45,10 @@ export function HomeExperience() {
   useLayoutEffect(() => {
     try {
       if (window.localStorage.getItem(PREF_KEY) === 'read') {
+        // Pre-paint restore of the stored preference. SSR must render the
+        // "see" default, so this cannot move into the useState initializer
+        // without a hydration mismatch.
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setMode('read')
       }
     } catch {}

@@ -1,153 +1,195 @@
 "use client"
 
+import Image from 'next/image'
 import Link from 'next/link'
+import { useRef } from 'react'
+import type { CSSProperties } from 'react'
 import { Navbar } from '@/components/layout/Navbar'
-import { ProjectCard, type ProjectCardProps } from '@/components/ui/ProjectCard'
-import { useGridFade } from '@/lib/hooks/useGridFade'
+import { MagneticButton } from '@/components/directions/tactile/MagneticButton'
+import { gsap, useGSAP, FULL_MOTION, REDUCED_MOTION } from '@/lib/motion/gsap'
 import { getProject, type Project } from '@/data/projects'
 
-// Default size tokens for the portfolio scrapbook layout.
-// Tweak these to scale every small/large card together.
-const SMALL_WIDTH = 'w-[33%]'
-const LARGE_WIDTH = 'w-[62%]'
+/* Per-card presentation for the scrapbook grid: column size + the resting
+   rotation of the polaroid frame. Coming-soon cards sit pinned flat (0deg). */
+const CARD_LAYOUT: Array<{ slug: string; size: 'sm' | 'lg'; rot: number }> = [
+  { slug: 'browser-extension', size: 'sm', rot: -2 },
+  { slug: 'ai-pam', size: 'lg', rot: 1.4 },
+  { slug: 'onboarding', size: 'lg', rot: 0 },
+  { slug: 'refinery', size: 'sm', rot: 2 },
+  { slug: 'blackberry', size: 'sm', rot: 0 },
+  { slug: 'copilot', size: 'lg', rot: 0 },
+]
 
-// Per-card presentation for the scrapbook grid: aspect ratio + rotation.
-const CARD_STYLES: Record<string, { aspect: string; rotate: string }> = {
-  'browser-extension': { aspect: 'aspect-[16/9]', rotate: '-rotate-[1deg]' },
-  'ai-pam': { aspect: 'aspect-[16/10]', rotate: 'rotate-[1deg]' },
-  onboarding: { aspect: 'aspect-[16/10]', rotate: '-rotate-[1deg]' },
-  refinery: { aspect: 'aspect-[5/4]', rotate: 'rotate-[1.5deg]' },
-  blackberry: { aspect: 'aspect-[4/3]', rotate: 'rotate-[1deg]' },
-  copilot: { aspect: 'aspect-[16/10]', rotate: '-rotate-[1.5deg]' },
-}
+/**
+ * A taped polaroid frame around the project artwork: white padded card, tape
+ * strip, handwritten caption, tag line, and an optional badge sticker.
+ * Live projects render as a link with a hover lift; coming-soon projects are
+ * a plain, dimmed article that cannot be clicked.
+ */
+function Polaroid({
+  project,
+  size,
+  rot,
+}: {
+  project: Project
+  size: 'sm' | 'lg'
+  rot: number
+}) {
+  const soon = !!project.comingSoon
+  const style = { '--rot': `${rot}deg` } as CSSProperties
 
-function toCardProps(project: Project): ProjectCardProps {
-  const style = CARD_STYLES[project.slug]
-  return {
-    title: project.title,
-    tags: project.tags,
-    href: project.href,
-    badge: project.badge,
-    aspect: style.aspect,
-    placeholder: project.placeholder,
-    rotate: style.rotate,
-    svgSrc: project.bannerImage,
-    imageFit: project.imageFit,
+  const frame = (
+    <div className="pf-polaroid">
+      <span className="tc-tape" aria-hidden="true" />
+      <div className="pf-photo" style={{ backgroundColor: project.placeholder }}>
+        {project.bannerImage ? (
+          <Image
+            src={project.bannerImage}
+            alt=""
+            fill
+            sizes={
+              size === 'lg'
+                ? '(max-width: 767px) 100vw, 62vw'
+                : '(max-width: 767px) 100vw, 33vw'
+            }
+            className="pf-photo-img"
+            draggable={false}
+          />
+        ) : null}
+        {project.badge ? (
+          <span className={`tc-caveat pf-badge${soon ? ' pf-badge-soon' : ''}`}>
+            {project.badge}
+          </span>
+        ) : null}
+      </div>
+      <div className="pf-caption">
+        <p className="tc-caveat pf-caption-title">{project.title}</p>
+        <p className="pf-caption-tags">{project.tags}</p>
+      </div>
+    </div>
+  )
+
+  if (soon) {
+    return (
+      <article className={`pf-card pf-card-${size} pf-card-soon`} style={style}>
+        {frame}
+      </article>
+    )
   }
+
+  return (
+    <Link
+      href={project.href}
+      className={`pf-card pf-card-${size} pf-card-live`}
+      style={style}
+    >
+      {frame}
+    </Link>
+  )
 }
 
 export default function PortfolioPage() {
-  const pageBackgroundRef = useGridFade({ hideAfter: null })
+  const rootRef = useRef<HTMLDivElement>(null)
 
-  const browserExt = toCardProps(getProject('browser-extension')!)
-  const aiPam = toCardProps(getProject('ai-pam')!)
-  const onboarding = toCardProps(getProject('onboarding')!)
-  const refinery = toCardProps(getProject('refinery')!)
-  const placeholderSmall = toCardProps(getProject('blackberry')!)
-  const placeholderLarge = toCardProps(getProject('copilot')!)
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia()
+
+      mm.add(FULL_MOTION, () => {
+        // Header drifts in on load.
+        gsap.from('.pf-header-item', {
+          autoAlpha: 0,
+          y: 26,
+          duration: 0.7,
+          ease: 'power3.out',
+          stagger: 0.1,
+        })
+
+        // Each polaroid rises and settles its rotation as it scrolls in.
+        gsap.utils.toArray<HTMLElement>('.pf-card').forEach((card, i) => {
+          gsap.from(card, {
+            autoAlpha: 0,
+            y: 64,
+            rotation: i % 2 === 0 ? -4 : 4,
+            duration: 0.9,
+            ease: 'back.out(1.4)',
+            scrollTrigger: { trigger: card, start: 'top 88%', once: true },
+          })
+        })
+
+        gsap.from('.pf-cta-card', {
+          autoAlpha: 0,
+          y: 48,
+          rotation: -3,
+          duration: 0.9,
+          ease: 'back.out(1.3)',
+          scrollTrigger: { trigger: '.pf-cta', start: 'top 85%', once: true },
+        })
+
+        gsap.from('.pf-credit', {
+          autoAlpha: 0,
+          y: 18,
+          duration: 0.6,
+          ease: 'power3.out',
+          scrollTrigger: { trigger: '.pf-credit', start: 'top 96%', once: true },
+        })
+      })
+
+      // Reduced motion: no tweens are created, everything renders static.
+      mm.add(REDUCED_MOTION, () => {})
+
+      return () => mm.revert()
+    },
+    { scope: rootRef }
+  )
 
   return (
-    <div className="pageBackground" ref={pageBackgroundRef}>
+    <div ref={rootRef} className="pf-page dir-tactile">
       <Navbar activePage="works" />
 
-      <main className="px-5 md:px-12 pt-[120px] md:pt-[160px] pb-12 md:pb-16">
-        <div className="max-w-[1200px] mx-auto">
-
+      <main className="pf-main">
+        <div className="pf-inner">
           {/* Header */}
-          <div className="mb-14">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#1a1a1a] text-white font-sans text-[14px] font-medium hover:bg-black transition-colors mb-6"
-              aria-label="Back to home"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <div className="pf-header">
+            <Link href="/" className="tc-btn pf-back pf-header-item" aria-label="Back to home">
+              <svg className="pf-back-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
               </svg>
               Back
             </Link>
-            <h1 className="font-serif font-light text-[40px] md:text-[52px] text-[#1a1a1a] leading-tight">
-              Selected works
-            </h1>
+            <h1 className="pf-title pf-header-item">Selected works</h1>
           </div>
 
-          {/* Desktop: scrapbook with two rows of mismatched sizes */}
-          <div className="hidden md:block">
-            {/* Row 1 — small left + large right */}
-            <div className="flex justify-between items-start">
-              <div className={`${SMALL_WIDTH} mt-56`}>
-                <ProjectCard {...browserExt} />
-              </div>
-              <div className={LARGE_WIDTH}>
-                <ProjectCard {...aiPam} />
-              </div>
-            </div>
-
-            {/* Row 2 — large left + small right (sizes reversed) */}
-            <div className="flex justify-between items-start mt-[102px]">
-              <div className={LARGE_WIDTH}>
-                <ProjectCard {...onboarding} />
-              </div>
-              <div className={`${SMALL_WIDTH} mt-[126px]`}>
-                <ProjectCard {...refinery} />
-              </div>
-            </div>
-
-            {/* Row 3 — small left + large right (matches row 1 pattern) */}
-            <div className="flex justify-between items-start mt-[102px]">
-              <div className={`${SMALL_WIDTH} mt-56`}>
-                <ProjectCard {...placeholderSmall} />
-              </div>
-              <div className={LARGE_WIDTH}>
-                <ProjectCard {...placeholderLarge} />
-              </div>
-            </div>
+          {/* Scrapbook grid of taped polaroids */}
+          <div className="pf-grid">
+            {CARD_LAYOUT.map(({ slug, size, rot }) => {
+              const project = getProject(slug)
+              if (!project) return null
+              return <Polaroid key={slug} project={project} size={size} rot={rot} />
+            })}
           </div>
-
-          {/* Mobile: single column stack, heroes first */}
-          <div className="flex flex-col gap-6 md:hidden">
-            <ProjectCard {...aiPam} />
-            <ProjectCard {...onboarding} />
-            <ProjectCard {...placeholderLarge} />
-            <ProjectCard {...browserExt} />
-            <ProjectCard {...refinery} />
-            <ProjectCard {...placeholderSmall} />
-          </div>
-
         </div>
 
         {/* Want to build something together? CTA */}
-        <section className="max-w-[880px] mx-auto mt-32 md:mt-48">
-          <div className="relative bg-white rounded-[24px] shadow-sm px-7 py-10 md:px-16 md:py-16">
-            {/* Tape: top-left */}
-            <span
-              aria-hidden="true"
-              className="absolute -top-2.5 left-8 md:left-12 w-[90px] md:w-[102px] h-[22px] md:h-[28px] bg-[#f7e08e]/90 rotate-[-6deg] shadow-[0_2px_4px_rgba(0,0,0,0.06)]"
-            />
-            {/* Tape: bottom-right */}
-            <span
-              aria-hidden="true"
-              className="absolute -bottom-2.5 right-8 md:right-12 w-[90px] md:w-[102px] h-[22px] md:h-[28px] bg-[#f7e08e]/90 rotate-[-6deg] shadow-[0_2px_4px_rgba(0,0,0,0.06)]"
-            />
+        <section className="pf-cta">
+          <div className="pf-cta-card">
+            <span className="tc-tape pf-cta-tape-left" aria-hidden="true" />
+            <span className="tc-tape pf-cta-tape-right" aria-hidden="true" />
 
-            <h2 className="font-sans font-bold text-[26px] md:text-[36px] text-[#1a1a1a] leading-tight">
-              Want to build something together?
-            </h2>
-            <p className="font-sans text-[13px] md:text-[15px] text-[#7a7a7a] mt-3 max-w-[520px]">
+            <h2 className="pf-cta-title">Want to build something together?</h2>
+            <p className="pf-cta-sub">
               If you have an idea worth shipping, I&apos;d love to hear from you.
             </p>
-            <a
-              href="mailto:charen@gmail.com"
-              className="inline-flex items-center gap-2 mt-7 md:mt-8 px-5 py-3 rounded-full bg-[#1a1a1a] text-white font-sans text-[13px] font-medium hover:bg-black transition-colors"
-            >
+            <MagneticButton href="mailto:charen@gmail.com" className="tc-btn pf-cta-btn">
               Get in touch
               <span aria-hidden="true">→</span>
-            </a>
+            </MagneticButton>
           </div>
         </section>
 
-        {/* Bottom credit — pinned near page bottom */}
-        <div className="text-center mt-40 md:mt-56 px-5">
-          <p className="font-sans text-[15px] font-bold text-[#1a1a1a]">Designed by Charen, built using Claude</p>
+        {/* Bottom credit */}
+        <div className="pf-credit">
+          <p>Designed by Charen, built using Claude</p>
         </div>
       </main>
     </div>

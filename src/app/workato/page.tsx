@@ -1,12 +1,10 @@
 "use client"
 
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { markViewed } from '@/lib/viewedTracker'
-import { useGridFade } from '@/lib/hooks/useGridFade'
 
 export default function WorkatoPage() {
   const router = useRouter()
@@ -19,7 +17,6 @@ export default function WorkatoPage() {
     }
   }
   const [activeTab, setActiveTab] = useState('pam')
-  const pageBackgroundRef = useGridFade()
 
   useEffect(() => {
     markViewed('workato')
@@ -33,7 +30,7 @@ export default function WorkatoPage() {
   ]
 
   return (
-    <div className="pageBackground" ref={pageBackgroundRef}>
+    <div className="wk-page dir-tactile">
       <Navbar activePage="workato" />
 
       {/* Main Content */}
@@ -43,7 +40,7 @@ export default function WorkatoPage() {
           {/* Back Button */}
           <button
             onClick={handleBack}
-            className="inline-flex items-center gap-1 mb-[50px] bg-black text-white px-[10px] py-[5px] font-serif text-caption hover:opacity-80 transition-opacity"
+            className="wk-back mb-[50px]"
           >
             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
@@ -147,7 +144,7 @@ export default function WorkatoPage() {
           {/* Bottom back link */}
           <button
             onClick={handleBack}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#1a1a1a] text-white font-sans text-[14px] font-medium hover:bg-black transition-colors"
+            className="wk-back"
             aria-label="Back"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

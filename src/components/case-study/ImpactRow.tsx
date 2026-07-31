@@ -18,28 +18,18 @@ export function ImpactRow({ rows }: ImpactRowProps) {
       {rows.map((row, i) => (
         <div
           key={i}
-          className="grid grid-cols-1 md:grid-cols-[320px_1fr] gap-[8px] md:gap-[32px] py-[20px] border-b border-divider-grey/30"
+          className="cs-impact-row grid grid-cols-1 md:grid-cols-[320px_1fr] gap-[8px] md:gap-[32px]"
         >
           <div>
             {row.metric && (
               <>
-                <p className="font-serif font-normal text-[28px] md:text-[32px] leading-[1] text-accent-yellow mb-[6px]">
-                  {row.metric}
-                </p>
-                {row.metricLabel && (
-                  <p className="text-[11px] font-serif font-medium uppercase tracking-[0.05em] text-[#9e9e9e] mb-[12px]">
-                    {row.metricLabel}
-                  </p>
-                )}
+                <p className="cs-metric">{row.metric}</p>
+                {row.metricLabel && <p className="cs-metric-label">{row.metricLabel}</p>}
               </>
             )}
-            {row.label && (
-              <p className="text-[18px] leading-[1.52] font-serif font-semibold md:whitespace-nowrap">
-                {row.label}
-              </p>
-            )}
+            {row.label && <p className="cs-impact-label md:whitespace-nowrap">{row.label}</p>}
           </div>
-          <p className="text-[14px] leading-[1.6] font-serif">{row.text}</p>
+          <p className="cs-impact-text">{row.text}</p>
         </div>
       ))}
     </div>
