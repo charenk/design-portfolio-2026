@@ -161,8 +161,14 @@ export function StickerHero() {
               aria-hidden="true"
               focusable="false"
             >
-              <path ref={arrowPathRef} d="M112 8 C 78 30, 52 30, 26 64" />
-              <path ref={arrowHeadRef} d="M38 58 L 24 66 L 36 74" />
+              {/*
+                One confident pen stroke: leaves the text horizontally, bows
+                up, then falls away to the tip at (26, 62). The head's barbs
+                splay off the tail's exit tangent (-0.49, 0.87) at +/-28deg so
+                the tip reads as one continuous stroke, not a bolted-on chevron.
+              */}
+              <path ref={arrowPathRef} d="M108 14 C 84 12, 46 26, 26 62" />
+              <path ref={arrowHeadRef} d="M40 54 L 26 62 L 27 47" />
             </svg>
             <p className="tc-caveat">
               currently at CyberQP, shaping AI powered PAM
