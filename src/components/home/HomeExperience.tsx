@@ -103,8 +103,10 @@ export function HomeExperience() {
   return (
     <div ref={rootRef} className="home-experience" data-mode={mode}>
       <div className="dir-tactile hx-see" hidden={mode !== 'see'}>
+        {/* Outside <main> so the mode morph's `main > *` sweep cannot
+            animate it or clearProps away its follow transform. */}
+        <CursorFollower />
         <main className="tc-main" id="top">
-          <CursorFollower />
           <TactileNav onModeChange={setMode} />
           <StickerHero />
           <CardBoard />
