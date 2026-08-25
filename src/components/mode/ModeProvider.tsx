@@ -13,8 +13,6 @@ import { gsap, ScrollTrigger, prefersReducedMotion } from '@/lib/motion/gsap'
 
 export type PortfolioMode = 'read' | 'see'
 
-const PREF_KEY = 'portfolio-mode'
-
 /**
  * A page-level transition takes over the visual switch (e.g. the Flip morph
  * on home and portfolio). It receives the target mode and an `apply` callback
@@ -35,11 +33,9 @@ interface ModeContextValue {
 const ModeContext = createContext<ModeContextValue | null>(null)
 
 /**
- * Sitewide read/see mode. SSR always renders "read" (the default landing
- * mode); a pre-paint inline script in the root layout strips
- * html[data-mode] for a stored "see" preference so CSS variants are correct
- * before hydration, and this provider syncs React state to it pre-paint on
- * mount.
+ * Sitewide read/see mode. Every load lands in "read": SSR renders
+ * html[data-mode="read"] and nothing restores a stored preference. The
+ * toggle switches modes for the current visit only.
  */
 export function ModeProvider({ children }: { children: React.ReactNode }) {
   const [mode, setModeState] = useState<PortfolioMode>('read')
@@ -51,24 +47,10 @@ export function ModeProvider({ children }: { children: React.ReactNode }) {
     modeRef.current = mode
   }, [mode])
 
-  useLayoutEffect(() => {
-    if (document.documentElement.dataset.mode !== 'read') {
-      // Pre-paint restore of the stored "see" preference: the inline script
-      // removed the attribute before hydration. Cannot live in the useState
-      // initializer without a hydration mismatch, since the server always
-      // renders "read".
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setModeState('see')
-    }
-  }, [])
-
   const setMode = useCallback((next: PortfolioMode) => {
     if (next === modeRef.current || busyRef.current) return
 
     const apply = () => {
-      try {
-        window.localStorage.setItem(PREF_KEY, next)
-      } catch {}
       if (next === 'read') {
         document.documentElement.dataset.mode = 'read'
       } else {

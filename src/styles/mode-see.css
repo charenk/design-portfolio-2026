@@ -41,14 +41,16 @@
   border-radius: 6px;
 }
 
-/* The ink-dot follower IS the cursor in see mode: hide the OS cursor across
-   the whole surface, but only in the exact conditions where the follower is
-   actually running (fine pointer + full motion). !important intentionally
+/* The ink-dot follower IS the cursor on the home see-pane, the only surface
+   that mounts CursorFollower. Scope the OS-cursor hiding to .hx-see so pages
+   that use .dir-tactile purely for styling (lock, case studies, /workato)
+   keep their OS cursor. Only active in the exact conditions where the
+   follower runs (fine pointer + full motion). !important intentionally
    outranks the scattered pointer/grab rules and any inline cursor styles so
    the two can never show at once. Reduced motion and touch keep OS cursors. */
 @media (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .dir-tactile,
-  .dir-tactile * {
+  .dir-tactile.hx-see,
+  .dir-tactile.hx-see * {
     cursor: none !important;
   }
 }
