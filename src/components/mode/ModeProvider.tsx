@@ -13,8 +13,6 @@ import { gsap, ScrollTrigger, prefersReducedMotion } from '@/lib/motion/gsap'
 
 export type PortfolioMode = 'read' | 'see'
 
-const PREF_KEY = 'portfolio-mode'
-
 /**
  * A page-level transition takes over the visual switch (e.g. the Flip morph
  * on home and portfolio). It receives the target mode and an `apply` callback
@@ -35,14 +33,13 @@ interface ModeContextValue {
 const ModeContext = createContext<ModeContextValue | null>(null)
 
 /**
- * Sitewide read/see mode. SSR always renders "see"; a pre-paint inline script
- * in the root layout mirrors a stored "read" preference onto
- * html[data-mode] so CSS variants are correct before hydration, and this
- * provider syncs React state to it pre-paint on mount.
+ * Sitewide read/see mode. Every load lands in "read": SSR renders
+ * html[data-mode="read"] and nothing restores a stored preference. The
+ * toggle switches modes for the current visit only.
  */
 export function ModeProvider({ children }: { children: React.ReactNode }) {
-  const [mode, setModeState] = useState<PortfolioMode>('see')
-  const modeRef = useRef<PortfolioMode>('see')
+  const [mode, setModeState] = useState<PortfolioMode>('read')
+  const modeRef = useRef<PortfolioMode>('read')
   const handlerRef = useRef<ModeTransitionHandler | null>(null)
   const busyRef = useRef(false)
 
@@ -50,23 +47,10 @@ export function ModeProvider({ children }: { children: React.ReactNode }) {
     modeRef.current = mode
   }, [mode])
 
-  useLayoutEffect(() => {
-    if (document.documentElement.dataset.mode === 'read') {
-      // Pre-paint restore of the stored preference set by the inline script.
-      // Cannot live in the useState initializer without a hydration mismatch,
-      // since the server always renders "see".
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setModeState('read')
-    }
-  }, [])
-
   const setMode = useCallback((next: PortfolioMode) => {
     if (next === modeRef.current || busyRef.current) return
 
     const apply = () => {
-      try {
-        window.localStorage.setItem(PREF_KEY, next)
-      } catch {}
       if (next === 'read') {
         document.documentElement.dataset.mode = 'read'
       } else {

@@ -49,20 +49,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    // suppressHydrationWarning: the inline script below mutates data-mode on
-    // <html> before hydration when a stored "read" preference exists.
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" data-mode="read">
       <body
         className={`${montserrat.variable} ${caveat.variable} ${instrumentSerif.variable} antialiased`}
       >
-        <script
-          // Pre-paint mode restore: keeps read-mode CSS variants correct
-          // before hydration, with no flash of the "see" default.
-          dangerouslySetInnerHTML={{
-            __html:
-              "try{if(localStorage.getItem('portfolio-mode')==='read')document.documentElement.dataset.mode='read'}catch(e){}",
-          }}
-        />
         <ModeProvider>
           <SmoothScrollProvider>{children}</SmoothScrollProvider>
         </ModeProvider>
