@@ -41,12 +41,15 @@
   border-radius: 6px;
 }
 
-/* Hide the OS cursor only where the custom cursor shows an affordance, and
-   only in the exact conditions where the custom cursor is actually running. */
+/* The ink-dot follower IS the cursor in see mode: hide the OS cursor across
+   the whole surface, but only in the exact conditions where the follower is
+   actually running (fine pointer + full motion). !important intentionally
+   outranks the scattered pointer/grab rules and any inline cursor styles so
+   the two can never show at once. Reduced motion and touch keep OS cursors. */
 @media (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .dir-tactile [data-cursor],
-  .dir-tactile [data-cursor] a {
-    cursor: none;
+  .dir-tactile,
+  .dir-tactile * {
+    cursor: none !important;
   }
 }
 

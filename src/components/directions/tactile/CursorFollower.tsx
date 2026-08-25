@@ -7,8 +7,10 @@ import { gsap, useGSAP, FULL_MOTION } from '@/lib/motion/gsap'
  * Ink-dot cursor follower. Desktop only (pointer: fine) and full motion only.
  * The dot lerps to the pointer via gsap.quickTo and morphs into a labelled
  * bubble over elements carrying data-cursor="drag" or data-cursor="view".
- * The OS cursor is hidden only over those elements (see v3.css), so
- * usability never depends on this component.
+ * In see mode the dot IS the cursor: mode-see.css hides the OS cursor across
+ * the whole .dir-tactile surface under the same media conditions, so the two
+ * never show together. Touch and reduced-motion visitors keep OS cursors and
+ * never see this component.
  */
 export function CursorFollower() {
   const rootRef = useRef<HTMLDivElement>(null)
