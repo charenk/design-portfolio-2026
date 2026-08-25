@@ -19,7 +19,9 @@ interface ProjectPageLayoutProps {
   title: string
   titleColorClass?: string
   backHref?: string
-  hero: HeroMedia
+  /** Omit to run the page with no hero frame at all (e.g. index-style pages
+      whose first screen should be content, not media). */
+  hero?: HeroMedia
   overviewLeft?: React.ReactNode
   overviewRight?: React.ReactNode
   disclaimer?: React.ReactNode
@@ -317,7 +319,9 @@ export function ProjectPageLayout({
             {title}
           </h1>
 
-          {/* Hero, pinned to the paper with a tape strip */}
+          {/* Hero, pinned to the paper with a tape strip. Skipped entirely
+              when no hero is supplied. */}
+          {hero && (
           <div className="cs-hero-frame">
             <span className="cs-tape" aria-hidden />
             {hero.type === 'video' && (
@@ -350,6 +354,7 @@ export function ProjectPageLayout({
               <div className="cs-hero-media cs-hero-placeholder aspect-[4/3] md:aspect-[16/9]" />
             )}
           </div>
+          )}
 
           {/* Everything below the hero fade-rises in as it scrolls into view */}
           <div className="cs-flow">

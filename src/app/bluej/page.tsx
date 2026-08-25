@@ -250,7 +250,9 @@ export default function BlueJPage() {
     <ProjectPageLayout
       /* TODO(content): final page title. */
       title="Work samples for Blue J"
-      hero={{ type: 'placeholder' }}
+      /* No hero: the intro and theme grid are the first screen. Add
+         hero={{ type: 'image', src: …, alt: … }} once there's art worth
+         leading with. */
       nextHref="/portfolio"
       nextLabel="All projects"
     >
