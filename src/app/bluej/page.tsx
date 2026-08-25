@@ -10,7 +10,7 @@ import { getProject } from '@/data/projects'
 /* TODO(content): everything in THEMES below is scaffold copy. The five theme
    titles are final; promises, framing paragraphs, and slot labels are drafts
    for Charen to replace in a single pass. Slot descriptions say what visual
-   belongs in each taped frame — swap `slot` placeholders for real imagery by
+   belongs in each taped frame; swap `slot` placeholders for real imagery by
    replacing the cs-figure-empty block with a cs-figure-media + img.          */
 /* ------------------------------------------------------------------------- */
 
@@ -24,7 +24,7 @@ interface ThemeSlot {
 }
 
 interface Theme {
-  /** Anchor id — overview cards jump-link to `#<id>`. */
+  /** Anchor id. Overview cards jump-link to `#<id>`. */
   id: string
   num: string
   title: string
@@ -58,7 +58,7 @@ const THEMES: Theme[] = [
     promise:
       'Turning scattered, drifting UI into a tokenized system teams actually adopt.',
     framing: [
-      // TODO(content): the drift→system story — where the drift came from, what the audit found, how the system earned adoption.
+      // TODO(content): the drift-to-system story: where the drift came from, what the audit found, how the system earned adoption.
       'How I take a product from inconsistent, drifting UI to a governed design system: auditing the drift, building the token and component architecture, and doing the unglamorous adoption work that makes it stick.',
     ],
     slots: [
@@ -86,7 +86,7 @@ const THEMES: Theme[] = [
       'Framing ambiguous problems, researching fast, shipping, then scaling what works.',
     framing: [
       // TODO(content): tighten around the AI-PAM 0→1 arc and the Copilot assessment.
-      'Joining before scope exists and carrying a product from framing through research, shipped iterations, and scale — shown through work that started as an open question and ended in customers’ hands.',
+      'Joining before scope exists and carrying a product from framing through research, shipped iterations, and scale. The work here started as an open question and ended in customers’ hands.',
     ],
     slots: [
       {
@@ -123,7 +123,7 @@ const THEMES: Theme[] = [
       },
       {
         label: 'Multi-agent orchestration',
-        desc: 'The Refinery: eight coordinated agents, an orchestrator, and a morning brief — the system diagram and dashboard.',
+        desc: 'The Refinery: eight coordinated agents, an orchestrator, and a morning brief, captured in the system diagram and dashboard.',
       },
       {
         label: 'Failure & disambiguation patterns',
@@ -137,10 +137,10 @@ const THEMES: Theme[] = [
     num: '04',
     title: 'Code First Design',
     promise:
-      'Designing in the medium — shipping working software to test ideas, not just mockups.',
+      'Designing in the medium: shipping working software to test ideas, not just mockups.',
     framing: [
       // TODO(content): the code-as-design-tool practice story.
-      'Some ideas can only be judged running. I build working software — this portfolio included — to explore, test, and ship design decisions in the real medium.',
+      'Some ideas can only be judged running. I build working software, this portfolio included, to explore, test, and ship design decisions in the real medium.',
     ],
     slots: [
       {
@@ -150,7 +150,7 @@ const THEMES: Theme[] = [
       },
       {
         label: 'Figma Buddy',
-        desc: 'AI design critique inside Figma comments — @buddy, built on the OpenAI API + Supabase.',
+        desc: 'AI design critique inside Figma comments: @buddy, built on the OpenAI API and Supabase.',
       },
       {
         label: 'The Refinery build',
@@ -166,7 +166,7 @@ const THEMES: Theme[] = [
     promise:
       'First-run experiences, feature discovery, and the metrics that prove they work.',
     framing: [
-      // TODO(content): activation/growth story — what moved, and how it was measured.
+      // TODO(content): activation and growth story: what moved, and how it was measured.
       'Design that earns its keep after launch: reworking first-run activation, making features discoverable in the flow of work, and instrumenting the journey so the team knows what moved.',
     ],
     slots: [
@@ -209,7 +209,7 @@ function ThemeSection({ theme }: { theme: Theme }) {
         ))}
       </div>
 
-      {/* Visual gallery — taped placeholder frames until curated imagery lands */}
+      {/* Visual gallery: taped placeholder frames until curated imagery lands */}
       <div className="cs-tgallery">
         {theme.slots.map((slot, i) => (
           <div
@@ -256,15 +256,15 @@ export default function BlueJPage() {
       nextHref="/portfolio"
       nextLabel="All projects"
     >
-      {/* Intro note — TODO(content): 2–3 lines max, addressed to the Blue J team. */}
+      {/* Intro note. TODO(content): 2-3 lines max, addressed to the Blue J team. */}
       <section className="mb-[64px]">
         <div className="cs-body max-w-[760px]">
           <p>
             Thanks for taking the time. Ahead of our next conversation, this page
-            shows the breadth of my work through five themes — from design
-            systems to zero-to-one, AI-native design, code-first practice, and
-            growth. Each theme is a high-level sample; the full case studies are
-            linked where you want to go deeper.
+            shows the breadth of my work through five themes: design systems,
+            zero to one, AI-native design, code-first practice, and growth. Each
+            theme is a high-level sample, and the full case studies are linked
+            where you want to go deeper.
           </p>
         </div>
       </section>

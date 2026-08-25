@@ -99,7 +99,7 @@ export default function LinkBuilderPage() {
     return u.toString()
   }, [target, withToken, token, source, medium, campaign, org])
 
-  // Short URL — just the org slug. Falls back to user override if they want
+  // Short URL: just the org slug. Falls back to user override if they want
   // to disambiguate (e.g. "okta-fall" when applying to the same org twice).
   // The route handler at src/app/[slug]/route.ts handles cookie planting and
   // UTM injection, then redirects to /.
@@ -224,7 +224,7 @@ export default function LinkBuilderPage() {
               className="w-4 h-4"
             />
             <label htmlFor="with-token" className="font-sans text-[14px] text-[#1a1a1a]">
-              Include token on the long URL (silent access — recipient skips the password gate)
+              Include token on the long URL (silent access: recipient skips the password gate)
             </label>
           </div>
 

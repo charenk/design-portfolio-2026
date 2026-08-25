@@ -30,7 +30,7 @@ export function markViewed(slug: string): void {
     const record: LastViewedRecord = { slug, viewedAt: Date.now() }
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(record))
   } catch {
-    // localStorage unavailable (private mode, quota, etc.) — fail silently
+    // localStorage unavailable (private mode, quota, etc.): fail silently
   }
 }
 

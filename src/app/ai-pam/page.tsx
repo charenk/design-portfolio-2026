@@ -130,7 +130,7 @@ export default function AiPamCaseStudy() {
       {/* Divider */}
       <div className="border-t border-divider-grey/30 mb-[56px]" />
 
-      {/* Stakes — Why this matters */}
+      {/* Stakes: why this matters */}
       <section className="mb-[80px]">
         <p className="text-[12px] uppercase tracking-[0.15em] font-serif font-medium text-accent-yellow mb-[16px]">
           Why this matters
@@ -179,7 +179,7 @@ export default function AiPamCaseStudy() {
           Working with stakeholders and cross functional teams, I held several hypotheses through discovery and design. The one below carried the most weight, and the rest of the case study walks through the solutions it produced.
         </p>
 
-        {/* Hypothesis — nested inside What I shaped */}
+        {/* Hypothesis, nested inside What I shaped */}
         <div className="border-l-[3px] border-accent-yellow pl-[24px] md:pl-[36px] py-[4px]">
           <p className="text-[11px] uppercase tracking-[0.15em] font-serif font-medium text-accent-yellow mb-[14px]">
             Hypothesis
@@ -279,7 +279,7 @@ export default function AiPamCaseStudy() {
         </p>
       </section>
 
-      {/* Decision 1: Read only by default — text only for now, image to follow */}
+      {/* Decision 1: Read only by default. Text only for now, image to follow */}
       <section className="mb-[50px]">
         <div className="mb-4">
           <p className="text-[11px] uppercase tracking-[0.15em] font-serif font-medium text-accent-yellow mb-[8px]">
@@ -296,7 +296,7 @@ export default function AiPamCaseStudy() {
         </div>
       </section>
 
-      {/* Decision 2: HITL gates — text left, image right */}
+      {/* Decision 2: HITL gates. Text left, image right */}
       <section className="mb-[50px]">
         <div className="md:hidden mb-4">
           <p className="text-[11px] uppercase tracking-[0.15em] font-serif font-medium text-accent-yellow mb-[8px]">
@@ -335,7 +335,7 @@ export default function AiPamCaseStudy() {
         </div>
       </section>
 
-      {/* Decision 3: Consent at config — image left, text right */}
+      {/* Decision 3: Consent at config. Image left, text right */}
       <section className="mb-[50px]">
         <div className="md:hidden mb-4">
           <p className="text-[11px] uppercase tracking-[0.15em] font-serif font-medium text-accent-yellow mb-[8px]">
@@ -374,7 +374,7 @@ export default function AiPamCaseStudy() {
         </div>
       </section>
 
-      {/* Decision 4: Stopping is safer — text left, image right */}
+      {/* Decision 4: Stopping is safer. Text left, image right */}
       <section className="mb-[50px]">
         <div className="md:hidden mb-4">
           <p className="text-[11px] uppercase tracking-[0.15em] font-serif font-medium text-accent-yellow mb-[8px]">
