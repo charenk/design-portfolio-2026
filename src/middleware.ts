@@ -18,7 +18,7 @@ export function middleware(request: NextRequest) {
   const envToken = process.env.PORTFOLIO_TOKEN
 
   if (urlToken && envToken && urlToken === envToken) {
-    // Valid token — set cookie and redirect with only the token stripped (UTM params preserved
+    // Valid token: set cookie and redirect with only the token stripped (UTM params preserved
     // so GA + LogRocket can attribute the visit to a specific application/campaign).
     const cleanUrl = new URL(request.url)
     cleanUrl.searchParams.delete('t')
@@ -46,13 +46,13 @@ export function middleware(request: NextRequest) {
     return response
   }
 
-  // /admin/* — token-only gate. Password access does not unlock these routes.
+  // /admin/*: token-only gate. Password access does not unlock these routes.
   if (pathname.startsWith('/admin')) {
     const adminCookie = request.cookies.get('admin_access')
     if (adminCookie?.value === '1') {
       return NextResponse.next()
     }
-    // No admin cookie — bounce to home silently. The route is non-discoverable on purpose.
+    // No admin cookie: bounce to home silently. The route is non-discoverable on purpose.
     return NextResponse.redirect(new URL('/', request.url))
   }
 
@@ -68,7 +68,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // No valid token or cookie — send to lock page with return path.
+  // No valid token or cookie: send to lock page with return path.
   // Keep the original query string (UTM params, etc.) so attribution survives
   // the password unlock round-trip.
   const lockUrl = new URL('/portfolio/lock', request.url)
@@ -78,7 +78,7 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // /refinery and /figma-buddy are deliberately absent — both are public
+  // /refinery and /figma-buddy are deliberately absent; both are public
   // experiments. Everything else that isn't the home page is gated, including
   // the company-targeted pages (/workato, /bluej).
   matcher: ['/', '/portfolio', '/workato', '/bluej', '/ai-pam', '/browser-extension', '/copilot', '/blackberry', '/admin/:path*'],

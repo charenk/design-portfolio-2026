@@ -11,7 +11,7 @@ const SLUG_PATTERN = /^[a-z0-9][a-z0-9-]{1,28}[a-z0-9]$/i
 // same response, and 307s to / with UTM query params. Visitor bypasses the
 // password gate without ever seeing a token.
 //
-// admin_access is intentionally NOT granted here — the admin tool stays
+// admin_access is intentionally NOT granted here; the admin tool stays
 // gated behind the magic-link token flow only.
 export async function GET(
   request: NextRequest,

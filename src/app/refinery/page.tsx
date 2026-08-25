@@ -62,7 +62,7 @@ export default function RefineryCaseStudy() {
 
       <SectionDivider />
 
-      {/* Solution overview — system diagram */}
+      {/* Solution overview: system diagram */}
       <section className="mb-[80px]">
         <h2 className="font-serif font-normal text-[26px] md:text-[34px] leading-[1.2] mb-[28px]">
           Solution overview
@@ -76,7 +76,7 @@ export default function RefineryCaseStudy() {
 
       <SectionDivider />
 
-      {/* Learnings and next steps — two-column */}
+      {/* Learnings and next steps, two-column */}
       <section className="mb-[80px]">
         <h2 className="font-serif font-normal text-[26px] md:text-[34px] leading-[1.2] mb-[40px]">
           Learnings and next steps

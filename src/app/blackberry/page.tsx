@@ -233,7 +233,7 @@ export default function BlackberryCaseStudy() {
         />
       </section>
 
-      {/* Project 01 — Cyber Attack Map */}
+      {/* Project 01: Cyber Attack Map */}
       <ProjectSection
         eyebrow="Project 01 · Cyber Attack Map"
         heading="Why we turned cluttered investigation into a single decision surface"
@@ -257,7 +257,7 @@ export default function BlackberryCaseStudy() {
         }}
       />
 
-      {/* Project 02 — Widget discovery */}
+      {/* Project 02: Widget discovery */}
       <ProjectSection
         eyebrow="Project 02 · Widget discovery and classification"
         heading="Why dashboard building had to start with audience, not feature"
@@ -286,7 +286,7 @@ export default function BlackberryCaseStudy() {
 
             <p>Two findings landed across all three.</p>
 
-            {/* Inline quotes — block-quote style stickies */}
+            {/* Inline quotes: block-quote style stickies */}
             <div className="flex flex-col gap-[10px] my-[8px]">
               {[
                 { quote: 'It would be great to know where this widget is used in current dashboards.', attr: 'SOC analyst, internal cohort' },
