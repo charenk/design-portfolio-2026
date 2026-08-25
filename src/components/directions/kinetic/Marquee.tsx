@@ -62,7 +62,15 @@ export function Marquee() {
     { scope: ref }
   )
 
-  const half = `${ITEMS.join(' · ')} · `.repeat(2)
+  // Two copies of the item run per half; separators pick up the magenta
+  // accent via the existing `.k-marquee-half em` rule.
+  const run = [...ITEMS, ...ITEMS]
+  const half = run.map((item, i) => (
+    <span key={i}>
+      {item}
+      <em> · </em>
+    </span>
+  ))
 
   return (
     <div ref={ref} className="k-marquee" aria-hidden="true">
