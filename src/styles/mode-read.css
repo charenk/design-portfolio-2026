@@ -133,7 +133,7 @@
     min-height: 100svh;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-end;
     gap: clamp(2rem, 6vh, 4rem);
     padding-top: calc(64px + clamp(1.5rem, 4vh, 3rem));
     padding-bottom: clamp(2.25rem, 6vh, 4.5rem);
@@ -150,21 +150,6 @@
       linear-gradient(to right, var(--k-grid-line) 1px, transparent 1px),
       linear-gradient(to bottom, var(--k-grid-line) 1px, transparent 1px);
     background-size: 80px 80px;
-  }
-
-  & .k-hero-meta {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px clamp(24px, 4vw, 64px);
-    justify-content: space-between;
-    color: var(--k-ink-soft);
-  }
-
-  & .k-hero-meta strong {
-    font-weight: 600;
-    color: var(--k-ink);
   }
 
   & .k-hero-bottom {
@@ -417,7 +402,7 @@
     line-height: 1.12;
     letter-spacing: -0.01em;
     max-width: 24ch;
-    margin-top: clamp(1.25rem, 3vh, 2rem);
+    margin-top: 0;
   }
 
   & .k-about-statement em {
@@ -425,12 +410,17 @@
     color: var(--k-magenta);
   }
 
+  & .k-about-label {
+    margin-top: clamp(2.25rem, 6vh, 4rem);
+    color: var(--k-ink-soft);
+  }
+
   & .k-about-logos {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     gap: clamp(24px, 4vw, 48px);
-    margin-top: clamp(2.25rem, 6vh, 4rem);
+    margin-top: clamp(0.9rem, 2vh, 1.25rem);
   }
 
   & .k-about-logos img {
