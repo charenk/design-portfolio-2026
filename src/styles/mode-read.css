@@ -15,7 +15,7 @@
   --k-grid-line: rgba(171, 7, 130, 0.08);
   --k-serif: var(--font-instrument-serif), 'Instrument Serif', Georgia, serif;
   --k-sans: var(--font-montserrat), 'Montserrat', system-ui, sans-serif;
-  --k-gutter: clamp(20px, 5vw, 72px);
+  --k-gutter: var(--content-gutter);
 
   background: var(--k-bg);
   color: var(--k-ink);
@@ -41,7 +41,8 @@
   /* ---------- shared ---------- */
 
   & .k-container {
-    max-width: 1600px;
+    /* content + gutters, so the inner box matches see mode at every width */
+    max-width: calc(var(--content-max) + 2 * var(--k-gutter));
     margin-inline: auto;
     padding-inline: var(--k-gutter);
   }

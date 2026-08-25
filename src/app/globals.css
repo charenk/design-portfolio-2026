@@ -76,6 +76,11 @@
 }
 
 :root {
+  /* One content box for the homepage's read and see modes: both modes
+     compute their column as min(--content-max, viewport - 2 * gutter). */
+  --content-max: 1120px;
+  --content-gutter: 20px;
+
   --background: #FFF7EF;
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);

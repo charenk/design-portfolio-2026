@@ -78,7 +78,7 @@
 }
 
 .dir-tactile .tc-section-inner {
-  max-width: 1120px;
+  max-width: var(--content-max);
   margin: 0 auto;
 }
 
@@ -185,7 +185,7 @@
 }
 
 .dir-tactile .tc-nav-inner {
-  max-width: 1120px;
+  max-width: var(--content-max);
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -277,7 +277,7 @@
 
 .dir-tactile .tc-hero-inner {
   position: relative;
-  max-width: 1120px;
+  max-width: var(--content-max);
   margin: 0 auto;
 }
 
