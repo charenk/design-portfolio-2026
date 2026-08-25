@@ -76,6 +76,10 @@ export function CardBoard() {
               edgeResistance: 0.75,
               inertia: true,
               minimumMovement: 3,
+              // See StickerHero: Draggable's inline cursor would defeat
+              // `cursor: none`, so mirror the follower's own gating here.
+              cursor: full ? 'none' : 'grab',
+              activeCursor: full ? 'none' : 'grabbing',
               onPress() {
                 card.classList.add('is-lifted')
                 if (full && inner) {

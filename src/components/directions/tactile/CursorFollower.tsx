@@ -40,8 +40,10 @@ export function CursorFollower() {
         gsap.set(bubble, { scale: 0 })
         gsap.set(dot, { scale: 1 })
 
-        const xTo = gsap.quickTo(root, 'x', { duration: 0.3, ease: 'power3' })
-        const yTo = gsap.quickTo(root, 'y', { duration: 0.3, ease: 'power3' })
+        // Tight enough that the bubble reads as the cursor itself: it is the
+        // only pointer affordance once the OS cursor is hidden.
+        const xTo = gsap.quickTo(root, 'x', { duration: 0.15, ease: 'power3' })
+        const yTo = gsap.quickTo(root, 'y', { duration: 0.15, ease: 'power3' })
 
         let shown = false
         let mode: string | null = null

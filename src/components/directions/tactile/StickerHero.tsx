@@ -49,6 +49,12 @@ export function StickerHero() {
             inertia: true,
             bounds: section,
             edgeResistance: 0.55,
+            // Draggable writes an inline cursor, which outranks the
+            // `cursor: none` rule in mode-see.css and leaves the OS cursor
+            // showing alongside the follower bubble. Only hide it when the
+            // follower is actually running, so reduced motion keeps a pointer.
+            cursor: full ? 'none' : 'grab',
+            activeCursor: full ? 'none' : 'grabbing',
             onPress() {
               dragging = true
             },
