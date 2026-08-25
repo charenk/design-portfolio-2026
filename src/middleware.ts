@@ -3,6 +3,16 @@ import { NextRequest, NextResponse } from 'next/server'
 export function middleware(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl
 
+  // Design mode: on-demand local bypass of every gate, including /admin.
+  // Started with `npm run design`. The NODE_ENV guard keeps the flag inert
+  // in production even if DESIGN_MODE leaks into a deploy's env.
+  if (
+    process.env.DESIGN_MODE === '1' &&
+    process.env.NODE_ENV === 'development'
+  ) {
+    return NextResponse.next()
+  }
+
   // Tier 1: magic link token in URL
   const urlToken = searchParams.get('t')
   const envToken = process.env.PORTFOLIO_TOKEN
