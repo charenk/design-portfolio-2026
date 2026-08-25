@@ -57,8 +57,10 @@ export function CursorFollower() {
 
         // Only the decorative ring eases; the dot root is set synchronously
         // in onMove so the visible cursor is always exactly at the pointer.
-        const ringXTo = gsap.quickTo(ringRoot, 'x', { duration: 0.28, ease: 'power3' })
-        const ringYTo = gsap.quickTo(ringRoot, 'y', { duration: 0.28, ease: 'power3' })
+        // 0.14s keeps the dot inside the ring at normal speeds, so the two
+        // read as one object; only fast flicks stretch them apart.
+        const ringXTo = gsap.quickTo(ringRoot, 'x', { duration: 0.14, ease: 'power3' })
+        const ringYTo = gsap.quickTo(ringRoot, 'y', { duration: 0.14, ease: 'power3' })
 
         let shown = false
         let mode: string | null = null
