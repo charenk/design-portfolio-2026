@@ -55,27 +55,49 @@ export function CursorFollower() {
         gsap.set(bubble, { scale: 0 })
         gsap.set([dot, ring], { scale: 1 })
 
-        // Only the decorative ring eases; the dot root is set synchronously
-        // in onMove so the visible cursor is always exactly at the pointer.
-        // 0.14s keeps the dot inside the ring at normal speeds, so the two
-        // read as one object; only fast flicks stretch them apart.
-        const ringXTo = gsap.quickTo(ringRoot, 'x', { duration: 0.14, ease: 'power3' })
-        const ringYTo = gsap.quickTo(ringRoot, 'y', { duration: 0.14, ease: 'power3' })
+        // The dot root is set synchronously in onMove so the visible cursor
+        // is always exactly at the pointer. The ring lerps behind on the
+        // shared GSAP ticker, with its lag hard-clamped to MAX_LAG px: the
+        // ring's interior radius minus the dot's radius, so the dot can
+        // never visually leave the ring no matter how fast the pointer
+        // moves. No duration tuning can guarantee that; the clamp does.
+        const MAX_LAG = 10
+        const pointer = { x: 0, y: 0 }
+        const ringPos = { x: 0, y: 0 }
+
+        const tick = () => {
+          // Frame-rate-independent lerp (~0.25 per 60fps frame).
+          const blend = 1 - Math.pow(0.75, gsap.ticker.deltaRatio(60))
+          ringPos.x += (pointer.x - ringPos.x) * blend
+          ringPos.y += (pointer.y - ringPos.y) * blend
+          const dx = ringPos.x - pointer.x
+          const dy = ringPos.y - pointer.y
+          const dist = Math.hypot(dx, dy)
+          if (dist > MAX_LAG) {
+            const s = MAX_LAG / dist
+            ringPos.x = pointer.x + dx * s
+            ringPos.y = pointer.y + dy * s
+          }
+          gsap.set(ringRoot, { x: ringPos.x, y: ringPos.y })
+        }
+        gsap.ticker.add(tick)
 
         let shown = false
         let mode: string | null = null
 
         const onMove = (e: PointerEvent) => {
+          pointer.x = e.clientX
+          pointer.y = e.clientY
           if (!shown) {
             shown = true
             // Place both layers at the pointer before fading in, so the
             // ring never flies in from the viewport origin.
+            ringPos.x = e.clientX
+            ringPos.y = e.clientY
             gsap.set(roots, { x: e.clientX, y: e.clientY })
             gsap.to(roots, { autoAlpha: 1, duration: 0.25 })
           }
           gsap.set(dotRoot, { x: e.clientX, y: e.clientY })
-          ringXTo(e.clientX)
-          ringYTo(e.clientY)
         }
 
         const setMode = (next: string | null) => {
@@ -135,6 +157,7 @@ export function CursorFollower() {
         document.documentElement.addEventListener('pointerleave', onLeaveDoc)
 
         return () => {
+          gsap.ticker.remove(tick)
           window.removeEventListener('pointermove', onMove)
           document.removeEventListener('pointerover', onOver)
           window.removeEventListener('pointerdown', onDown)
