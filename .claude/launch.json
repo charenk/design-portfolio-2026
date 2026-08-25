@@ -6,6 +6,12 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
       "port": 3000
+    },
+    {
+      "name": "portfolio-design",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "design"],
+      "port": 3000
     }
   ]
 }
