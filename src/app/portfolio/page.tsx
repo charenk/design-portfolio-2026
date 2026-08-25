@@ -301,7 +301,7 @@ export default function PortfolioPage() {
           <WorkIndex
             projects={PORTFOLIO_PROJECTS}
             heading="Index"
-            sub={`${PORTFOLIO_PROJECTS.length} Projects, 2019 to 2026`}
+            sub={`${PORTFOLIO_PROJECTS.length} Projects`}
             sectionId="pfr-work"
           />
 

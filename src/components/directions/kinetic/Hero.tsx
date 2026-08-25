@@ -32,16 +32,6 @@ export function Hero() {
       })
 
       mm.add(FULL_MOTION, () => {
-        // Meta row rises in just before the headline chars land.
-        gsap.from('.k-hero-meta > span', {
-          autoAlpha: 0,
-          y: 16,
-          duration: 0.8,
-          stagger: 0.09,
-          ease: 'power3.out',
-          delay: 0.2,
-        })
-
         // Thin magenta rule draws left to right after the headline.
         gsap.from('.k-hero-rule', {
           scaleX: 0,
@@ -70,18 +60,13 @@ export function Hero() {
   )
 
   return (
-    <section ref={ref} className="k-hero k-container" aria-label="Introduction">
+    <section ref={ref} className="k-hero" aria-label="Introduction">
+      {/* Grid is a child of the full-bleed section, not the capped container,
+          so it runs edge to edge; overflow: clip still bounds its parallax. */}
       <div className="k-hero-grid" aria-hidden="true" />
 
-      <div className="k-hero-meta k-label">
-        <span>
-          <strong>Charen Koneti</strong>
-        </span>
-        <span>Currently at CyberQP</span>
-        <span>Based in Canada</span>
-      </div>
-
-      <div className="k-hero-bottom">
+      <div className="k-container k-hero-inner">
+        <div className="k-hero-bottom">
         <h1 className="k-hero-hl">
           <RevealText
             as="span"
@@ -130,6 +115,7 @@ export function Hero() {
         </RevealText>
 
         <div className="k-hero-rule" aria-hidden="true" />
+        </div>
       </div>
     </section>
   )

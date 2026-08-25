@@ -41,12 +41,15 @@
   border-radius: 6px;
 }
 
-/* Hide the OS cursor only where the custom cursor shows an affordance, and
-   only in the exact conditions where the custom cursor is actually running. */
+/* The ink-dot follower IS the cursor in see mode: hide the OS cursor across
+   the whole surface, but only in the exact conditions where the follower is
+   actually running (fine pointer + full motion). !important intentionally
+   outranks the scattered pointer/grab rules and any inline cursor styles so
+   the two can never show at once. Reduced motion and touch keep OS cursors. */
 @media (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .dir-tactile [data-cursor],
-  .dir-tactile [data-cursor] a {
-    cursor: none;
+  .dir-tactile,
+  .dir-tactile * {
+    cursor: none !important;
   }
 }
 
@@ -78,7 +81,7 @@
 }
 
 .dir-tactile .tc-section-inner {
-  max-width: 1120px;
+  max-width: var(--content-max);
   margin: 0 auto;
 }
 
@@ -147,6 +150,26 @@
   pointer-events: none;
 }
 
+/* Decorative trailing ring: its own fixed root one layer below the dot, so
+   the precision dot and labelled bubble always paint above it. */
+.dir-tactile .tc-cursor-ring-root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9989;
+  pointer-events: none;
+}
+
+.dir-tactile .tc-cursor-ring {
+  position: absolute;
+  width: 34px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 1.5px solid var(--tc-ink);
+  opacity: 0.55;
+  translate: -50% -50%;
+}
+
 .dir-tactile .tc-cursor-dot {
   position: absolute;
   width: 10px;
@@ -185,7 +208,7 @@
 }
 
 .dir-tactile .tc-nav-inner {
-  max-width: 1120px;
+  max-width: var(--content-max);
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -277,7 +300,7 @@
 
 .dir-tactile .tc-hero-inner {
   position: relative;
-  max-width: 1120px;
+  max-width: var(--content-max);
   margin: 0 auto;
 }
 

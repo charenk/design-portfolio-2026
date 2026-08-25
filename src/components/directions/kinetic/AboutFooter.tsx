@@ -69,8 +69,6 @@ export function AboutFooter() {
   return (
     <div ref={ref}>
       <section className="k-about k-container" aria-label="About">
-        <h2 className="k-label">Previously shipped at</h2>
-
         <RevealText
           as="p"
           className="k-about-statement"
@@ -82,6 +80,8 @@ export function AboutFooter() {
           Currently shaping AI-powered privileged access management products
           at CyberQP.
         </RevealText>
+
+        <h2 className="k-label k-about-label">Previously shipped at</h2>
 
         <div className="k-about-logos">
           {LOGOS.map((logo) => (

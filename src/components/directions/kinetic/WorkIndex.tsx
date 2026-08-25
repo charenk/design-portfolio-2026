@@ -35,7 +35,7 @@ export function WorkIndex({
   sub,
   sectionId = 'work-read',
 }: WorkIndexProps) {
-  const subLabel = sub ?? `${projects.length} Projects, 2019 to 2026`
+  const subLabel = sub ?? `${projects.length} Projects`
   const sectionRef = useRef<HTMLElement>(null)
   const previewRef = useRef<HTMLDivElement>(null)
 
