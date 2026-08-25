@@ -35,14 +35,15 @@ interface ModeContextValue {
 const ModeContext = createContext<ModeContextValue | null>(null)
 
 /**
- * Sitewide read/see mode. SSR always renders "see"; a pre-paint inline script
- * in the root layout mirrors a stored "read" preference onto
- * html[data-mode] so CSS variants are correct before hydration, and this
- * provider syncs React state to it pre-paint on mount.
+ * Sitewide read/see mode. SSR always renders "read" (the default landing
+ * mode); a pre-paint inline script in the root layout strips
+ * html[data-mode] for a stored "see" preference so CSS variants are correct
+ * before hydration, and this provider syncs React state to it pre-paint on
+ * mount.
  */
 export function ModeProvider({ children }: { children: React.ReactNode }) {
-  const [mode, setModeState] = useState<PortfolioMode>('see')
-  const modeRef = useRef<PortfolioMode>('see')
+  const [mode, setModeState] = useState<PortfolioMode>('read')
+  const modeRef = useRef<PortfolioMode>('read')
   const handlerRef = useRef<ModeTransitionHandler | null>(null)
   const busyRef = useRef(false)
 
@@ -51,12 +52,13 @@ export function ModeProvider({ children }: { children: React.ReactNode }) {
   }, [mode])
 
   useLayoutEffect(() => {
-    if (document.documentElement.dataset.mode === 'read') {
-      // Pre-paint restore of the stored preference set by the inline script.
-      // Cannot live in the useState initializer without a hydration mismatch,
-      // since the server always renders "see".
+    if (document.documentElement.dataset.mode !== 'read') {
+      // Pre-paint restore of the stored "see" preference: the inline script
+      // removed the attribute before hydration. Cannot live in the useState
+      // initializer without a hydration mismatch, since the server always
+      // renders "read".
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setModeState('read')
+      setModeState('see')
     }
   }, [])
 

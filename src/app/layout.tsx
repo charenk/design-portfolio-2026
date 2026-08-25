@@ -50,17 +50,18 @@ export default function RootLayout({
 }>) {
   return (
     // suppressHydrationWarning: the inline script below mutates data-mode on
-    // <html> before hydration when a stored "read" preference exists.
-    <html lang="en" suppressHydrationWarning>
+    // <html> before hydration when a stored "see" preference exists.
+    <html lang="en" data-mode="read" suppressHydrationWarning>
       <body
         className={`${montserrat.variable} ${caveat.variable} ${instrumentSerif.variable} antialiased`}
       >
         <script
-          // Pre-paint mode restore: keeps read-mode CSS variants correct
-          // before hydration, with no flash of the "see" default.
+          // Pre-paint mode restore: read is the default landing mode; strip
+          // the attribute for visitors who previously chose "see", with no
+          // flash of the "read" default.
           dangerouslySetInnerHTML={{
             __html:
-              "try{if(localStorage.getItem('portfolio-mode')==='read')document.documentElement.dataset.mode='read'}catch(e){}",
+              "try{if(localStorage.getItem('portfolio-mode')==='see')delete document.documentElement.dataset.mode}catch(e){}",
           }}
         />
         <ModeProvider>
