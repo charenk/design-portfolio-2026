@@ -150,6 +150,26 @@
   pointer-events: none;
 }
 
+/* Decorative trailing ring: its own fixed root one layer below the dot, so
+   the precision dot and labelled bubble always paint above it. */
+.dir-tactile .tc-cursor-ring-root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9989;
+  pointer-events: none;
+}
+
+.dir-tactile .tc-cursor-ring {
+  position: absolute;
+  width: 34px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 1.5px solid var(--tc-ink);
+  opacity: 0.55;
+  translate: -50% -50%;
+}
+
 .dir-tactile .tc-cursor-dot {
   position: absolute;
   width: 10px;
