@@ -497,11 +497,14 @@ function Deck({ frames }: { frames: DeckFrame[] }) {
             >
               <span className="cs-tape" aria-hidden />
               <div className="cs-figure-media cs-tmodal-frame-media">
+                {/* Normal-flow img (not the absolute cs-figure-img): its
+                    intrinsic 16:9 ratio derives the width from the slide's
+                    height, so the frame shrink-wraps the painted image. */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={frame.image.src}
                   alt={frame.image.alt}
-                  className="cs-figure-img"
+                  className="cs-tmodal-slide-img"
                 />
               </div>
             </div>
@@ -584,7 +587,21 @@ function ThemeModal({
 
   const [selectedKey, setSelectedKey] = useState(firstKey)
   const [activeChildId, setActiveChildId] = useState(firstChildId)
+  /* True once the deck is scrolled: swaps the crumb's divider-shadow in. */
+  const [deckScrolled, setDeckScrolled] = useState(false)
   const parentScrollRef = useRef<HTMLDivElement>(null)
+  const railRef = useRef<HTMLElement>(null)
+
+  /* Keep the active rail entry visible as the scrollspy moves it: with the
+     crumb no longer naming the sub-item, the rail is the one "where am I"
+     indicator, so it must not drift out of view (especially the horizontal
+     mobile strip). block/inline "nearest" keeps this from moving anything
+     but the rail's own scroller. */
+  useEffect(() => {
+    railRef.current
+      ?.querySelector<HTMLElement>('.is-active')
+      ?.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' })
+  }, [activeChildId, selectedKey])
 
   /* The id to imperatively scroll to is kept OUT of activeChildId's own
      update cycle: activeChildId also gets written by the scrollspy below as
@@ -615,12 +632,6 @@ function ThemeModal({
       (selectedEntry.node.leaf ? [selectedEntry.node.leaf] : [])
     : []
   const deckFrames = buildDeck(selectedLeaves)
-  /* Only name the slide when the node actually has multiple sub-items;
-     for a single-sub-item deck the parent half already says it. */
-  const activeChildLabel =
-    selectedLeaves.length > 1
-      ? selectedLeaves.find((l) => l.id === activeChildId)?.label
-      : undefined
 
   const focusDetail = () => {
     requestAnimationFrame(() => {
@@ -633,12 +644,14 @@ function ThemeModal({
   const selectLeaf = (id: string) => {
     setSelectedKey(id)
     setActiveChildId(undefined)
+    setDeckScrolled(false)
     focusDetail()
   }
 
   const selectParent = (parentLabel: string, childId?: string) => {
     setSelectedKey(`${theme.id}-${slug(parentLabel)}`)
     setActiveChildId(childId)
+    setDeckScrolled(false)
     requestScroll(childId)
     focusDetail()
   }
@@ -651,6 +664,7 @@ function ThemeModal({
   const handleParentScroll = () => {
     const box = parentScrollRef.current
     if (!box) return
+    setDeckScrolled(box.scrollTop > 4)
     const top = box.getBoundingClientRect().top
     let current: string | undefined
     for (const slide of box.querySelectorAll<HTMLElement>('.cs-tmodal-slide')) {
@@ -720,6 +734,7 @@ function ThemeModal({
   useEffect(() => {
     setSelectedKey(firstKey)
     setActiveChildId(firstChildId)
+    setDeckScrolled(false)
     requestScroll(firstChildId)
     // firstKey/firstChildId derive from theme.id; resetting on theme change is enough.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -786,7 +801,7 @@ function ThemeModal({
             content, each with its own scroll area (see-and-swap, not one
             shared page scroll). */}
         <div className="cs-tmodal-body">
-          <nav className="cs-tmodal-rail" aria-label="Sections in this theme">
+          <nav ref={railRef} className="cs-tmodal-rail" aria-label="Sections in this theme">
             {railGroups.map((group, gi) => (
               <div key={group.title ?? gi} className="cs-tmodal-rail-group">
                 {group.title && (
@@ -855,36 +870,18 @@ function ThemeModal({
             ) : (
               selectedEntry && (
                 <>
-                  {/* Breadcrumb replaces the old group kicker + parent title +
-                      per-section label stack: one line, so the slides get the
-                      vertical space. The child half names whichever slide is
-                      in view and crossfades as the reader moves through. */}
+                  {/* One line above the deck: just the parent. The rail's
+                      highlight is the single "where am I" indicator (it
+                      tracks per-slide via the scrollspy), and each slide
+                      carries its own baked-in title, so naming the sub-item
+                      here again would state it in three places. */}
                   <h3
-                    className="cs-tmodal-crumb cs-tmodal-detail-title"
+                    className={`cs-tmodal-crumb cs-tmodal-detail-title${deckScrolled ? ' is-scrolled' : ''}`}
                     tabIndex={-1}
                   >
                     <span className="cs-tmodal-crumb-parent">
                       {selectedEntry.node.label}
                     </span>
-                    {activeChildLabel && (
-                      <>
-                        <span className="cs-tmodal-crumb-sep" aria-hidden="true">
-                          ·
-                        </span>
-                        <AnimatePresence mode="wait" initial={false}>
-                          <motion.span
-                            key={activeChildLabel}
-                            className="cs-tmodal-crumb-child"
-                            initial={{ opacity: 0, y: 4 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -4 }}
-                            transition={{ duration: 0.16 }}
-                          >
-                            {activeChildLabel}
-                          </motion.span>
-                        </AnimatePresence>
-                      </>
-                    )}
                   </h3>
                   <div
                     ref={parentScrollRef}
