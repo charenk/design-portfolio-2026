@@ -1914,8 +1914,21 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
 }
 
 .cs-page .cs-tmodal-rail-item-sub {
-  padding-left: 24px;
+  padding: 5px 10px 5px 22px;
+  font-size: 12px;
+  line-height: 1.35;
   color: var(--cs-ink-faint);
+  border-left: 2px solid transparent;
+  border-radius: 0 8px 8px 0;
+}
+
+/* Active child is a position marker, deliberately lighter than the
+   parent's filled "selected" pill: a magenta bar and ink text, no fill. */
+.cs-page .cs-tmodal-rail-item-sub.is-active {
+  background: transparent;
+  font-weight: 500;
+  color: var(--cs-ink);
+  border-left-color: var(--cs-magenta);
 }
 
 .cs-page .cs-tmodal-rail-group + .cs-tmodal-rail-group {
@@ -2039,6 +2052,11 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
   max-width: 100%;
   display: flex;
   min-height: 0;
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
+  border: none;
+  border-radius: 0;
 }
 
 .cs-page .cs-tmodal-frame-media {
@@ -2050,9 +2068,21 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
 
 .cs-page .cs-tmodal-slide-img {
   display: block;
-  height: min(calc(100cqh - 20px), calc((100cqw - 20px) * 9 / 16));
+  height: min(calc(100cqh - 8px), calc((100cqw - 8px) * 9 / 16));
   width: auto;
-  border-radius: 8px;
+  border-radius: 12px;
+  /* Literal values, not var(--cs-shadow-soft): read mode nulls the shadow
+     vars, but these near-white slides need depth to hold an edge against
+     the paper without the border stroke the user rejected. */
+  box-shadow: 0 1px 2px rgba(34, 31, 26, 0.06), 0 10px 24px rgba(34, 31, 26, 0.1);
+}
+
+/* Read mode borders figures (line ~1229); modal slides opt out at matching
+   specificity so the image's own radius + shadow are the whole edge. */
+html[data-mode='read'] .cs-page .cs-tmodal-frame {
+  border: none;
+  border-radius: 0;
+  padding: 0;
 }
 
 /* Visually hidden, still announced: keeps the sub-item structure legible to
@@ -2202,6 +2232,13 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
 
   .cs-page .cs-tmodal-rail-item-sub {
     padding-left: 12px;
+    border-left: none;
+    border-bottom: 2px solid transparent;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .cs-page .cs-tmodal-rail-item-sub.is-active {
+    border-bottom-color: var(--cs-magenta);
   }
 
   /* Groups flow inline on the horizontal strip. */
