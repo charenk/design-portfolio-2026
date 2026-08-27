@@ -2068,7 +2068,10 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
 
 .cs-page .cs-tmodal-slide-img {
   display: block;
-  height: min(calc(100cqh - 8px), calc((100cqw - 8px) * 9 / 16));
+  /* The width-bound branch must use the WIDEST slide ratio in any deck
+     (currently the 2560x1400 exports) or those slides overflow
+     horizontally. Narrower 16:9 decks just underfill by ~3%, harmless. */
+  height: min(calc(100cqh - 8px), calc((100cqw - 8px) * 1400 / 2560));
   width: auto;
   border-radius: 12px;
   /* Literal values, not var(--cs-shadow-soft): read mode nulls the shadow

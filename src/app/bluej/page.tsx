@@ -93,23 +93,19 @@ const THEMES: Theme[] = [
             subItems: [
               {
                 label: 'Intro',
-                desc: 'The CyberQP design-system story: efforts, outcome, and the agentic framework behind it.',
+                desc: 'The CyberQP design-system story: selected samples, the agentic framework, and the platform outcome.',
                 images: [
                   {
                     src: '/bluej/ds-intro-1.png',
-                    alt: 'CyberQP design-system efforts for product cohesiveness and design-engineering handoff: annotated source-side org states next to the identities table UI',
+                    alt: 'Selected work samples: scaling the list-item component with annotated org states, the TableCard component on the identities table, and addressing front-end agent drift',
                   },
                   {
                     src: '/bluej/ds-intro-2.png',
-                    alt: 'Product outcome: the legacy product UI beside the new platform design direction',
+                    alt: 'Design System 2.0, the new agentic design system framework: discovery, prioritize and decide, build and test with Claude, measure and monitor',
                   },
                   {
                     src: '/bluej/ds-intro-3.png',
-                    alt: 'New agentic design system framework: discovery, prioritize and decide, build and test, measure and monitor',
-                  },
-                  {
-                    src: '/bluej/ds-intro-4.png',
-                    alt: 'Selected examples: TableCard component, front-end agent drift, and source organization presentation',
+                    alt: 'Outcome, the biggest UX win: from the legacy product to the new platform design direction, leading the platform redesign alongside design system enhancements',
                   },
                 ],
               },
