@@ -111,41 +111,45 @@ const THEMES: Theme[] = [
               },
               {
                 label: 'Adding TableCard component',
-                desc: 'TableCard: one enclosing surface for tabs, table, and pagination.',
+                desc: 'One enclosing surface for tabs, table, and pagination: the before and after, the working artifact, and what shipped to Storybook.',
                 images: [
                   {
                     src: '/bluej/ds-tablecard-1.png',
-                    alt: 'TableCard definition and the before state: tabs, table, and footer pagination as three unbounded components on the live identities screen',
+                    alt: 'Work sample 1, before TableCard and refined guidelines: the identities screen with tabs, table, and footer pagination marked one, two, and three as three unbounded components',
                   },
                   {
                     src: '/bluej/ds-tablecard-2.png',
-                    alt: 'Selected artifacts: the identities table after TableCard, with tabs, table, and pagination bound in one enclosed card',
+                    alt: 'After the TableCard definition: the same identities table with tabs, rows, and pagination bound inside one enclosed surface',
                   },
                   {
                     src: '/bluej/ds-tablecard-3.png',
-                    alt: 'Selected artifacts: canvas annotations giving the agent context while working, with feedback on pagination height, active-page state, and component inconsistencies',
+                    alt: 'Behind the scenes working artifact: canvas annotations on pagination height, page-selector state, and border-radius inconsistencies, captioned about iterating with engineering in the loop on high-impact components',
                   },
                   {
                     src: '/bluej/ds-tablecard-4.png',
-                    alt: 'Outcome: TableCard documented in Storybook with header slot, untabbed, footer slot, and page pattern variants',
+                    alt: 'Final output: the new TableCard configuration in Storybook with header slot, untabbed, footer slot, and page pattern variants, added alongside a decision log and product context',
                   },
                 ],
               },
               {
                 label: 'Addressing frontend drift',
-                desc: 'Catching drift before it ships, then updating the component guidelines.',
+                desc: 'Catching drift in an audit, fixing it before it shipped, then closing the gap in the guidelines.',
                 images: [
                   {
                     src: '/bluej/ds-drift-1.png',
-                    alt: 'Addressing frontend drifts and updating component guidelines',
+                    alt: 'Work sample 2, UI defects in dark mode found during audit: the Policies screen where the primary button and menu use gray.900 fills on a near-identical dark canvas, so the container barely separates from the page',
                   },
                   {
                     src: '/bluej/ds-drift-2.png',
-                    alt: 'Discovery of drift before the solution hit production: picked from the Claude-maintained punch list, severity confirmed in a local audit, fix implemented and the page updated',
+                    alt: 'Discovery of drift before the solution hit production: punch item P-030 for the button system with its acceptance criteria, picked from the agent-maintained punch list, severity confirmed in a local audit, then fixed',
                   },
                   {
                     src: '/bluej/ds-drift-3.png',
-                    alt: 'Selected artifacts: the Button component dated and shared via Storybook, showing variant guidance in dark mode',
+                    alt: 'Before and after the fix, up close: the Policy and Action controls with near-invisible fills, beside the same controls today with a clear primary button',
+                  },
+                  {
+                    src: '/bluej/ds-drift-4.png',
+                    alt: 'Updated and reviewed button guidelines, decision log, and theme file so the system will not reproduce the issue: Button variants documented in Storybook across solid, outline, destructive, destructive outline, and ghost',
                   },
                 ],
               },
