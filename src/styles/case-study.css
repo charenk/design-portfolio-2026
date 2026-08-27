@@ -1937,6 +1937,10 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
   background: var(--cs-magenta);
   transform-origin: top;
   transform: scaleY(var(--rail-progress, 0));
+  /* Snap scrolling changes the fraction in discrete jumps, so without a
+     transition the bar teleports instead of reading as growth. Short
+     enough that free-scrolling still feels attached to the gesture. */
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Active child is a position marker, deliberately lighter than the
@@ -1945,6 +1949,9 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
   background: transparent;
   font-weight: 500;
   color: var(--cs-ink);
+  /* The unfilled remainder of the track. Without it a 25% fill reads as a
+     stray dash rather than "one of four". */
+  border-left-color: rgba(171, 7, 130, 0.22);
 }
 
 .cs-page .cs-tmodal-rail-group + .cs-tmodal-rail-group {
@@ -2266,6 +2273,11 @@ html[data-mode='read'] .cs-page .cs-tmodal-frame {
     height: 2px;
     transform-origin: left;
     transform: scaleX(var(--rail-progress, 0));
+  }
+
+  .cs-page .cs-tmodal-rail-item-sub.is-active {
+    border-left-color: transparent;
+    border-bottom-color: rgba(171, 7, 130, 0.22);
   }
 
   /* Groups flow inline on the horizontal strip. */
