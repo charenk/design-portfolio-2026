@@ -1913,7 +1913,12 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
   color: var(--cs-ink);
 }
 
+/* The left bar doubles as a progress indicator: it fills downward as the
+   reader moves through that sub-item's slides. A border can't be partially
+   filled, so it's a scaled pseudo-element driven by --rail-progress, which
+   handleParentScroll writes per scroll frame. */
 .cs-page .cs-tmodal-rail-item-sub {
+  position: relative;
   padding: 5px 10px 5px 22px;
   font-size: 12px;
   line-height: 1.35;
@@ -1922,13 +1927,24 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
   border-radius: 0 8px 8px 0;
 }
 
+.cs-page .cs-tmodal-rail-item-sub::before {
+  content: '';
+  position: absolute;
+  left: -2px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--cs-magenta);
+  transform-origin: top;
+  transform: scaleY(var(--rail-progress, 0));
+}
+
 /* Active child is a position marker, deliberately lighter than the
    parent's filled "selected" pill: a magenta bar and ink text, no fill. */
 .cs-page .cs-tmodal-rail-item-sub.is-active {
   background: transparent;
   font-weight: 500;
   color: var(--cs-ink);
-  border-left-color: var(--cs-magenta);
 }
 
 .cs-page .cs-tmodal-rail-group + .cs-tmodal-rail-group {
@@ -2240,8 +2256,16 @@ html[data-mode='read'] .cs-page .cs-tmodal-frame {
     border-radius: 8px 8px 0 0;
   }
 
-  .cs-page .cs-tmodal-rail-item-sub.is-active {
-    border-bottom-color: var(--cs-magenta);
+  /* Horizontal strip: the bar underlines the chip and fills left to right. */
+  .cs-page .cs-tmodal-rail-item-sub::before {
+    left: 0;
+    right: 0;
+    top: auto;
+    bottom: -2px;
+    width: auto;
+    height: 2px;
+    transform-origin: left;
+    transform: scaleX(var(--rail-progress, 0));
   }
 
   /* Groups flow inline on the horizontal strip. */

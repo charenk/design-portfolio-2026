@@ -666,13 +666,37 @@ function ThemeModal({
     if (!box) return
     setDeckScrolled(box.scrollTop > 4)
     const top = box.getBoundingClientRect().top
+    const slides = [...box.querySelectorAll<HTMLElement>('.cs-tmodal-slide')]
     let current: string | undefined
-    for (const slide of box.querySelectorAll<HTMLElement>('.cs-tmodal-slide')) {
+    let indexInChild = 0
+    for (const slide of slides) {
       if (slide.getBoundingClientRect().top - top <= 24) {
+        indexInChild = slide.dataset.childId === current ? indexInChild + 1 : 0
         current = slide.dataset.childId
       }
     }
-    if (current) setActiveChildId(current)
+    if (!current) return
+    setActiveChildId(current)
+    const total = slides.filter((s) => s.dataset.childId === current).length
+    writeRailProgress(current, total ? (indexInChild + 1) / total : 1)
+  }
+
+  /* Rail fill is written straight to the DOM rather than held in React
+     state: this runs on every scroll frame, and a state update here would
+     re-render the whole modal each frame (activeChildId doesn't, because
+     React bails out when the id is unchanged). Only the active item keeps a
+     value, so a stale fill can't linger on the one you just left. */
+  const writeRailProgress = (childId: string, fraction: number) => {
+    const rail = railRef.current
+    if (!rail) return
+    for (const item of rail.querySelectorAll<HTMLElement>(
+      '.cs-tmodal-rail-item-sub'
+    )) {
+      item.style.setProperty(
+        '--rail-progress',
+        item.dataset.childId === childId ? String(fraction) : '0'
+      )
+    }
   }
 
   /* Runs the pending scroll request once, after the click's state changes
@@ -686,6 +710,16 @@ function ThemeModal({
       behavior: 'smooth',
       block: 'start',
     })
+    /* Seed the rail fill for this selection: when the target is already at
+       the top of the box no scroll fires, so handleParentScroll would never
+       run and the bar would keep the previous child's value. */
+    const box = parentScrollRef.current
+    const total = box
+      ? box.querySelectorAll(
+          `.cs-tmodal-slide[data-child-id="${CSS.escape(id)}"]`
+        ).length
+      : 0
+    writeRailProgress(id, total ? 1 / total : 1)
     // scrollTick is the trigger; re-reading the ref each fire is intentional.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scrollTick])
@@ -821,6 +855,7 @@ function ThemeModal({
                         <button
                           key={child.id}
                           type="button"
+                          data-child-id={child.id}
                           className={`cs-tmodal-rail-item cs-tmodal-rail-item-sub${selectedKey === `${theme.id}-${slug(node.label)}` && activeChildId === child.id ? ' is-active' : ''}`}
                           onClick={() => selectParent(node.label, child.id)}
                         >
