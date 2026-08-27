@@ -37,6 +37,9 @@ interface ThemeItem {
   subItems?: ThemeSlot[]
   desc?: string
   wide?: boolean
+  /** Imagery for a leaf item, same shape as ThemeSlot.images. A leaf with
+      several slides renders as its own deck without needing sub-items. */
+  images?: { src: string; alt: string }[]
 }
 
 /** A titled group of items ("Latest", "Others"). Groups render as labeled
@@ -155,15 +158,15 @@ const THEMES: Theme[] = [
               },
               {
                 label: 'Simplifying organization list',
-                desc: 'Defining how source organizations present so organization sync makes sense.',
+                desc: 'Enhancing the menu list item component so organization sync reads clearly on both sides.',
                 images: [
                   {
                     src: '/bluej/ds-org-list-1.png',
-                    alt: 'Defining how we present source organizations to help sync organizations: source-side and CyberQP-side org states with flat, typed, and parent-child variants, annotated',
+                    alt: 'Work sample 3, enhancing the menu list item component for organizations: source-side and CyberQP-side org states covering flat orgs, typed orgs, parent-child nesting, selection checkboxes, and marked-to-create badges for both the agent\u2019s action and the user\u2019s',
                   },
                   {
                     src: '/bluej/ds-org-list-2.png',
-                    alt: 'Outcome: the organization list item component in the organization sync flow, beside the legacy organization matching experience and its known pain points',
+                    alt: 'Outcome: the updated organization matching experience in the new platform, with source titles matched against CyberQP organizations and unmatched rows called out, beside the legacy organization table it replaced',
                   },
                 ],
               },
@@ -174,11 +177,31 @@ const THEMES: Theme[] = [
       {
         title: 'Previous',
         items: [
-          // TODO(content): the Hopper Design System story. Content coming.
           {
             label: 'Hopper Design System',
-            desc: 'Placeholder: the Hopper Design System work. Content coming.',
-            wide: true,
+            desc: 'Leading the ShareGate platforms onto Workleap\u2019s shared design system, from context and role to the artifacts that drove adoption.',
+            images: [
+              {
+                src: '/bluej/ds-hopper-1.png',
+                alt: 'Hopper, the Workleap and ShareGate design system at hopper.workleap.design: accessible, international, TypeScript based, with dark mode, plus colors, text styles, and a react-aria component suite',
+              },
+              {
+                src: '/bluej/ds-hopper-2.png',
+                alt: 'Context: HR tech and IT products evolved independently, so two UI systems had to be maintained, patterns drifted for years, and teams duplicated effort; the shift was a strategy to integrate the products with a clear ROI in saved engineering and design cycles',
+              },
+              {
+                src: '/bluej/ds-hopper-3.png',
+                alt: 'My role: led the design system transition on ShareGate platforms, auditing products for the design system\u2019s discovery, designing and managing the platform\u2019s UI states, then ensuring adoption and building new patterns during design review',
+              },
+              {
+                src: '/bluej/ds-hopper-4.png',
+                alt: 'Behind the scenes: an async voting workshop on Hopper design patterns, where teams spent five votes each across pattern cards to prioritize documentation, producing a ranked list',
+              },
+              {
+                src: '/bluej/ds-hopper-5.png',
+                alt: 'Behind the scenes: component documentation for the Button group, with design requirements, guidelines, a completion checklist, light and dark theme variants, and a changelog entry',
+              },
+            ],
           },
         ],
       },
@@ -541,7 +564,12 @@ function buildRailGroups(theme: Theme): { title?: string; nodes: RailNode[] }[] 
         leaf: {
           id: `${theme.id}-${slug(item.label)}`,
           label: item.label,
-          slot: { label: item.label, desc: item.desc ?? '', wide: item.wide },
+          slot: {
+            label: item.label,
+            desc: item.desc ?? '',
+            wide: item.wide,
+            images: item.images,
+          },
           tilt: tiltIndex++,
         },
       }
