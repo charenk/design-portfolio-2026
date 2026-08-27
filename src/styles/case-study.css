@@ -1830,13 +1830,12 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
 
 .cs-page .cs-tmodal-rail {
   flex-shrink: 0;
-  width: 272px;
+  width: 260px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   gap: 4px;
-  padding: 22px 14px 22px clamp(20px, 2.5vw, 28px);
-  border-right: 1px solid var(--cs-line);
+  padding: 22px 8px 22px clamp(20px, 2.5vw, 28px);
   overflow-y: auto;
 }
 
@@ -1934,19 +1933,6 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
   color: var(--cs-ink-faint);
 }
 
-/* Matching group heading above the content pane's sections. */
-.cs-page .cs-tmodal-group-heading {
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--cs-line);
-  font-family: var(--cs-sans);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--cs-ink-faint);
-}
-
 /* Detail pane: a flex column so a selected parent's title stays pinned
    while only its own sub-item box (below) scrolls. For a leaf/Go-deeper
    selection this is just one non-scrolling block; overflow-y stays as a
@@ -1958,7 +1944,7 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 22px clamp(28px, 3.5vw, 48px) 32px;
+  padding: 22px clamp(24px, 3vw, 40px) 32px clamp(16px, 2vw, 28px);
   border-radius: 0 0 16px 0;
 }
 
@@ -1971,16 +1957,36 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
   margin-bottom: 4px;
 }
 
-.cs-page .cs-tmodal-item-title {
+/* One-line breadcrumb over the deck: "{parent} \00b7 {slide}". Replaces the
+   old group kicker + parent title + per-slide label stack so the slides get
+   that vertical space back. */
+.cs-page .cs-tmodal-crumb {
   flex-shrink: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 0;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--cs-line);
+}
+
+.cs-page .cs-tmodal-crumb-parent {
   font-family: var(--cs-serif);
   font-weight: 400;
   font-size: 21px;
   line-height: 1.25;
   color: var(--cs-ink);
-  margin-bottom: 0;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--cs-line);
+}
+
+.cs-page .cs-tmodal-crumb-sep {
+  color: var(--cs-ink-faint);
+}
+
+.cs-page .cs-tmodal-crumb-child {
+  font-family: var(--cs-sans);
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--cs-ink-soft);
 }
 
 .cs-page .cs-tmodal-detail-title:focus-visible {
@@ -1998,12 +2004,60 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
-  margin-top: 22px;
-  padding-top: 4px;
+  margin-top: 18px;
+  /* Snap slide-to-slide: one flick always lands on the next image rather
+     than stopping between two. */
+  scroll-snap-type: y mandatory;
 }
 
-.cs-page .cs-tmodal-subsection {
-  margin-left: clamp(0px, 2vw, 20px);
+/* Each slide fills the box so the whole 16:9 image is visible without
+   scrolling; scrolling then advances to the next one. */
+.cs-page .cs-tmodal-slide {
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  scroll-margin-top: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* The frame fills its slide so the media inherits a definite height:
+   .cs-figure-img is absolutely positioned and collapses without one. The
+   image then contains itself inside that area, so the paper frame reads as
+   a mount around the slide. */
+.cs-page .cs-tmodal-frame {
+  margin: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.cs-page .cs-tmodal-frame-media {
+  flex: 1;
+  min-height: 0;
+  background: transparent;
+}
+
+/* contain, not cover: the whole slide stays visible at any viewport shape,
+   which is the point of one-image-per-screen. */
+.cs-page .cs-tmodal-frame-media .cs-figure-img {
+  object-fit: contain;
+}
+
+/* Visually hidden, still announced: keeps the sub-item structure legible to
+   assistive tech now that the per-slide label is gone from the page. */
+.cs-page .cs-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 
 .cs-page .cs-tmodal-section-title {
@@ -2017,27 +2071,55 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
 
 .cs-page .cs-tmodal-footer {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: space-between;
   gap: 16px;
-  padding: 14px clamp(28px, 3.5vw, 48px);
+  padding: 18px clamp(28px, 3.5vw, 48px);
   border-top: 1px solid var(--cs-line);
 }
 
+/* Prev/next theme: a small kicker label over a prominent title, so this
+   reads as a real navigation control rather than a subtle text link. */
 .cs-page .cs-tmodal-step {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
   max-width: 46%;
   border: none;
   background: transparent;
-  font-family: var(--cs-serif);
-  font-size: 13px;
-  line-height: 1.4;
-  text-align: left;
-  color: var(--cs-ink-soft);
+  padding: 4px 2px;
   cursor: pointer;
+}
+
+.cs-page .cs-tmodal-step-next {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.cs-page .cs-tmodal-step-label {
+  font-family: var(--cs-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cs-ink-faint);
   transition: color 0.2s ease;
 }
 
-.cs-page .cs-tmodal-step:hover {
+.cs-page .cs-tmodal-step-title {
+  font-family: var(--cs-serif);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--cs-ink);
+  transition: color 0.2s ease;
+}
+
+.cs-page .cs-tmodal-step:hover .cs-tmodal-step-label {
+  color: var(--cs-magenta);
+}
+
+.cs-page .cs-tmodal-step:hover .cs-tmodal-step-title {
   color: var(--cs-magenta);
 }
 
@@ -2076,23 +2158,32 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
 
   .cs-page .cs-tmodal-rail {
     width: 100%;
-    max-height: 180px;
     flex-direction: row;
-    align-items: flex-start;
+    align-items: center;
     overflow-x: auto;
     overflow-y: hidden;
     gap: 6px;
-    padding: 12px 20px;
+    padding: 10px 20px;
     border-right: none;
     border-bottom: 1px solid var(--cs-line);
   }
 
-  /* A parent's stacked sub-items would otherwise be taller than the strip;
-     give the column its own bounded, independently-scrolling area instead
-     of overflowing past the rail into the page below. */
+  /* Everything flows inline on one scrolling strip: a parent's sub-items
+     sit beside it rather than stacking, which would make the strip taller
+     than the slides it is meant to leave room for. */
   .cs-page .cs-tmodal-rail-parent {
-    max-height: 100%;
-    overflow-y: auto;
+    flex-direction: row;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 6px;
+    margin-top: 0;
+  }
+
+  .cs-page .cs-tmodal-rail-parent-label {
+    width: auto;
+    flex-shrink: 0;
+    padding: 8px 12px;
+    white-space: nowrap;
   }
 
   .cs-page .cs-tmodal-rail-item {
@@ -2100,13 +2191,16 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
     white-space: nowrap;
   }
 
+  .cs-page .cs-tmodal-rail-item-sub {
+    padding-left: 12px;
+  }
+
   /* Groups flow inline on the horizontal strip. */
   .cs-page .cs-tmodal-rail-group {
     flex-direction: row;
-    align-items: flex-start;
+    align-items: center;
     flex-shrink: 0;
     gap: 6px;
-    max-height: 100%;
   }
 
   .cs-page .cs-tmodal-rail-group + .cs-tmodal-rail-group {

@@ -22,6 +22,9 @@ interface ThemeSlot {
   desc: string
   /** Spans the full gallery width on desktop. */
   wide?: boolean
+  /** Real imagery (16:9 slide exports in /public/bluej). When present, one
+      taped media frame renders per image instead of the placeholder. */
+  images?: { src: string; alt: string }[]
 }
 
 /** One entry in a theme group. A plain item (no subItems) is itself a
@@ -83,26 +86,93 @@ const THEMES: Theme[] = [
     ],
     groups: [
       {
-        title: 'Most recent',
+        title: 'Latest',
         items: [
-          // TODO(content): Charen will share the CyberQP design-system story in a follow-up prompt.
           {
             label: 'Design system at CyberQP',
-            desc: 'Placeholder: the CyberQP design-system context. Content coming.',
-            wide: true,
-          },
-          {
-            label: 'Item 2',
-            desc: 'Placeholder: second most-recent sample. Content coming.',
-          },
-          {
-            label: 'Item 3',
-            desc: 'Placeholder: third most-recent sample. Content coming.',
+            subItems: [
+              {
+                label: 'Intro',
+                desc: 'The CyberQP design-system story: efforts, outcome, and the agentic framework behind it.',
+                images: [
+                  {
+                    src: '/bluej/ds-intro-1.png',
+                    alt: 'CyberQP design-system efforts for product cohesiveness and design-engineering handoff: annotated source-side org states next to the identities table UI',
+                  },
+                  {
+                    src: '/bluej/ds-intro-2.png',
+                    alt: 'Product outcome: the legacy product UI beside the new platform design direction',
+                  },
+                  {
+                    src: '/bluej/ds-intro-3.png',
+                    alt: 'New agentic design system framework: discovery, prioritize and decide, build and test, measure and monitor',
+                  },
+                  {
+                    src: '/bluej/ds-intro-4.png',
+                    alt: 'Selected examples: TableCard component, front-end agent drift, and source organization presentation',
+                  },
+                ],
+              },
+              {
+                label: 'Adding TableCard component',
+                desc: 'TableCard: one enclosing surface for tabs, table, and pagination.',
+                images: [
+                  {
+                    src: '/bluej/ds-tablecard-1.png',
+                    alt: 'TableCard definition and the before state: tabs, table, and footer pagination as three unbounded components on the live identities screen',
+                  },
+                  {
+                    src: '/bluej/ds-tablecard-2.png',
+                    alt: 'Selected artifacts: the identities table after TableCard, with tabs, table, and pagination bound in one enclosed card',
+                  },
+                  {
+                    src: '/bluej/ds-tablecard-3.png',
+                    alt: 'Selected artifacts: canvas annotations giving the agent context while working, with feedback on pagination height, active-page state, and component inconsistencies',
+                  },
+                  {
+                    src: '/bluej/ds-tablecard-4.png',
+                    alt: 'Outcome: TableCard documented in Storybook with header slot, untabbed, footer slot, and page pattern variants',
+                  },
+                ],
+              },
+              {
+                label: 'Addressing frontend drift',
+                desc: 'Catching drift before it ships, then updating the component guidelines.',
+                images: [
+                  {
+                    src: '/bluej/ds-drift-1.png',
+                    alt: 'Addressing frontend drifts and updating component guidelines',
+                  },
+                  {
+                    src: '/bluej/ds-drift-2.png',
+                    alt: 'Discovery of drift before the solution hit production: picked from the Claude-maintained punch list, severity confirmed in a local audit, fix implemented and the page updated',
+                  },
+                  {
+                    src: '/bluej/ds-drift-3.png',
+                    alt: 'Selected artifacts: the Button component dated and shared via Storybook, showing variant guidance in dark mode',
+                  },
+                ],
+              },
+              {
+                label: 'Simplifying organization list',
+                desc: 'Defining how source organizations present so organization sync makes sense.',
+                images: [
+                  {
+                    src: '/bluej/ds-org-list-1.png',
+                    alt: 'Defining how we present source organizations to help sync organizations: source-side and CyberQP-side org states with flat, typed, and parent-child variants, annotated',
+                  },
+                  {
+                    src: '/bluej/ds-org-list-2.png',
+                    alt: 'Outcome: the organization list item component in the organization sync flow, beside the legacy organization matching experience and its known pain points',
+                  },
+                ],
+              },
+            ],
           },
         ],
       },
       {
-        title: 'Previous works',
+        title: 'Previous',
         items: [
           // TODO(content): the Hopper Design System story. Content coming.
           {
@@ -323,6 +393,127 @@ interface RailNode {
   children?: RailLeaf[]
 }
 
+/* One sub-item's visuals: real slide frames when imagery exists, else the
+   labeled placeholder frame. Tilt continues from the slot's base index so
+   stacked frames keep the alternating hand-placed rhythm. */
+function SlotFrames({ slot, tilt }: { slot: ThemeSlot; tilt: number }) {
+  if (slot.images?.length) {
+    return (
+      <>
+        {slot.images.map((image, i) => (
+          <div
+            key={image.src}
+            className={`cs-figure ${slotTilt(tilt + i)} cs-tmodal-frame`}
+            data-cs-figure
+          >
+            <span className="cs-tape" aria-hidden />
+            <div className="cs-figure-media aspect-video">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={image.src} alt={image.alt} className="cs-figure-img" />
+            </div>
+          </div>
+        ))}
+      </>
+    )
+  }
+  return (
+    <div className={`cs-figure ${slotTilt(tilt)}`} data-cs-figure>
+      <span className="cs-tape" aria-hidden />
+      <div
+        className={`cs-figure-empty ${slot.wide ? 'aspect-[3/2] md:aspect-[21/9]' : 'aspect-[3/2]'}`}
+      >
+        <div>
+          <p className="cs-figure-empty-label">{slot.label}</p>
+          <p className="cs-figure-empty-desc">{slot.desc}</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+interface DeckFrame {
+  key: string
+  /** Anchor id, present only on a sub-item's FIRST frame so rail clicks
+      still land on the start of that sub-item. */
+  id?: string
+  childId: string
+  childLabel: string
+  tilt: number
+  image?: { src: string; alt: string }
+  slot?: ThemeSlot
+  /** Renders the visually-hidden heading that keeps the sub-item structure
+      readable to assistive tech now that the visible label is gone. */
+  heading?: string
+}
+
+/* Flattens a node's sub-items into one frame per image, so the scroll box
+   can snap image-by-image (one flick = one slide) and the breadcrumb can
+   name whichever slide is in view. Sub-items without imagery contribute a
+   single placeholder frame. */
+function buildDeck(leaves: RailLeaf[]): DeckFrame[] {
+  return leaves.flatMap((leaf) => {
+    const images = leaf.slot.images
+    if (images?.length) {
+      return images.map((image, i): DeckFrame => ({
+        key: image.src,
+        id: i === 0 ? leaf.id : undefined,
+        childId: leaf.id,
+        childLabel: leaf.label,
+        tilt: leaf.tilt + i,
+        image,
+        heading: i === 0 ? leaf.label : undefined,
+      }))
+    }
+    return [
+      {
+        key: leaf.id,
+        id: leaf.id,
+        childId: leaf.id,
+        childLabel: leaf.label,
+        tilt: leaf.tilt,
+        slot: leaf.slot,
+        heading: leaf.label,
+      },
+    ]
+  })
+}
+
+/* One deck: full-height snap frames, each holding a single slide. */
+function Deck({ frames }: { frames: DeckFrame[] }) {
+  return (
+    <>
+      {frames.map((frame) => (
+        <div
+          key={frame.key}
+          id={frame.id}
+          data-child-id={frame.childId}
+          className="cs-tmodal-slide"
+        >
+          {frame.heading && <h4 className="cs-sr-only">{frame.heading}</h4>}
+          {frame.image ? (
+            <div
+              className={`cs-figure ${slotTilt(frame.tilt)} cs-tmodal-frame`}
+              data-cs-figure
+            >
+              <span className="cs-tape" aria-hidden />
+              <div className="cs-figure-media cs-tmodal-frame-media">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={frame.image.src}
+                  alt={frame.image.alt}
+                  className="cs-figure-img"
+                />
+              </div>
+            </div>
+          ) : (
+            frame.slot && <SlotFrames slot={frame.slot} tilt={frame.tilt} />
+          )}
+        </div>
+      ))}
+    </>
+  )
+}
+
 /* Builds the rail's group/item/subItem tree once per theme, assigning each
    leaf a stable slugged anchor id and a running tilt index (so alternating
    tilt continues across items and groups, not just within one). */
@@ -416,34 +607,58 @@ function ThemeModal({
   })
   const deeperSelected = selectedKey === `${theme.id}-deeper`
 
+  /* Leaf and parent nodes both render as a deck: a leaf is simply a
+     one-sub-item deck, so the breadcrumb and snap behaviour are identical
+     either way. */
+  const selectedLeaves: RailLeaf[] = selectedEntry
+    ? selectedEntry.node.children ??
+      (selectedEntry.node.leaf ? [selectedEntry.node.leaf] : [])
+    : []
+  const deckFrames = buildDeck(selectedLeaves)
+  /* Only name the slide when the node actually has multiple sub-items;
+     for a single-sub-item deck the parent half already says it. */
+  const activeChildLabel =
+    selectedLeaves.length > 1
+      ? selectedLeaves.find((l) => l.id === activeChildId)?.label
+      : undefined
+
+  const focusDetail = () => {
+    requestAnimationFrame(() => {
+      scrollRef.current
+        ?.querySelector<HTMLElement>('.cs-tmodal-detail-title')
+        ?.focus()
+    })
+  }
+
   const selectLeaf = (id: string) => {
     setSelectedKey(id)
     setActiveChildId(undefined)
+    focusDetail()
   }
 
   const selectParent = (parentLabel: string, childId?: string) => {
     setSelectedKey(`${theme.id}-${slug(parentLabel)}`)
     setActiveChildId(childId)
     requestScroll(childId)
+    focusDetail()
   }
 
-  /* Scoped scrollspy: tracks which sub-item is nearest the top of the
-     SELECTED parent's own scroll box (not the whole page), so free-scrolling
-     inside that box keeps the rail in sync the same way the old page-wide
-     scrollspy did. Only updates the highlight, never triggers a scroll. */
+  /* Scoped scrollspy: tracks which SLIDE is nearest the top of the selected
+     node's own scroll box (not the whole page), and reports the sub-item it
+     belongs to. Reading per-slide rather than per-sub-item is what lets the
+     breadcrumb's child label rotate as the reader flicks through a
+     multi-slide sub-item. Only updates the highlight, never scrolls. */
   const handleParentScroll = () => {
     const box = parentScrollRef.current
-    const children = selectedEntry?.node.children
-    if (!box || !children?.length) return
+    if (!box) return
     const top = box.getBoundingClientRect().top
-    let current = children[0].id
-    for (const child of children) {
-      const el = document.getElementById(child.id)
-      if (el && el.getBoundingClientRect().top - top <= 24) {
-        current = child.id
+    let current: string | undefined
+    for (const slide of box.querySelectorAll<HTMLElement>('.cs-tmodal-slide')) {
+      if (slide.getBoundingClientRect().top - top <= 24) {
+        current = slide.dataset.childId
       }
     }
-    setActiveChildId(current)
+    if (current) setActiveChildId(current)
   }
 
   /* Runs the pending scroll request once, after the click's state changes
@@ -510,11 +725,10 @@ function ThemeModal({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [theme.id])
 
-  useEffect(() => {
-    scrollRef.current
-      ?.querySelector<HTMLElement>('.cs-tmodal-detail-title')
-      ?.focus()
-  }, [selectedKey])
+  /* Focus moves to the detail heading only on an explicit selection (see
+     focusDetail, called from the rail handlers), never on open: focus
+     belongs on the close button there, and focusing the heading would also
+     flash its ring at mouse users. */
 
   return (
     <motion.div
@@ -638,64 +852,48 @@ function ThemeModal({
                   </a>
                 ))}
               </div>
-            ) : selectedEntry?.node.children ? (
-              <>
-                {selectedEntry.group.title && (
-                  <p className="cs-tmodal-group-heading">{selectedEntry.group.title}</p>
-                )}
-                <h3 className="cs-tmodal-item-title cs-tmodal-detail-title" tabIndex={-1}>
-                  {selectedEntry.node.label}
-                </h3>
-                <div
-                  ref={parentScrollRef}
-                  className="cs-tmodal-parent-scroll"
-                  data-lenis-prevent
-                  onScroll={handleParentScroll}
-                >
-                  {selectedEntry.node.children.map((child) => (
-                    <section
-                      key={child.id}
-                      id={child.id}
-                      className="cs-tmodal-section cs-tmodal-subsection"
-                    >
-                      <h4 className="cs-tmodal-section-title">{child.label}</h4>
-                      <div className={`cs-figure ${slotTilt(child.tilt)}`} data-cs-figure>
-                        <span className="cs-tape" aria-hidden />
-                        <div
-                          className={`cs-figure-empty ${child.slot.wide ? 'aspect-[3/2] md:aspect-[21/9]' : 'aspect-[3/2]'}`}
-                        >
-                          <div>
-                            <p className="cs-figure-empty-label">{child.label}</p>
-                            <p className="cs-figure-empty-desc">{child.slot.desc}</p>
-                          </div>
-                        </div>
-                      </div>
-                    </section>
-                  ))}
-                </div>
-              </>
             ) : (
-              selectedEntry?.node.leaf && (
+              selectedEntry && (
                 <>
-                  {selectedEntry.group.title && (
-                    <p className="cs-tmodal-group-heading">{selectedEntry.group.title}</p>
-                  )}
-                  <section className="cs-tmodal-section">
-                    <h3 className="cs-tmodal-section-title cs-tmodal-detail-title" tabIndex={-1}>
-                      {selectedEntry.node.leaf.label}
-                    </h3>
-                    <div className={`cs-figure ${slotTilt(selectedEntry.node.leaf.tilt)}`} data-cs-figure>
-                      <span className="cs-tape" aria-hidden />
-                      <div
-                        className={`cs-figure-empty ${selectedEntry.node.leaf.slot.wide ? 'aspect-[3/2] md:aspect-[21/9]' : 'aspect-[3/2]'}`}
-                      >
-                        <div>
-                          <p className="cs-figure-empty-label">{selectedEntry.node.leaf.label}</p>
-                          <p className="cs-figure-empty-desc">{selectedEntry.node.leaf.slot.desc}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </section>
+                  {/* Breadcrumb replaces the old group kicker + parent title +
+                      per-section label stack: one line, so the slides get the
+                      vertical space. The child half names whichever slide is
+                      in view and crossfades as the reader moves through. */}
+                  <h3
+                    className="cs-tmodal-crumb cs-tmodal-detail-title"
+                    tabIndex={-1}
+                  >
+                    <span className="cs-tmodal-crumb-parent">
+                      {selectedEntry.node.label}
+                    </span>
+                    {activeChildLabel && (
+                      <>
+                        <span className="cs-tmodal-crumb-sep" aria-hidden="true">
+                          ·
+                        </span>
+                        <AnimatePresence mode="wait" initial={false}>
+                          <motion.span
+                            key={activeChildLabel}
+                            className="cs-tmodal-crumb-child"
+                            initial={{ opacity: 0, y: 4 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -4 }}
+                            transition={{ duration: 0.16 }}
+                          >
+                            {activeChildLabel}
+                          </motion.span>
+                        </AnimatePresence>
+                      </>
+                    )}
+                  </h3>
+                  <div
+                    ref={parentScrollRef}
+                    className="cs-tmodal-parent-scroll"
+                    data-lenis-prevent
+                    onScroll={handleParentScroll}
+                  >
+                    <Deck frames={deckFrames} />
+                  </div>
                 </>
               )
             )}
@@ -706,11 +904,15 @@ function ThemeModal({
           {prevTheme ? (
             <button
               type="button"
-              className="cs-tmodal-step"
+              className="cs-tmodal-step cs-tmodal-step-prev"
               onClick={() => onNavigate(prevTheme.id)}
             >
-              <span aria-hidden="true">← </span>
-              {prevTheme.num} {prevTheme.title}
+              <span className="cs-tmodal-step-label">
+                <span aria-hidden="true">← </span>Previous
+              </span>
+              <span className="cs-tmodal-step-title">
+                {prevTheme.num} {prevTheme.title}
+              </span>
             </button>
           ) : (
             <span />
@@ -718,11 +920,15 @@ function ThemeModal({
           {nextTheme ? (
             <button
               type="button"
-              className="cs-tmodal-step"
+              className="cs-tmodal-step cs-tmodal-step-next"
               onClick={() => onNavigate(nextTheme.id)}
             >
-              {nextTheme.num} {nextTheme.title}
-              <span aria-hidden="true"> →</span>
+              <span className="cs-tmodal-step-label">
+                Next<span aria-hidden="true"> →</span>
+              </span>
+              <span className="cs-tmodal-step-title">
+                {nextTheme.num} {nextTheme.title}
+              </span>
             </button>
           ) : (
             <span />
