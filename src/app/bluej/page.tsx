@@ -641,8 +641,13 @@ function ThemeModal({
      does afterward. */
   const [scrollTick, setScrollTick] = useState(0)
   const pendingScrollId = useRef<string | undefined>(undefined)
-  const requestScroll = (id?: string) => {
+  /* Smooth only when staying inside the same deck. Switching decks swaps
+     the content wholesale, so animating through unrelated new slides just
+     looks like a glitch; those jump. */
+  const pendingSmooth = useRef(true)
+  const requestScroll = (id?: string, smooth = true) => {
     pendingScrollId.current = id
+    pendingSmooth.current = smooth
     setScrollTick((t) => t + 1)
   }
 
@@ -673,14 +678,19 @@ function ThemeModal({
     setSelectedKey(id)
     setActiveChildId(undefined)
     setDeckScrolled(false)
+    /* A leaf has no child anchor to scroll to, so the box would otherwise
+       keep the previous deck's scroll position and open mid-deck. */
+    requestScroll(undefined, false)
     focusDetail()
   }
 
   const selectParent = (parentLabel: string, childId?: string) => {
-    setSelectedKey(`${theme.id}-${slug(parentLabel)}`)
+    const key = `${theme.id}-${slug(parentLabel)}`
+    const sameDeck = key === selectedKey
+    setSelectedKey(key)
     setActiveChildId(childId)
     setDeckScrolled(false)
-    requestScroll(childId)
+    requestScroll(childId, sameDeck)
     focusDetail()
   }
 
@@ -733,9 +743,21 @@ function ThemeModal({
      math is needed. */
   useEffect(() => {
     const id = pendingScrollId.current
-    if (!id) return
+    if (!id) {
+      /* No anchor (a leaf, or Go deeper): send the deck back to slide one.
+         behavior 'instant' aborts a smooth scroll still running from a
+         previous selection, which would otherwise keep animating over the
+         swapped-in deck and leave it a few px off the first slide. The
+         second pass on the next frame catches an animation that had
+         already been scheduled for this one. */
+      const reset = () =>
+        parentScrollRef.current?.scrollTo({ top: 0, behavior: 'instant' })
+      reset()
+      requestAnimationFrame(reset)
+      return
+    }
     document.getElementById(id)?.scrollIntoView({
-      behavior: 'smooth',
+      behavior: pendingSmooth.current ? 'smooth' : 'auto',
       block: 'start',
     })
     /* Seed the rail fill for this selection: when the target is already at
