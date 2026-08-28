@@ -385,21 +385,31 @@ const THEMES: Theme[] = [
       // TODO(content): activation and growth story: what moved, and how it was measured.
       'Design that earns its keep after launch: reworking first-run activation, making features discoverable in the flow of work, and instrumenting the journey so the team knows what moved.',
     ],
-    groups: [{ items: [
+    groups: [
       {
-        label: 'Activation rework',
-        desc: 'CyberQP first-run activation and feature discovery: the journey map and the redesigned flow.',
-        wide: true,
+        title: 'Latest',
+        items: [
+          // TODO(content): slides for the new platform. Promote to subItems
+          // once the breakdown is known, as with the CyberQP design system.
+          {
+            label: 'CyberQP new platform',
+            desc: 'Placeholder: activation and growth work on the new platform. Content coming.',
+            wide: true,
+          },
+        ],
       },
       {
-        label: 'Adoption in the flow of work',
-        desc: 'Browser extension: consolidating vault credentials and JIT accounts where technicians already are.',
+        title: 'Previous',
+        items: [
+          // TODO(content): slides for the legacy product.
+          {
+            label: 'CyberQP legacy',
+            desc: 'Placeholder: activation and growth work on the legacy product. Content coming.',
+            wide: true,
+          },
+        ],
       },
-      {
-        label: 'Measurement loop',
-        desc: 'The instrumentation behind the story: what was tracked, and how it fed the next iteration.',
-      },
-    ] }],
+    ],
     related: ['browser-extension'],
   },
 ]
@@ -1090,8 +1100,12 @@ export default function BlueJPage() {
       /* No hero: the intro and theme grid are the first screen. Add
          hero={{ type: 'image', src: …, alt: … }} once there's art worth
          leading with. */
-      nextHref="/portfolio"
-      nextLabel="All projects"
+      backHref="/"
+      backLabel="Back to home"
+      backAlways
+      /* Self-contained: the five themes are the whole story, so no footer
+         routing off to the rest of the portfolio. */
+      hideBottomNav
     >
       {/* Intro note: the hello lives in the page title; this stays short. */}
       <section className="mb-[64px]">
