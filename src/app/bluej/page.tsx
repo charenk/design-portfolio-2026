@@ -334,26 +334,43 @@ const THEMES: Theme[] = [
   {
     id: 'code-first',
     num: '04',
-    title: 'Designing in code',
+    title: 'Code-first design',
     promise:
       'Ideas tested as working software, not mockups.',
     framing: [
-      // TODO(content): the code-as-design-tool practice story.
-      'Some ideas can only be judged running. I build working software, this portfolio included, to explore, test, and ship design decisions in the real medium.',
+      'Overview of setup, process, and custom skills.',
     ],
     groups: [{ items: [
       {
-        label: 'This portfolio',
-        desc: 'The site you are reading: dual read/see modes, GSAP choreography, built in code with Claude.',
-        wide: true,
+        label: 'Overview and setup',
+        images: [
+          {
+            src: '/bluej/cf-overview-1.png',
+            alt: 'Transitioning to code-first design: the article \u201cBeing a Designer/Builder in the Agentic Era\u201d on going from handing off Figma files to shipping code in production, beside a year of contribution graphs split into personal projects and AI explorations, then building and maintaining a one-to-one prototype matching prod and contributing directly in prod',
+          },
+        ],
       },
       {
-        label: 'Figma Buddy',
-        desc: 'AI design critique inside Figma comments: @buddy, built on the OpenAI API and Supabase.',
+        label: 'Process',
+        images: [
+          {
+            src: '/bluej/cf-process-1.png',
+            alt: 'The agentic design process: an intake gate naming the need and the failure signal from product priorities, unmet needs, Slack, Pendo, and telemetry, then the agent generates volume using org-level and project skills in design mode, then a review gate judging with intent, handing off to engineering and shipping, with customers, subject-matter experts, and signals feeding revisions before ship',
+          },
+          {
+            src: '/bluej/cf-process-2.png',
+            alt: 'How I contribute to the front-end code of the production app: the Panthera UI design workflow documented in WORKFLOW.md, a day-to-day cycle from one start command to a design branch and sandbox, working in the browser on mocked product pages, committing feature files while sandbox files stay local, then opening a PR that merges to main and deploys to QA',
+          },
+        ],
       },
       {
-        label: 'The Refinery build',
-        desc: 'From idea to a nine-agent system running locally for under fifteen cents a day.',
+        label: 'Custom skills',
+        images: [
+          {
+            src: '/bluej/cf-skills-1.png',
+            alt: 'Custom skills that help me lead multiple projects as a sole designer: a data-viz skill built from early design exploration and expanded with knowledge from The Wall Street Journal Guide to Information Graphics, a project-specific cyberqp-design skill holding component and product-module context with design directions and decisions, and Impeccable, shown as a SKILL.md open in the editor and the dashboard it produced',
+          },
+        ],
       },
     ] }],
     related: ['refinery', 'figma-buddy'],
