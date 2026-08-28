@@ -3,8 +3,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ProjectPageLayout } from '@/components/layout/ProjectPageLayout'
-import { SectionDivider } from '@/components/case-study/SectionDivider'
-import { ItalicCoda } from '@/components/case-study/ItalicCoda'
 import { getProject } from '@/data/projects'
 
 /* ------------------------------------------------------------------------- */
@@ -1207,18 +1205,6 @@ export default function BlueJPage() {
         )}
       </AnimatePresence>
 
-      {/* Close */}
-      <SectionDivider />
-      <section className="mb-[40px]">
-        <ItalicCoda>
-          {/* TODO(content): closing line for Blue J. */}
-          If any of these threads is worth pulling on, I&apos;d love to walk you
-          through the full story in conversation.{' '}
-          <a href="mailto:charen.k@gmail.com" className="cs-tlink cs-tlink-inline">
-            Get in touch<span aria-hidden="true"> →</span>
-          </a>
-        </ItalicCoda>
-      </section>
     </ProjectPageLayout>
   )
 }
