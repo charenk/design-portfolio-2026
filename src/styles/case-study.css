@@ -1973,6 +1973,12 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
    while only its own sub-item box (below) scrolls. For a leaf/Go-deeper
    selection this is just one non-scrolling block; overflow-y stays as a
    fallback for the rare tall leaf. */
+/* Rail-less variant: the deck owns the full modal width, so the pane's
+   asymmetric padding (tightened on the rail side) is no longer wanted. */
+.cs-page .cs-tmodal-body.is-full .cs-tmodal-scroll {
+  padding-left: clamp(24px, 3vw, 40px);
+}
+
 .cs-page .cs-tmodal-scroll {
   flex: 1;
   display: flex;

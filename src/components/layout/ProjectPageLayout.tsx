@@ -19,6 +19,15 @@ interface ProjectPageLayoutProps {
   title: string
   titleColorClass?: string
   backHref?: string
+  /** Label on the back control. Default "Back". */
+  backLabel?: string
+  /** Always send Back to backHref instead of retracing history. For a
+      self-contained page, "back" means a fixed destination, not wherever
+      the visitor happened to arrive from. */
+  backAlways?: boolean
+  /** Drop the bottom Back / Next-project row. For pages that are the whole
+      story and shouldn't route a reader off to the rest of the portfolio. */
+  hideBottomNav?: boolean
   /** Omit to run the page with no hero frame at all (e.g. index-style pages
       whose first screen should be content, not media). */
   hero?: HeroMedia
@@ -199,6 +208,9 @@ export function ProjectPageLayout({
   title,
   titleColorClass,
   backHref = '/portfolio',
+  backLabel = 'Back',
+  backAlways = false,
+  hideBottomNav = false,
   hero,
   overviewLeft,
   overviewRight,
@@ -291,7 +303,7 @@ export function ProjectPageLayout({
   )
 
   const handleBack = () => {
-    if (window.history.length > 1) {
+    if (!backAlways && window.history.length > 1) {
       router.back()
     } else {
       router.push(backHref)
@@ -306,11 +318,11 @@ export function ProjectPageLayout({
         <div className="cs-container">
 
           {/* Back Button */}
-          <button onClick={handleBack} className="cs-back" aria-label="Back">
+          <button onClick={handleBack} className="cs-back" aria-label={backLabel}>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
             </svg>
-            Back
+            {backLabel}
           </button>
 
           {/* Title. titleColorClass is kept for API compatibility; the tactile
@@ -380,6 +392,7 @@ export function ProjectPageLayout({
             )}
 
             {/* Bottom navigation: back to projects on the left, next project on the right */}
+            {!hideBottomNav && (
             <div className="cs-bottom-nav">
               <button onClick={handleBack} className="cs-bottom-link" aria-label="Back">
                 <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -396,6 +409,7 @@ export function ProjectPageLayout({
                 </Link>
               )}
             </div>
+            )}
 
           </div>
 
