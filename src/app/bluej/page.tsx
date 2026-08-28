@@ -382,30 +382,86 @@ const THEMES: Theme[] = [
     promise:
       'Getting features discovered and used after launch.',
     framing: [
-      // TODO(content): activation and growth story: what moved, and how it was measured.
-      'Design that earns its keep after launch: reworking first-run activation, making features discoverable in the flow of work, and instrumenting the journey so the team knows what moved.',
+      'Moving a sales-led product toward product-led growth: onboarding, activation, and the telemetry to tell whether it worked.',
     ],
     groups: [
       {
         title: 'Latest',
         items: [
-          // TODO(content): slides for the new platform. Promote to subItems
-          // once the breakdown is known, as with the CyberQP design system.
           {
             label: 'CyberQP new platform',
-            desc: 'Placeholder: activation and growth work on the new platform. Content coming.',
-            wide: true,
+            subItems: [
+              {
+                label: 'Context',
+                desc: 'Carrying the legacy learnings into a baseline self-serve onboarding guide.',
+                images: [
+                  {
+                    src: '/bluej/ga-new-context.png',
+                    alt: 'Onboarding for the new CyberQP platform, reusing what the legacy work taught to give the product a baseline self-serve onboarding guide: full state mapping for the six-step setup panel, with the expanded step-one review of organization setup, the collapsed banner, and per-state goals, telemetry, and hypotheses',
+                  },
+                ],
+              },
+              {
+                label: 'Cross-functional alignment',
+                desc: 'Preparing the telemetry framing so product and the wider team could agree what success meant.',
+                images: [
+                  {
+                    src: '/bluej/ga-new-alignment.png',
+                    alt: 'Collaborating and preparing for alignment with product and other cross-functional teams: a shared product telemetry and measuring success document mapping each cohort, from pre sign-up through trial, against activation, adoption, habit, and expansion',
+                  },
+                ],
+              },
+              {
+                label: 'Measuring success',
+                desc: 'What the onboarding panel is measured on, and the hypotheses behind it.',
+                images: [
+                  {
+                    src: '/bluej/ga-new-measuring.png',
+                    alt: 'Measuring success for the onboarding panel: the goal of getting a tenant from zero data to useful for daily work in one session, rolled-up telemetry from funnel completion to drop-off step and dismiss rate, and hypotheses on showing progress early, the hybrid title pattern, and the sidebar PSA and RMM callout',
+                  },
+                ],
+              },
+            ],
           },
         ],
       },
       {
         title: 'Previous',
         items: [
-          // TODO(content): slides for the legacy product.
           {
             label: 'CyberQP legacy',
-            desc: 'Placeholder: activation and growth work on the legacy product. Content coming.',
-            wide: true,
+            subItems: [
+              {
+                label: 'Context',
+                desc: 'A sales-led product losing feature adoption, and the shift to product-led growth.',
+                images: [
+                  {
+                    src: '/bluej/ga-legacy-context.png',
+                    alt: 'Context: CyberQP was historically sales led, serving the MSP market with deployment and onboarding that ran for weeks, and feature adoption declined as the offering grew; following the new product-led strategy I led PLG discovery and phased design work on tenant onboarding and setup, and on time to value per organization',
+                  },
+                ],
+              },
+              {
+                label: 'Onboarding checklist design',
+                desc: 'Settling the checklist pattern with a preference test rather than an opinion.',
+                images: [
+                  {
+                    src: '/bluej/ga-legacy-design.png',
+                    alt: 'Finalizing the onboarding checklist design through a preference test: option A, a minimal onboarding guide, against option B with more detail and decorative imagery, both shown in the product',
+                  },
+                ],
+              },
+              {
+                label: 'Outcome',
+                desc: 'The guide as it shipped, with per-customer setup pulled into one flow.',
+                images: [
+                  {
+                    src: '/bluej/ga-legacy-outcome.png',
+                    alt: 'Outcome in the legacy product: the shipped onboarding guide with progress in the sidebar and a dismissible five-step panel, beside the per-customer setup flow for connecting sources, importing accounts, and configuring security policies',
+                  },
+                ],
+              },
+            ],
           },
         ],
       },
