@@ -1639,10 +1639,12 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
   font-size: 26px;
 }
 
+/* Promise lines carry the card's pitch: sans for readability at small
+   sizes (the serif got hard to read at 14px). */
 .cs-page .cs-tcard-promise {
-  font-family: var(--cs-serif);
+  font-family: var(--cs-sans);
   font-size: 14px;
-  line-height: 1.55;
+  line-height: 1.6;
   color: var(--cs-ink-soft);
 }
 
@@ -1719,4 +1721,593 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
 .cs-page .cs-tlink-inline {
   margin-left: 6px;
   font-style: normal;
+}
+
+/* Theme cards are buttons (they open a modal): reset the button chrome so
+   the existing card look carries over unchanged. */
+.cs-page button.cs-tcard {
+  border: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+/* ------------------------------------------------- theme modal (/bluej) */
+/* One theme per modal: header, anchored pill nav, a sample section per
+   taped frame inside an inner scroller, prev/next theme in the footer. */
+
+.cs-page .cs-tmodal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300; /* above .site-nav (200) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(12px, 2vw, 28px);
+}
+
+.cs-page .cs-tmodal-backdrop {
+  position: absolute;
+  inset: 0;
+  border: none;
+  cursor: pointer;
+  background: rgba(34, 31, 26, 0.5);
+}
+
+.cs-page .cs-tmodal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(1320px, 100%);
+  height: 100%;
+  max-height: 100%;
+  background: var(--cs-surface);
+  border-radius: 16px;
+  box-shadow: var(--cs-shadow-lift);
+  overflow: visible; /* the tape strip pokes above the panel */
+}
+
+/* Tape sits centered on the panel's top edge, same as taped figures. */
+.cs-page .cs-tmodal > .cs-tape {
+  top: -12px;
+  left: 50%;
+  translate: -50%;
+}
+
+.cs-page .cs-tmodal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 26px clamp(28px, 3.5vw, 48px) 18px;
+  border-bottom: 1px solid var(--cs-line);
+}
+
+.cs-page .cs-tmodal-title {
+  font-family: var(--cs-serif);
+  font-weight: 400;
+  font-size: clamp(22px, 3vw, 30px);
+  line-height: 1.15;
+}
+
+.cs-page .cs-tmodal-close {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  margin: -6px -8px 0 0;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  font-size: 26px;
+  line-height: 1;
+  color: var(--cs-ink-soft);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.cs-page .cs-tmodal-close:hover {
+  background: rgba(34, 31, 26, 0.06);
+  color: var(--cs-ink);
+}
+
+/* Short description under the modal title. Sans for small-size readability. */
+.cs-page .cs-tmodal-desc {
+  margin-top: 10px;
+  max-width: 720px;
+  font-family: var(--cs-sans);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--cs-ink-soft);
+}
+
+/* Two panes: rail left, scrolling content right. min-height: 0 lets the
+   flex children shrink so only the right pane scrolls. */
+.cs-page .cs-tmodal-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.cs-page .cs-tmodal-rail {
+  flex-shrink: 0;
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  padding: 22px 8px 22px clamp(20px, 2.5vw, 28px);
+  overflow-y: auto;
+}
+
+.cs-page .cs-tmodal-rail-item {
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  padding: 9px 10px;
+  text-align: left;
+  font-family: var(--cs-sans);
+  font-size: 12.5px;
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--cs-ink-soft);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.cs-page .cs-tmodal-rail-item:hover {
+  color: var(--cs-magenta);
+}
+
+.cs-page .cs-tmodal-rail-item.is-active {
+  background: rgba(34, 31, 26, 0.06);
+  color: var(--cs-ink);
+  font-weight: 600;
+}
+
+/* Grouped rail: a small-caps label above each cluster of items. */
+.cs-page .cs-tmodal-rail-group {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+}
+
+/* A parent item ("CyberQP AI Terminal") sits above its indented sub-items;
+   clicking the label selects the whole parent, clicking a child selects the
+   parent AND scrolls its own box to that child. */
+.cs-page .cs-tmodal-rail-parent {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 8px;
+}
+
+.cs-page .cs-tmodal-rail-parent:first-child {
+  margin-top: 0;
+}
+
+.cs-page .cs-tmodal-rail-parent-label {
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  width: 100%;
+  padding: 8px 12px 4px;
+  text-align: left;
+  font-family: var(--cs-sans);
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--cs-ink);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.cs-page .cs-tmodal-rail-parent-label:hover {
+  color: var(--cs-magenta);
+}
+
+.cs-page .cs-tmodal-rail-parent-label.is-active {
+  background: rgba(34, 31, 26, 0.06);
+  color: var(--cs-ink);
+}
+
+/* The left bar doubles as a progress indicator: it fills downward as the
+   reader moves through that sub-item's slides. A border can't be partially
+   filled, so it's a scaled pseudo-element driven by --rail-progress, which
+   handleParentScroll writes per scroll frame. */
+.cs-page .cs-tmodal-rail-item-sub {
+  position: relative;
+  padding: 5px 10px 5px 22px;
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--cs-ink-faint);
+  border-left: 2px solid transparent;
+  border-radius: 0 8px 8px 0;
+}
+
+.cs-page .cs-tmodal-rail-item-sub::before {
+  content: '';
+  position: absolute;
+  left: -2px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--cs-magenta);
+  transform-origin: top;
+  transform: scaleY(var(--rail-progress, 0));
+  /* Snap scrolling changes the fraction in discrete jumps, so without a
+     transition the bar teleports instead of reading as growth. Short
+     enough that free-scrolling still feels attached to the gesture. */
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Active child is a position marker, deliberately lighter than the
+   parent's filled "selected" pill: a magenta bar and ink text, no fill. */
+.cs-page .cs-tmodal-rail-item-sub.is-active {
+  background: transparent;
+  font-weight: 500;
+  color: var(--cs-ink);
+  /* The unfilled remainder of the track. Without it a 25% fill reads as a
+     stray dash rather than "one of four". */
+  border-left-color: rgba(171, 7, 130, 0.22);
+}
+
+.cs-page .cs-tmodal-rail-group + .cs-tmodal-rail-group {
+  margin-top: 20px;
+}
+
+.cs-page .cs-tmodal-rail-label {
+  padding: 0 12px;
+  margin-bottom: 2px;
+  font-family: var(--cs-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cs-ink-faint);
+}
+
+/* Detail pane: a flex column so a selected parent's title stays pinned
+   while only its own sub-item box (below) scrolls. For a leaf/Go-deeper
+   selection this is just one non-scrolling block; overflow-y stays as a
+   fallback for the rare tall leaf. */
+.cs-page .cs-tmodal-scroll {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 14px clamp(24px, 3vw, 40px) 18px clamp(16px, 2vw, 28px);
+  border-radius: 0 0 16px 0;
+}
+
+.cs-page .cs-tmodal-section {
+  scroll-margin-top: 16px;
+  margin-bottom: 36px;
+}
+
+.cs-page .cs-tmodal-section:last-child {
+  margin-bottom: 4px;
+}
+
+/* One-line breadcrumb over the deck: "{parent} \00b7 {slide}". Replaces the
+   old group kicker + parent title + per-slide label stack so the slides get
+   that vertical space back. */
+.cs-page .cs-tmodal-crumb {
+  flex-shrink: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 0;
+  padding-bottom: 10px;
+  /* No divider at rest; a soft shadow fades in once the deck is scrolled,
+     so slides read as gliding underneath the header. z-index lets the
+     shadow paint over the deck box below. */
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 12px 14px -14px rgba(34, 31, 26, 0);
+  transition: box-shadow 0.25s ease;
+}
+
+.cs-page .cs-tmodal-crumb.is-scrolled {
+  box-shadow: 0 12px 14px -14px rgba(34, 31, 26, 0.4);
+}
+
+.cs-page .cs-tmodal-crumb-parent {
+  font-family: var(--cs-serif);
+  font-weight: 400;
+  font-size: 21px;
+  line-height: 1.25;
+  color: var(--cs-ink);
+}
+
+.cs-page .cs-tmodal-detail-title:focus-visible {
+  outline: 2px solid var(--cs-magenta);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* The selected parent's own content + scroll area: everything below the
+   pinned title lives here, scrolling independently of the rest of the
+   modal (and of any other parent's content, which isn't rendered at all
+   while this one is selected). */
+.cs-page .cs-tmodal-parent-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  margin-top: 6px;
+  /* Snap slide-to-slide: one flick always lands on the next image rather
+     than stopping between two. */
+  scroll-snap-type: y mandatory;
+}
+
+/* Each slide fills the box so the whole 16:9 image is visible without
+   scrolling; scrolling then advances to the next one. */
+.cs-page .cs-tmodal-slide {
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  scroll-margin-top: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* Size container so the img below can compute an exact contain-fit from
+     cqw/cqh, shrink-wrapping the paper mount in BOTH dimensions. */
+  container-type: size;
+}
+
+/* Placeholder frames (no imagery yet) still span the pane. */
+.cs-page .cs-tmodal-slide > .cs-figure:not(.cs-tmodal-frame) {
+  width: 100%;
+}
+
+/* The paper mount shrink-wraps the slide in both dimensions: the img's
+   height is the exact contain-fit of a 16:9 image inside the slide's area
+   (minus the mount's 10px padding per side), computed from container
+   units, and its width follows from the intrinsic ratio. */
+.cs-page .cs-tmodal-frame {
+  margin: 0;
+  max-width: 100%;
+  display: flex;
+  min-height: 0;
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
+  border: none;
+  border-radius: 0;
+}
+
+.cs-page .cs-tmodal-frame-media {
+  min-height: 0;
+  display: flex;
+  justify-content: center;
+  background: transparent;
+}
+
+.cs-page .cs-tmodal-slide-img {
+  display: block;
+  /* The width-bound branch must use the WIDEST slide ratio in any deck
+     (currently the 2560x1400 exports) or those slides overflow
+     horizontally. Narrower 16:9 decks just underfill by ~3%, harmless. */
+  height: min(calc(100cqh - 8px), calc((100cqw - 8px) * 1400 / 2560));
+  width: auto;
+  border-radius: 12px;
+  /* Literal values, not var(--cs-shadow-soft): read mode nulls the shadow
+     vars, but these near-white slides need depth to hold an edge against
+     the paper without the border stroke the user rejected. */
+  box-shadow: 0 1px 2px rgba(34, 31, 26, 0.06), 0 10px 24px rgba(34, 31, 26, 0.1);
+}
+
+/* Read mode borders figures (line ~1229); modal slides opt out at matching
+   specificity so the image's own radius + shadow are the whole edge. */
+html[data-mode='read'] .cs-page .cs-tmodal-frame {
+  border: none;
+  border-radius: 0;
+  padding: 0;
+}
+
+/* Visually hidden, still announced: keeps the sub-item structure legible to
+   assistive tech now that the per-slide label is gone from the page. */
+.cs-page .cs-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.cs-page .cs-tmodal-section-title {
+  font-family: var(--cs-hand);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--cs-magenta);
+  rotate: -0.8deg;
+  margin-bottom: 14px;
+}
+
+.cs-page .cs-tmodal-footer {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px clamp(28px, 3.5vw, 48px);
+  border-top: 1px solid var(--cs-line);
+}
+
+/* Prev/next theme: a small kicker label over a prominent title, so this
+   reads as a real navigation control rather than a subtle text link. */
+.cs-page .cs-tmodal-step {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  max-width: 46%;
+  border: none;
+  background: transparent;
+  padding: 4px 2px;
+  cursor: pointer;
+}
+
+.cs-page .cs-tmodal-step-next {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.cs-page .cs-tmodal-step-label {
+  font-family: var(--cs-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cs-ink-faint);
+  transition: color 0.2s ease;
+}
+
+.cs-page .cs-tmodal-step-title {
+  font-family: var(--cs-serif);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--cs-ink);
+  transition: color 0.2s ease;
+}
+
+.cs-page .cs-tmodal-step:hover .cs-tmodal-step-label {
+  color: var(--cs-magenta);
+}
+
+.cs-page .cs-tmodal-step:hover .cs-tmodal-step-title {
+  color: var(--cs-magenta);
+}
+
+/* Small screens: the modal becomes a full-height sheet. */
+@media (max-width: 767px) {
+  .cs-page .cs-tmodal-overlay {
+    padding: 0;
+  }
+
+  .cs-page .cs-tmodal {
+    width: 100%;
+    height: 100dvh;
+    max-height: none;
+    border-radius: 0;
+  }
+
+  .cs-page .cs-tmodal > .cs-tape {
+    display: none;
+  }
+
+  .cs-page .cs-tmodal-scroll {
+    border-radius: 0;
+  }
+
+  .cs-page .cs-tmodal-header,
+  .cs-page .cs-tmodal-scroll,
+  .cs-page .cs-tmodal-footer {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  /* The rail flattens into a horizontal strip above the content. */
+  .cs-page .cs-tmodal-body {
+    flex-direction: column;
+  }
+
+  .cs-page .cs-tmodal-rail {
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 6px;
+    padding: 10px 20px;
+    border-right: none;
+    border-bottom: 1px solid var(--cs-line);
+  }
+
+  /* Everything flows inline on one scrolling strip: a parent's sub-items
+     sit beside it rather than stacking, which would make the strip taller
+     than the slides it is meant to leave room for. */
+  .cs-page .cs-tmodal-rail-parent {
+    flex-direction: row;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 6px;
+    margin-top: 0;
+  }
+
+  .cs-page .cs-tmodal-rail-parent-label {
+    width: auto;
+    flex-shrink: 0;
+    padding: 8px 12px;
+    white-space: nowrap;
+  }
+
+  .cs-page .cs-tmodal-rail-item {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .cs-page .cs-tmodal-rail-item-sub {
+    padding-left: 12px;
+    border-left: none;
+    border-bottom: 2px solid transparent;
+    border-radius: 8px 8px 0 0;
+  }
+
+  /* Horizontal strip: the bar underlines the chip and fills left to right. */
+  .cs-page .cs-tmodal-rail-item-sub::before {
+    left: 0;
+    right: 0;
+    top: auto;
+    bottom: -2px;
+    width: auto;
+    height: 2px;
+    transform-origin: left;
+    transform: scaleX(var(--rail-progress, 0));
+  }
+
+  .cs-page .cs-tmodal-rail-item-sub.is-active {
+    border-left-color: transparent;
+    border-bottom-color: rgba(171, 7, 130, 0.22);
+  }
+
+  /* Groups flow inline on the horizontal strip. */
+  .cs-page .cs-tmodal-rail-group {
+    flex-direction: row;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 6px;
+  }
+
+  .cs-page .cs-tmodal-rail-group + .cs-tmodal-rail-group {
+    margin-top: 0;
+    margin-left: 14px;
+  }
+
+  .cs-page .cs-tmodal-rail-label {
+    margin-bottom: 0;
+    padding: 0 4px 0 0;
+    white-space: nowrap;
+  }
+}
+
+/* Read mode: the modal title tracks the read serif treatment, and the
+   handwritten section labels become small-caps sans like other labels. */
+html[data-mode='read'] .cs-page .cs-tmodal-section-title {
+  font-family: var(--cs-sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  rotate: 0deg;
+  color: var(--cs-ink);
 }

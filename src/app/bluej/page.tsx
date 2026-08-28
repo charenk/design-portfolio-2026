@@ -1,6 +1,7 @@
 "use client"
 
-import { Fragment } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { ProjectPageLayout } from '@/components/layout/ProjectPageLayout'
 import { SectionDivider } from '@/components/case-study/SectionDivider'
 import { ItalicCoda } from '@/components/case-study/ItalicCoda'
@@ -21,6 +22,32 @@ interface ThemeSlot {
   desc: string
   /** Spans the full gallery width on desktop. */
   wide?: boolean
+  /** Real imagery (16:9 slide exports in /public/bluej). When present, one
+      taped media frame renders per image instead of the placeholder. */
+  images?: { src: string; alt: string }[]
+}
+
+/** One entry in a theme group. A plain item (no subItems) is itself a
+    taped frame: `desc`/`wide` apply directly. An item WITH subItems is a
+    heading over its own mini-gallery: each subItem gets its own anchor,
+    rail entry, and frame (e.g. "CyberQP AI Terminal" broken into Context,
+    Framing, Iterations...). */
+interface ThemeItem {
+  label: string
+  subItems?: ThemeSlot[]
+  desc?: string
+  wide?: boolean
+  /** Imagery for a leaf item, same shape as ThemeSlot.images. A leaf with
+      several slides renders as its own deck without needing sub-items. */
+  images?: { src: string; alt: string }[]
+}
+
+/** A titled group of items ("Latest", "Others"). Groups render as labeled
+    sections in the modal's anchored list and content pane; a group with no
+    title renders its items ungrouped. */
+interface ThemeGroup {
+  title?: string
+  items: ThemeItem[]
 }
 
 interface Theme {
@@ -30,9 +57,9 @@ interface Theme {
   title: string
   /** One-line promise on the overview card. */
   promise: string
-  /** Short framing copy at the top of the section. Keep tight: visuals lead. */
+  /** Short description under the modal title. Keep tight: visuals lead. */
   framing: string[]
-  slots: ThemeSlot[]
+  groups: ThemeGroup[]
   /** Project slugs with a live full case study to link out to. */
   related: string[]
 }
@@ -54,26 +81,129 @@ const THEMES: Theme[] = [
   {
     id: 'design-systems',
     num: '01',
-    title: 'From Design Drift to Design Systems',
+    title: 'Design systems',
     promise:
-      'Turning scattered, drifting UI into a tokenized system teams actually adopt.',
+      'Turning drifting UI into a system teams actually use.',
     framing: [
-      // TODO(content): the drift-to-system story: where the drift came from, what the audit found, how the system earned adoption.
-      'How I take a product from inconsistent, drifting UI to a governed design system: auditing the drift, building the token and component architecture, and doing the unglamorous adoption work that makes it stick.',
+      'Improving product cohesion by addressing design drift, and governing a design system that helps developers ship faster while maintaining quality.',
     ],
-    slots: [
+    groups: [
       {
-        label: 'The drift audit',
-        desc: 'Before/after inventory: the same component captured across screens showing divergence, annotated with what caused it.',
-        wide: true,
+        title: 'Latest',
+        items: [
+          {
+            label: 'Design system at CyberQP',
+            subItems: [
+              {
+                label: 'Intro',
+                desc: 'The CyberQP design-system story: selected samples, the agentic framework, and the platform outcome.',
+                images: [
+                  {
+                    src: '/bluej/ds-intro-1.png',
+                    alt: 'Selected work samples: scaling the list-item component with annotated org states, the TableCard component on the identities table, and addressing front-end agent drift',
+                  },
+                  {
+                    src: '/bluej/ds-intro-2.png',
+                    alt: 'Design System 2.0, the new agentic design system framework: discovery, prioritize and decide, build and test with Claude, measure and monitor',
+                  },
+                  {
+                    src: '/bluej/ds-intro-3.png',
+                    alt: 'Outcome, the biggest UX win: from the legacy product to the new platform design direction, leading the platform redesign alongside design system enhancements',
+                  },
+                ],
+              },
+              {
+                label: 'Adding TableCard component',
+                desc: 'One enclosing surface for tabs, table, and pagination: the before and after, the working artifact, and what shipped to Storybook.',
+                images: [
+                  {
+                    src: '/bluej/ds-tablecard-1.png',
+                    alt: 'Work sample 1, before TableCard and refined guidelines: the identities screen with tabs, table, and footer pagination marked one, two, and three as three unbounded components',
+                  },
+                  {
+                    src: '/bluej/ds-tablecard-2.png',
+                    alt: 'After the TableCard definition: the same identities table with tabs, rows, and pagination bound inside one enclosed surface',
+                  },
+                  {
+                    src: '/bluej/ds-tablecard-3.png',
+                    alt: 'Behind the scenes working artifact: canvas annotations on pagination height, page-selector state, and border-radius inconsistencies, captioned about iterating with engineering in the loop on high-impact components',
+                  },
+                  {
+                    src: '/bluej/ds-tablecard-4.png',
+                    alt: 'Final output: the new TableCard configuration in Storybook with header slot, untabbed, footer slot, and page pattern variants, added alongside a decision log and product context',
+                  },
+                ],
+              },
+              {
+                label: 'Addressing frontend drift',
+                desc: 'Catching drift in an audit, fixing it before it shipped, then closing the gap in the guidelines.',
+                images: [
+                  {
+                    src: '/bluej/ds-drift-1.png',
+                    alt: 'Work sample 2, UI defects in dark mode found during audit: the Policies screen where the primary button and menu use gray.900 fills on a near-identical dark canvas, so the container barely separates from the page',
+                  },
+                  {
+                    src: '/bluej/ds-drift-2.png',
+                    alt: 'Discovery of drift before the solution hit production: punch item P-030 for the button system with its acceptance criteria, picked from the agent-maintained punch list, severity confirmed in a local audit, then fixed',
+                  },
+                  {
+                    src: '/bluej/ds-drift-3.png',
+                    alt: 'Before and after the fix, up close: the Policy and Action controls with near-invisible fills, beside the same controls today with a clear primary button',
+                  },
+                  {
+                    src: '/bluej/ds-drift-4.png',
+                    alt: 'Updated and reviewed button guidelines, decision log, and theme file so the system will not reproduce the issue: Button variants documented in Storybook across solid, outline, destructive, destructive outline, and ghost',
+                  },
+                ],
+              },
+              {
+                label: 'Simplifying organization list',
+                desc: 'Enhancing the menu list item component so organization sync reads clearly on both sides.',
+                images: [
+                  {
+                    src: '/bluej/ds-org-list-1.png',
+                    alt: 'Work sample 3, enhancing the menu list item component for organizations: source-side and CyberQP-side org states covering flat orgs, typed orgs, parent-child nesting, selection checkboxes, and marked-to-create badges for both the agent\u2019s action and the user\u2019s',
+                  },
+                  {
+                    src: '/bluej/ds-org-list-2.png',
+                    alt: 'Outcome: the updated organization matching experience in the new platform, with source titles matched against CyberQP organizations and unmatched rows called out, beside the legacy organization table it replaced',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
       },
       {
-        label: 'Token & component architecture',
-        desc: 'Diagram of the token layers (primitive → semantic → component) and how they map to code.',
-      },
-      {
-        label: 'Adoption & governance',
-        desc: 'How the system rolled out: contribution model, docs, and the adoption curve across squads.',
+        title: 'Previous',
+        items: [
+          {
+            label: 'Hopper Design System',
+            desc: 'Leading the ShareGate platforms onto Workleap\u2019s shared design system, from context and role to the artifacts that drove adoption.',
+            images: [
+              {
+                src: '/bluej/ds-hopper-1.png',
+                alt: 'Hopper, the Workleap and ShareGate design system at hopper.workleap.design: accessible, international, TypeScript based, with dark mode, plus colors, text styles, and a react-aria component suite',
+              },
+              {
+                src: '/bluej/ds-hopper-2.png',
+                alt: 'Context: HR tech and IT products evolved independently, so two UI systems had to be maintained, patterns drifted for years, and teams duplicated effort; the shift was a strategy to integrate the products with a clear ROI in saved engineering and design cycles',
+              },
+              {
+                src: '/bluej/ds-hopper-3.png',
+                alt: 'My role: led the design system transition on ShareGate platforms, auditing products for the design system\u2019s discovery, designing and managing the platform\u2019s UI states, then ensuring adoption and building new patterns during design review',
+              },
+              {
+                src: '/bluej/ds-hopper-4.png',
+                alt: 'Behind the scenes: an async voting workshop on Hopper design patterns, where teams spent five votes each across pattern cards to prioritize documentation, producing a ranked list',
+              },
+              {
+                src: '/bluej/ds-hopper-5.png',
+                alt: 'Behind the scenes: component documentation for the Button group, with design requirements, guidelines, a completion checklist, light and dark theme variants, and a changelog entry',
+              },
+            ],
+          },
+        ],
       },
     ],
     related: [],
@@ -81,26 +211,95 @@ const THEMES: Theme[] = [
   {
     id: 'zero-to-one',
     num: '02',
-    title: 'Zero to One: Frame, Research, Ship, Scale',
+    title: '0-1 and scale up initiatives',
     promise:
-      'Framing ambiguous problems, researching fast, shipping, then scaling what works.',
+      'From fuzzy problem to shipped product.',
     framing: [
-      // TODO(content): tighten around the AI-PAM 0→1 arc and the Copilot assessment.
+      // TODO(content): tighten around the AI-PAM 0→1 arc, privileged-identity discovery, and the Copilot/Blackberry work.
       'Joining before scope exists and carrying a product from framing through research, shipped iterations, and scale. The work here started as an open question and ended in customers’ hands.',
     ],
-    slots: [
+    groups: [
       {
-        label: 'Frame → ship timeline',
-        desc: 'The AI-PAM arc: discovery, three customer-facing iterations, what changed between each.',
-        wide: true,
+        title: 'Latest',
+        items: [
+          // TODO(content): Charen will share the CyberQP AI Terminal story in a follow-up prompt.
+          {
+            label: 'CyberQP AI Terminal',
+            subItems: [
+              {
+                label: 'Context',
+                desc: 'Placeholder: context for the CyberQP AI Terminal. Content coming.',
+              },
+              {
+                label: 'Framing',
+                desc: 'Placeholder: how the problem was framed. Content coming.',
+              },
+              {
+                label: 'Working with AI Lab',
+                desc: 'Placeholder: collaborating with the AI Labs team. Content coming.',
+              },
+              {
+                label: 'AI terminal design explorations',
+                desc: 'Placeholder: design exploration artifacts for the terminal. Content coming.',
+                wide: true,
+              },
+              {
+                label: 'Iterations',
+                desc: 'Placeholder: how the design iterated across releases. Content coming.',
+              },
+              {
+                label: 'Learnings',
+                desc: 'Placeholder: what came out of shipping the terminal. Content coming.',
+              },
+            ],
+          },
+          // TODO(content): Charen will share the privileged-identity discovery story in a follow-up prompt.
+          {
+            label: 'Discovery of privileged identities',
+            subItems: [
+              {
+                label: 'Context',
+                desc: 'Placeholder: context for privileged-identity discovery. Content coming.',
+              },
+              {
+                label: 'Why now',
+                desc: 'Placeholder: why this problem mattered at this moment. Content coming.',
+              },
+              {
+                label: 'Working with SMEs',
+                desc: 'Placeholder: collaborating with subject-matter experts. Content coming.',
+              },
+              {
+                label: 'Design explorations',
+                desc: 'Placeholder: design exploration artifacts. Content coming.',
+                wide: true,
+              },
+              {
+                label: 'Drawer component definition',
+                desc: 'Placeholder: defining the drawer component. Content coming.',
+              },
+              {
+                label: 'Outcome',
+                desc: 'Placeholder: how it landed. Content coming.',
+              },
+            ],
+          },
+        ],
       },
       {
-        label: 'Opportunity solution tree',
-        desc: 'The OST that turned three research cohorts into prioritized use cases.',
-      },
-      {
-        label: 'Readiness assessment concept',
-        desc: 'Copilot tenant assessment: gap-led framing that tells M365 tenants whether they are safe to switch on Copilot.',
+        title: 'Others',
+        items: [
+          {
+            label: 'Copilot tenant assessment (Sharegate)',
+            desc: 'Copilot tenant assessment: gap-led framing that tells M365 tenants whether they are safe to switch on Copilot.',
+            wide: true,
+          },
+          {
+            label: 'Visualize security attack matrix (Blackberry)',
+            desc: 'Placeholder: the security attack matrix visualization. Content coming.',
+            wide: true,
+          },
+        ],
       },
     ],
     related: ['ai-pam'],
@@ -108,14 +307,14 @@ const THEMES: Theme[] = [
   {
     id: 'ai-native',
     num: '03',
-    title: 'AI-Native Design: Designing for Agents & Workflows',
+    title: 'Designing for AI agents',
     promise:
-      'Trust gates, human-in-the-loop patterns, and agent workflows for regulated domains.',
+      'AI that experts can trust with real work.',
     framing: [
       // TODO(content): sharpen the agentic-design positioning for Blue J's tax/legal AI context.
       'Designing AI that experts trust with consequential work: read-only defaults, confirmation gates at the right trust moments, and systems that stop rather than guess.',
     ],
-    slots: [
+    groups: [{ items: [
       {
         label: 'The AI terminal & four trust gates',
         desc: 'AI-PAM terminal flow: intent confirmation, policy authorization, query plan review, workflow approval.',
@@ -129,47 +328,64 @@ const THEMES: Theme[] = [
         label: 'Failure & disambiguation patterns',
         desc: 'What happens when confidence is low or a connector dies: stop, name it, offer a recoverable path.',
       },
-    ],
+    ] }],
     related: ['ai-pam', 'refinery'],
   },
   {
     id: 'code-first',
     num: '04',
-    title: 'Code First Design',
+    title: 'Code-first design',
     promise:
-      'Designing in the medium: shipping working software to test ideas, not just mockups.',
+      'Ideas tested as working software, not mockups.',
     framing: [
-      // TODO(content): the code-as-design-tool practice story.
-      'Some ideas can only be judged running. I build working software, this portfolio included, to explore, test, and ship design decisions in the real medium.',
+      'Overview of setup, process, and custom skills.',
     ],
-    slots: [
+    groups: [{ items: [
       {
-        label: 'This portfolio',
-        desc: 'The site you are reading: dual read/see modes, GSAP choreography, built in code with Claude.',
-        wide: true,
+        label: 'Overview and setup',
+        images: [
+          {
+            src: '/bluej/cf-overview-1.png',
+            alt: 'Transitioning to code-first design: the article \u201cBeing a Designer/Builder in the Agentic Era\u201d on going from handing off Figma files to shipping code in production, beside a year of contribution graphs split into personal projects and AI explorations, then building and maintaining a one-to-one prototype matching prod and contributing directly in prod',
+          },
+        ],
       },
       {
-        label: 'Figma Buddy',
-        desc: 'AI design critique inside Figma comments: @buddy, built on the OpenAI API and Supabase.',
+        label: 'Process',
+        images: [
+          {
+            src: '/bluej/cf-process-1.png',
+            alt: 'The agentic design process: an intake gate naming the need and the failure signal from product priorities, unmet needs, Slack, Pendo, and telemetry, then the agent generates volume using org-level and project skills in design mode, then a review gate judging with intent, handing off to engineering and shipping, with customers, subject-matter experts, and signals feeding revisions before ship',
+          },
+          {
+            src: '/bluej/cf-process-2.png',
+            alt: 'How I contribute to the front-end code of the production app: the Panthera UI design workflow documented in WORKFLOW.md, a day-to-day cycle from one start command to a design branch and sandbox, working in the browser on mocked product pages, committing feature files while sandbox files stay local, then opening a PR that merges to main and deploys to QA',
+          },
+        ],
       },
       {
-        label: 'The Refinery build',
-        desc: 'From idea to a nine-agent system running locally for under fifteen cents a day.',
+        label: 'Custom skills',
+        images: [
+          {
+            src: '/bluej/cf-skills-1.png',
+            alt: 'Custom skills that help me lead multiple projects as a sole designer: a data-viz skill built from early design exploration and expanded with knowledge from The Wall Street Journal Guide to Information Graphics, a project-specific cyberqp-design skill holding component and product-module context with design directions and decisions, and Impeccable, shown as a SKILL.md open in the editor and the dashboard it produced',
+          },
+        ],
       },
-    ],
+    ] }],
     related: ['refinery', 'figma-buddy'],
   },
   {
     id: 'growth',
     num: '05',
-    title: 'Designing for Discovery, Activation & Growth',
+    title: 'Growth and activation',
     promise:
-      'First-run experiences, feature discovery, and the metrics that prove they work.',
+      'Getting features discovered and used after launch.',
     framing: [
       // TODO(content): activation and growth story: what moved, and how it was measured.
       'Design that earns its keep after launch: reworking first-run activation, making features discoverable in the flow of work, and instrumenting the journey so the team knows what moved.',
     ],
-    slots: [
+    groups: [{ items: [
       {
         label: 'Activation rework',
         desc: 'CyberQP first-run activation and feature discovery: the journey map and the redesigned flow.',
@@ -183,99 +399,720 @@ const THEMES: Theme[] = [
         label: 'Measurement loop',
         desc: 'The instrumentation behind the story: what was tracked, and how it fed the next iteration.',
       },
-    ],
+    ] }],
     related: ['browser-extension'],
   },
 ]
 
-/* Tilt alternates across a theme's gallery so frames feel hand-placed. */
+/* Tilt alternates across a theme's samples so frames feel hand-placed. */
 function slotTilt(i: number): string {
   return i % 2 === 0 ? 'cs-tilt-l' : 'cs-tilt-r'
 }
 
-function ThemeSection({ theme }: { theme: Theme }) {
+/* Anchor ids are slugged from labels rather than positional, so they stay
+   stable as content is added/reordered. */
+function slug(label: string): string {
+  return label
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '')
+}
+
+interface RailLeaf {
+  id: string
+  label: string
+  slot: ThemeSlot
+  tilt: number
+}
+
+interface RailNode {
+  label: string
+  /** Present for a leaf item (no subItems): this node IS the frame. */
+  leaf?: RailLeaf
+  /** Present for a parent item: its subItems, each its own frame. */
+  children?: RailLeaf[]
+}
+
+/* One sub-item's visuals: real slide frames when imagery exists, else the
+   labeled placeholder frame. Tilt continues from the slot's base index so
+   stacked frames keep the alternating hand-placed rhythm. */
+function SlotFrames({ slot, tilt }: { slot: ThemeSlot; tilt: number }) {
+  if (slot.images?.length) {
+    return (
+      <>
+        {slot.images.map((image, i) => (
+          <div
+            key={image.src}
+            className={`cs-figure ${slotTilt(tilt + i)} cs-tmodal-frame`}
+            data-cs-figure
+          >
+            <span className="cs-tape" aria-hidden />
+            <div className="cs-figure-media aspect-video">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={image.src} alt={image.alt} className="cs-figure-img" />
+            </div>
+          </div>
+        ))}
+      </>
+    )
+  }
+  return (
+    <div className={`cs-figure ${slotTilt(tilt)}`} data-cs-figure>
+      <span className="cs-tape" aria-hidden />
+      <div
+        className={`cs-figure-empty ${slot.wide ? 'aspect-[3/2] md:aspect-[21/9]' : 'aspect-[3/2]'}`}
+      >
+        <div>
+          <p className="cs-figure-empty-label">{slot.label}</p>
+          <p className="cs-figure-empty-desc">{slot.desc}</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+interface DeckFrame {
+  key: string
+  /** Anchor id, present only on a sub-item's FIRST frame so rail clicks
+      still land on the start of that sub-item. */
+  id?: string
+  childId: string
+  childLabel: string
+  tilt: number
+  image?: { src: string; alt: string }
+  slot?: ThemeSlot
+  /** Renders the visually-hidden heading that keeps the sub-item structure
+      readable to assistive tech now that the visible label is gone. */
+  heading?: string
+}
+
+/* Flattens a node's sub-items into one frame per image, so the scroll box
+   can snap image-by-image (one flick = one slide) and the breadcrumb can
+   name whichever slide is in view. Sub-items without imagery contribute a
+   single placeholder frame. */
+function buildDeck(leaves: RailLeaf[]): DeckFrame[] {
+  return leaves.flatMap((leaf) => {
+    const images = leaf.slot.images
+    if (images?.length) {
+      return images.map((image, i): DeckFrame => ({
+        key: image.src,
+        id: i === 0 ? leaf.id : undefined,
+        childId: leaf.id,
+        childLabel: leaf.label,
+        tilt: leaf.tilt + i,
+        image,
+        heading: i === 0 ? leaf.label : undefined,
+      }))
+    }
+    return [
+      {
+        key: leaf.id,
+        id: leaf.id,
+        childId: leaf.id,
+        childLabel: leaf.label,
+        tilt: leaf.tilt,
+        slot: leaf.slot,
+        heading: leaf.label,
+      },
+    ]
+  })
+}
+
+/* One deck: full-height snap frames, each holding a single slide. */
+function Deck({ frames }: { frames: DeckFrame[] }) {
+  return (
+    <>
+      {frames.map((frame) => (
+        <div
+          key={frame.key}
+          id={frame.id}
+          data-child-id={frame.childId}
+          className="cs-tmodal-slide"
+        >
+          {frame.heading && <h4 className="cs-sr-only">{frame.heading}</h4>}
+          {frame.image ? (
+            <div
+              className={`cs-figure ${slotTilt(frame.tilt)} cs-tmodal-frame`}
+              data-cs-figure
+            >
+              <span className="cs-tape" aria-hidden />
+              <div className="cs-figure-media cs-tmodal-frame-media">
+                {/* Normal-flow img (not the absolute cs-figure-img): its
+                    intrinsic 16:9 ratio derives the width from the slide's
+                    height, so the frame shrink-wraps the painted image. */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={frame.image.src}
+                  alt={frame.image.alt}
+                  className="cs-tmodal-slide-img"
+                />
+              </div>
+            </div>
+          ) : (
+            frame.slot && <SlotFrames slot={frame.slot} tilt={frame.tilt} />
+          )}
+        </div>
+      ))}
+    </>
+  )
+}
+
+/* Builds the rail's group/item/subItem tree once per theme, assigning each
+   leaf a stable slugged anchor id and a running tilt index (so alternating
+   tilt continues across items and groups, not just within one). */
+function buildRailGroups(theme: Theme): { title?: string; nodes: RailNode[] }[] {
+  let tiltIndex = 0
+  return theme.groups.map((group) => ({
+    title: group.title,
+    nodes: group.items.map((item): RailNode => {
+      if (item.subItems) {
+        return {
+          label: item.label,
+          children: item.subItems.map((sub) => ({
+            id: `${theme.id}-${slug(item.label)}-${slug(sub.label)}`,
+            label: sub.label,
+            slot: sub,
+            tilt: tiltIndex++,
+          })),
+        }
+      }
+      return {
+        label: item.label,
+        leaf: {
+          id: `${theme.id}-${slug(item.label)}`,
+          label: item.label,
+          slot: {
+            label: item.label,
+            desc: item.desc ?? '',
+            wide: item.wide,
+            images: item.images,
+          },
+          tilt: tiltIndex++,
+        },
+      }
+    }),
+  }))
+}
+
+/**
+ * One theme, presented as a modal over the overview grid. Structure:
+ * header (eyebrow, title, close), an anchored pill nav, one section per
+ * sample inside an inner scroller (data-lenis-prevent so wheel events stay
+ * local), a "Go deeper" section when case studies exist, and a footer with
+ * prev/next theme so a reviewer can flow through all five without closing.
+ */
+function ThemeModal({
+  theme,
+  onClose,
+  onNavigate,
+}: {
+  theme: Theme
+  onClose: () => void
+  onNavigate: (id: string) => void
+}) {
+  const panelRef = useRef<HTMLDivElement>(null)
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const closeRef = useRef<HTMLButtonElement>(null)
+
   const links = theme.related
     .map(relatedLink)
     .filter((l): l is { title: string; href: string } => l !== null)
 
+  /* Anchored-list rail: grouped entries ("Latest" / "Others"), each either a
+     single frame or a parent item broken into its own sub-frames. Clicking
+     any rail entry SELECTS it: the right pane shows only that node's own
+     content, in its own scroll area, rather than one shared page scroll. */
+  const railGroups = buildRailGroups(theme)
+  const flatNodes = railGroups.flatMap((g) => g.nodes.map((n) => ({ group: g, node: n })))
+  const firstEntry = flatNodes[0]
+  const firstKey = firstEntry
+    ? firstEntry.node.leaf?.id ?? `${theme.id}-${slug(firstEntry.node.label)}`
+    : undefined
+  const firstChildId = firstEntry?.node.children?.[0]?.id
+
+  const [selectedKey, setSelectedKey] = useState(firstKey)
+  const [activeChildId, setActiveChildId] = useState(firstChildId)
+  /* True once the deck is scrolled: swaps the crumb's divider-shadow in. */
+  const [deckScrolled, setDeckScrolled] = useState(false)
+  const parentScrollRef = useRef<HTMLDivElement>(null)
+  const railRef = useRef<HTMLElement>(null)
+
+  /* Keep the active rail entry visible as the scrollspy moves it: with the
+     crumb no longer naming the sub-item, the rail is the one "where am I"
+     indicator, so it must not drift out of view (especially the horizontal
+     mobile strip). block/inline "nearest" keeps this from moving anything
+     but the rail's own scroller. */
+  useEffect(() => {
+    railRef.current
+      ?.querySelector<HTMLElement>('.is-active')
+      ?.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' })
+  }, [activeChildId, selectedKey])
+
+  /* The id to imperatively scroll to is kept OUT of activeChildId's own
+     update cycle: activeChildId also gets written by the scrollspy below as
+     the user free-scrolls, and if that same value drove the scrollIntoView
+     effect, a click-triggered scroll would be interrupted mid-animation by
+     the scrollspy reporting an earlier item still nearest-top, snapping the
+     view back before it ever reached the target. A separate counter fires
+     the scroll exactly once per click, regardless of what the scrollspy
+     does afterward. */
+  const [scrollTick, setScrollTick] = useState(0)
+  const pendingScrollId = useRef<string | undefined>(undefined)
+  /* Smooth only when staying inside the same deck. Switching decks swaps
+     the content wholesale, so animating through unrelated new slides just
+     looks like a glitch; those jump. */
+  const pendingSmooth = useRef(true)
+  const requestScroll = (id?: string, smooth = true) => {
+    pendingScrollId.current = id
+    pendingSmooth.current = smooth
+    setScrollTick((t) => t + 1)
+  }
+
+  const selectedEntry = flatNodes.find(({ node }) => {
+    const key = node.leaf?.id ?? `${theme.id}-${slug(node.label)}`
+    return key === selectedKey
+  })
+  const deeperSelected = selectedKey === `${theme.id}-deeper`
+
+  /* Leaf and parent nodes both render as a deck: a leaf is simply a
+     one-sub-item deck, so the breadcrumb and snap behaviour are identical
+     either way. */
+  const selectedLeaves: RailLeaf[] = selectedEntry
+    ? selectedEntry.node.children ??
+      (selectedEntry.node.leaf ? [selectedEntry.node.leaf] : [])
+    : []
+  const deckFrames = buildDeck(selectedLeaves)
+
+  const focusDetail = () => {
+    requestAnimationFrame(() => {
+      scrollRef.current
+        ?.querySelector<HTMLElement>('.cs-tmodal-detail-title')
+        ?.focus()
+    })
+  }
+
+  const selectLeaf = (id: string) => {
+    setSelectedKey(id)
+    setActiveChildId(undefined)
+    setDeckScrolled(false)
+    /* A leaf has no child anchor to scroll to, so the box would otherwise
+       keep the previous deck's scroll position and open mid-deck. */
+    requestScroll(undefined, false)
+    focusDetail()
+  }
+
+  const selectParent = (parentLabel: string, childId?: string) => {
+    const key = `${theme.id}-${slug(parentLabel)}`
+    const sameDeck = key === selectedKey
+    setSelectedKey(key)
+    setActiveChildId(childId)
+    setDeckScrolled(false)
+    requestScroll(childId, sameDeck)
+    focusDetail()
+  }
+
+  /* Scoped scrollspy: tracks which SLIDE is nearest the top of the selected
+     node's own scroll box (not the whole page), and reports the sub-item it
+     belongs to. Reading per-slide rather than per-sub-item is what lets the
+     breadcrumb's child label rotate as the reader flicks through a
+     multi-slide sub-item. Only updates the highlight, never scrolls. */
+  const handleParentScroll = () => {
+    const box = parentScrollRef.current
+    if (!box) return
+    setDeckScrolled(box.scrollTop > 4)
+    const top = box.getBoundingClientRect().top
+    const slides = [...box.querySelectorAll<HTMLElement>('.cs-tmodal-slide')]
+    let current: string | undefined
+    let indexInChild = 0
+    for (const slide of slides) {
+      if (slide.getBoundingClientRect().top - top <= 24) {
+        indexInChild = slide.dataset.childId === current ? indexInChild + 1 : 0
+        current = slide.dataset.childId
+      }
+    }
+    if (!current) return
+    setActiveChildId(current)
+    const total = slides.filter((s) => s.dataset.childId === current).length
+    writeRailProgress(current, total ? (indexInChild + 1) / total : 1)
+  }
+
+  /* Rail fill is written straight to the DOM rather than held in React
+     state: this runs on every scroll frame, and a state update here would
+     re-render the whole modal each frame (activeChildId doesn't, because
+     React bails out when the id is unchanged). Only the active item keeps a
+     value, so a stale fill can't linger on the one you just left. */
+  const writeRailProgress = (childId: string, fraction: number) => {
+    const rail = railRef.current
+    if (!rail) return
+    for (const item of rail.querySelectorAll<HTMLElement>(
+      '.cs-tmodal-rail-item-sub'
+    )) {
+      item.style.setProperty(
+        '--rail-progress',
+        item.dataset.childId === childId ? String(fraction) : '0'
+      )
+    }
+  }
+
+  /* Runs the pending scroll request once, after the click's state changes
+     (possibly a parent switch) have committed to the DOM. scrollIntoView
+     finds the nearest scrollable ancestor on its own, so no manual offset
+     math is needed. */
+  useEffect(() => {
+    const id = pendingScrollId.current
+    if (!id) {
+      /* No anchor (a leaf, or Go deeper): send the deck back to slide one.
+         behavior 'instant' aborts a smooth scroll still running from a
+         previous selection, which would otherwise keep animating over the
+         swapped-in deck and leave it a few px off the first slide. The
+         second pass on the next frame catches an animation that had
+         already been scheduled for this one. */
+      const reset = () =>
+        parentScrollRef.current?.scrollTo({ top: 0, behavior: 'instant' })
+      reset()
+      requestAnimationFrame(reset)
+      return
+    }
+    document.getElementById(id)?.scrollIntoView({
+      behavior: pendingSmooth.current ? 'smooth' : 'auto',
+      block: 'start',
+    })
+    /* Seed the rail fill for this selection: when the target is already at
+       the top of the box no scroll fires, so handleParentScroll would never
+       run and the bar would keep the previous child's value. */
+    const box = parentScrollRef.current
+    const total = box
+      ? box.querySelectorAll(
+          `.cs-tmodal-slide[data-child-id="${CSS.escape(id)}"]`
+        ).length
+      : 0
+    writeRailProgress(id, total ? 1 / total : 1)
+    // scrollTick is the trigger; re-reading the ref each fire is intentional.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scrollTick])
+
+  const themeIndex = THEMES.findIndex((t) => t.id === theme.id)
+  const prevTheme = THEMES[themeIndex - 1] ?? null
+  const nextTheme = THEMES[themeIndex + 1] ?? null
+
+  /* Escape closes; focus starts on the close button and Tab stays inside
+     the panel (a light focus trap). The body scroll lock lives in the page
+     component: per-modal cleanup would race when hopping prev/next themes,
+     since the exiting modal unmounts after the next one mounts. */
+  useEffect(() => {
+    closeRef.current?.focus()
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose()
+        return
+      }
+      if (e.key !== 'Tab') return
+      const panel = panelRef.current
+      if (!panel) return
+      const focusables = panel.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled])'
+      )
+      if (!focusables.length) return
+      const first = focusables[0]
+      const last = focusables[focusables.length - 1]
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault()
+        first.focus()
+      }
+    }
+
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [onClose])
+
+  /* Reset selection to the theme's first node when hopping between themes,
+     and move focus to the newly-selected pane's heading so keyboard users
+     land somewhere on every selection change (including this reset). */
+  useEffect(() => {
+    setSelectedKey(firstKey)
+    setActiveChildId(firstChildId)
+    setDeckScrolled(false)
+    requestScroll(firstChildId)
+    // firstKey/firstChildId derive from theme.id; resetting on theme change is enough.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [theme.id])
+
+  /* Focus moves to the detail heading only on an explicit selection (see
+     focusDetail, called from the rail handlers), never on open: focus
+     belongs on the close button there, and focusing the heading would also
+     flash its ring at mouse users. */
+
   return (
-    <section id={theme.id} className="cs-theme">
-      <p className="cs-eyebrow">Theme {theme.num} / 05</p>
-      <h2 className="cs-h2">{theme.title}</h2>
+    <motion.div
+      className="cs-tmodal-overlay"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+    >
+      <button
+        type="button"
+        className="cs-tmodal-backdrop"
+        aria-label="Close theme"
+        onClick={onClose}
+      />
 
-      <div className="cs-body max-w-[760px]">
-        {theme.framing.map((p, i) => (
-          <p key={i}>{p}</p>
-        ))}
-      </div>
+      <motion.div
+        ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={`${theme.id}-modal-title`}
+        className="cs-tmodal"
+        initial={{ opacity: 0, y: 18, scale: 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 12, scale: 0.99 }}
+        transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <span className="cs-tape" aria-hidden />
 
-      {/* Visual gallery: taped placeholder frames until curated imagery lands */}
-      <div className="cs-tgallery">
-        {theme.slots.map((slot, i) => (
-          <div
-            key={slot.label}
-            className={`cs-figure ${slotTilt(i)}${slot.wide ? ' cs-tslot-wide' : ''}`}
-            data-cs-figure
-          >
-            <span className="cs-tape" aria-hidden />
-            <div
-              className={`cs-figure-empty ${slot.wide ? 'aspect-[3/2] md:aspect-[21/9]' : 'aspect-[440/320]'}`}
-            >
-              <div>
-                <p className="cs-figure-empty-label">{slot.label}</p>
-                <p className="cs-figure-empty-desc">{slot.desc}</p>
-              </div>
+        <header className="cs-tmodal-header">
+          <div>
+            <p className="cs-eyebrow">Theme {theme.num} / 05</p>
+            <h2 id={`${theme.id}-modal-title`} className="cs-tmodal-title">
+              {theme.title}
+            </h2>
+            <div className="cs-tmodal-desc">
+              {theme.framing.map((p, i) => (
+                <p key={i}>{p}</p>
+              ))}
             </div>
           </div>
-        ))}
-      </div>
+          <button
+            ref={closeRef}
+            type="button"
+            className="cs-tmodal-close"
+            aria-label="Close"
+            onClick={onClose}
+          >
+            ×
+          </button>
+        </header>
 
-      {links.length > 0 && (
-        <div className="cs-tlinks">
-          <span className="cs-tlinks-label">Go deeper</span>
-          {links.map((link) => (
-            <a key={link.href} href={link.href} className="cs-tlink">
-              {link.title}
-              <span aria-hidden="true"> →</span>
-            </a>
-          ))}
+        {/* Two panes: anchored list on the left, detail on the right. Clicking
+            a rail entry SELECTS it; the right pane shows only that node's own
+            content, each with its own scroll area (see-and-swap, not one
+            shared page scroll). */}
+        <div className="cs-tmodal-body">
+          <nav ref={railRef} className="cs-tmodal-rail" aria-label="Sections in this theme">
+            {railGroups.map((group, gi) => (
+              <div key={group.title ?? gi} className="cs-tmodal-rail-group">
+                {group.title && (
+                  <p className="cs-tmodal-rail-label">{group.title}</p>
+                )}
+                {group.nodes.map((node) =>
+                  node.children ? (
+                    <div key={node.label} className="cs-tmodal-rail-parent">
+                      <button
+                        type="button"
+                        className={`cs-tmodal-rail-parent-label${selectedKey === `${theme.id}-${slug(node.label)}` ? ' is-active' : ''}`}
+                        onClick={() => selectParent(node.label, node.children![0]?.id)}
+                      >
+                        {node.label}
+                      </button>
+                      {node.children.map((child) => (
+                        <button
+                          key={child.id}
+                          type="button"
+                          data-child-id={child.id}
+                          className={`cs-tmodal-rail-item cs-tmodal-rail-item-sub${selectedKey === `${theme.id}-${slug(node.label)}` && activeChildId === child.id ? ' is-active' : ''}`}
+                          onClick={() => selectParent(node.label, child.id)}
+                        >
+                          {child.label}
+                        </button>
+                      ))}
+                    </div>
+                  ) : (
+                    node.leaf && (
+                      <button
+                        key={node.leaf.id}
+                        type="button"
+                        className={`cs-tmodal-rail-item${selectedKey === node.leaf.id ? ' is-active' : ''}`}
+                        onClick={() => selectLeaf(node.leaf!.id)}
+                      >
+                        {node.leaf.label}
+                      </button>
+                    )
+                  )
+                )}
+              </div>
+            ))}
+            {links.length > 0 && (
+              <div className="cs-tmodal-rail-group">
+                <button
+                  type="button"
+                  className={`cs-tmodal-rail-item${deeperSelected ? ' is-active' : ''}`}
+                  onClick={() => selectLeaf(`${theme.id}-deeper`)}
+                >
+                  Go deeper
+                </button>
+              </div>
+            )}
+          </nav>
+
+          <div ref={scrollRef} className="cs-tmodal-scroll" data-lenis-prevent>
+            {deeperSelected ? (
+              <div className="cs-tlinks">
+                <span className="cs-tlinks-label">Go deeper</span>
+                {links.map((link) => (
+                  <a key={link.href} href={link.href} className="cs-tlink">
+                    {link.title}
+                    <span aria-hidden="true"> →</span>
+                  </a>
+                ))}
+              </div>
+            ) : (
+              selectedEntry && (
+                <>
+                  {/* One line above the deck: just the parent. The rail's
+                      highlight is the single "where am I" indicator (it
+                      tracks per-slide via the scrollspy), and each slide
+                      carries its own baked-in title, so naming the sub-item
+                      here again would state it in three places. */}
+                  <h3
+                    className={`cs-tmodal-crumb cs-tmodal-detail-title${deckScrolled ? ' is-scrolled' : ''}`}
+                    tabIndex={-1}
+                  >
+                    <span className="cs-tmodal-crumb-parent">
+                      {selectedEntry.node.label}
+                    </span>
+                  </h3>
+                  <div
+                    ref={parentScrollRef}
+                    className="cs-tmodal-parent-scroll"
+                    data-lenis-prevent
+                    onScroll={handleParentScroll}
+                  >
+                    <Deck frames={deckFrames} />
+                  </div>
+                </>
+              )
+            )}
+          </div>
         </div>
-      )}
-    </section>
+
+        <footer className="cs-tmodal-footer">
+          {prevTheme ? (
+            <button
+              type="button"
+              className="cs-tmodal-step cs-tmodal-step-prev"
+              onClick={() => onNavigate(prevTheme.id)}
+            >
+              <span className="cs-tmodal-step-label">
+                <span aria-hidden="true">← </span>Previous
+              </span>
+              <span className="cs-tmodal-step-title">
+                {prevTheme.num} {prevTheme.title}
+              </span>
+            </button>
+          ) : (
+            <span />
+          )}
+          {nextTheme ? (
+            <button
+              type="button"
+              className="cs-tmodal-step cs-tmodal-step-next"
+              onClick={() => onNavigate(nextTheme.id)}
+            >
+              <span className="cs-tmodal-step-label">
+                Next<span aria-hidden="true"> →</span>
+              </span>
+              <span className="cs-tmodal-step-title">
+                {nextTheme.num} {nextTheme.title}
+              </span>
+            </button>
+          ) : (
+            <span />
+          )}
+        </footer>
+      </motion.div>
+    </motion.div>
   )
 }
 
 export default function BlueJPage() {
+  const [openId, setOpenId] = useState<string | null>(null)
+  const openTheme = THEMES.find((t) => t.id === openId) ?? null
+
+  /* The URL hash mirrors the open modal so theme links stay shareable:
+     /bluej#design-systems opens that theme directly. */
+  useEffect(() => {
+    const fromHash = window.location.hash.slice(1)
+    if (THEMES.some((t) => t.id === fromHash)) setOpenId(fromHash)
+  }, [])
+
+  /* One body scroll lock for the whole modal experience, held across
+     prev/next theme hops. */
+  const modalOpen = openId !== null
+  useEffect(() => {
+    if (!modalOpen) return
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = prevOverflow
+    }
+  }, [modalOpen])
+
+  const openModal = useCallback((id: string) => {
+    setOpenId(id)
+    window.history.replaceState(null, '', `#${id}`)
+  }, [])
+
+  const closeModal = useCallback(() => {
+    setOpenId((current) => {
+      if (current) {
+        /* Return focus to the card that opened the modal. */
+        document
+          .querySelector<HTMLElement>(`[data-tcard="${current}"]`)
+          ?.focus()
+      }
+      return null
+    })
+    window.history.replaceState(
+      null,
+      '',
+      window.location.pathname + window.location.search
+    )
+  }, [])
+
   return (
     <ProjectPageLayout
       /* TODO(content): final page title. */
-      title="Work samples for Blue J"
+      title="👋 Hello, Blue J team"
       /* No hero: the intro and theme grid are the first screen. Add
          hero={{ type: 'image', src: …, alt: … }} once there's art worth
          leading with. */
       nextHref="/portfolio"
       nextLabel="All projects"
     >
-      {/* Intro note. TODO(content): 2-3 lines max, addressed to the Blue J team. */}
+      {/* Intro note: the hello lives in the page title; this stays short. */}
       <section className="mb-[64px]">
         <div className="cs-body max-w-[760px]">
           <p>
-            Thanks for taking the time. Ahead of our next conversation, this page
-            shows the breadth of my work through five themes: design systems,
-            zero to one, AI-native design, code-first practice, and growth. Each
-            theme is a high-level sample, and the full case studies are linked
-            where you want to go deeper.
+            Here are curated themes presenting my work across the product and
+            design function. Looking forward to going deeper on any of these
+            when we meet virtually. Thanks for looking.
           </p>
         </div>
       </section>
 
-      {/* Overview grid: five taped cards jump-linking to the sections below.
+      {/* Overview grid: five taped cards, each opening its theme as a modal.
           Design systems leads and takes the widest card. */}
       <nav className="cs-tgrid mb-[24px]" aria-label="Themes on this page">
         {THEMES.map((theme, i) => (
-          <a
+          <button
             key={theme.id}
-            href={`#${theme.id}`}
+            type="button"
+            data-tcard={theme.id}
+            onClick={() => openModal(theme.id)}
             className={`cs-tcard${i === 0 ? ' cs-tcard-featured' : ''}`}
           >
             <span className="cs-tape" aria-hidden />
@@ -283,18 +1120,22 @@ export default function BlueJPage() {
             <h3 className="cs-tcard-title">{theme.title}</h3>
             <p className="cs-tcard-promise">{theme.promise}</p>
             <span className="cs-tcard-arrow" aria-hidden="true">
-              ↓
+              →
             </span>
-          </a>
+          </button>
         ))}
       </nav>
 
-      {THEMES.map((theme) => (
-        <Fragment key={theme.id}>
-          <SectionDivider />
-          <ThemeSection theme={theme} />
-        </Fragment>
-      ))}
+      <AnimatePresence>
+        {openTheme && (
+          <ThemeModal
+            key={openTheme.id}
+            theme={openTheme}
+            onClose={closeModal}
+            onNavigate={openModal}
+          />
+        )}
+      </AnimatePresence>
 
       {/* Close */}
       <SectionDivider />
