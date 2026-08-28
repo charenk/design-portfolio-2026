@@ -196,12 +196,11 @@ const THEMES: Theme[] = [
   {
     id: 'zero-to-one',
     num: '02',
-    title: '0-1 and scale up initiatives',
+    title: '0-1 and scale-up projects',
     promise:
       'From fuzzy problem to shipped product.',
     framing: [
-      // TODO(content): tighten around the AI-PAM 0→1 arc, privileged-identity discovery, and the Copilot/Blackberry work.
-      'Joining before scope exists and carrying a product from framing through research, shipped iterations, and scale. The work here started as an open question and ended in customers’ hands.',
+      'Recent projects where I led the design and helped shape the work alongside product and engineering teams.',
     ],
     groups: [
       {
