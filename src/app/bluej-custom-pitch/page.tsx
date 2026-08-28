@@ -1084,7 +1084,7 @@ export default function BlueJPage() {
   const openTheme = THEMES.find((t) => t.id === openId) ?? null
 
   /* The URL hash mirrors the open modal so theme links stay shareable:
-     /bluej#design-systems opens that theme directly. */
+     /bluej-custom-pitch#design-systems opens that theme directly. */
   useEffect(() => {
     const fromHash = window.location.hash.slice(1)
     if (THEMES.some((t) => t.id === fromHash)) setOpenId(fromHash)
