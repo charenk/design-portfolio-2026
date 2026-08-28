@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ProjectPageLayout } from '@/components/layout/ProjectPageLayout'
-import { getProject } from '@/data/projects'
 
 /* ------------------------------------------------------------------------- */
 /* TODO(content): everything in THEMES below is scaffold copy. The five theme
@@ -58,21 +57,10 @@ interface Theme {
   /** Short description under the modal title. Keep tight: visuals lead. */
   framing: string[]
   groups: ThemeGroup[]
-  /** Project slugs with a live full case study to link out to. */
-  related: string[]
-}
-
-/* Pages that exist as routes but aren't in the ALL_PROJECTS registry. */
-const EXTRA_LINKS: Record<string, { title: string; href: string }> = {
-  'figma-buddy': { title: 'Figma Buddy', href: '/figma-buddy' },
-}
-
-function relatedLink(slug: string): { title: string; href: string } | null {
-  const extra = EXTRA_LINKS[slug]
-  if (extra) return extra
-  const project = getProject(slug)
-  if (!project || project.comingSoon) return null
-  return { title: project.title, href: project.href }
+  /** Render every slide as one full-width deck with no rail. For a theme
+      that reads as a single continuous story rather than a set of separate
+      samples, the rail is navigation nobody needs. */
+  fullDeck?: boolean
 }
 
 const THEMES: Theme[] = [
@@ -204,7 +192,6 @@ const THEMES: Theme[] = [
         ],
       },
     ],
-    related: [],
   },
   {
     id: 'zero-to-one',
@@ -300,7 +287,6 @@ const THEMES: Theme[] = [
         ],
       },
     ],
-    related: ['ai-pam'],
   },
   {
     id: 'ai-native',
@@ -327,12 +313,12 @@ const THEMES: Theme[] = [
         desc: 'What happens when confidence is low or a connector dies: stop, name it, offer a recoverable path.',
       },
     ] }],
-    related: ['ai-pam', 'refinery'],
   },
   {
     id: 'code-first',
     num: '04',
     title: 'Code-first design',
+    fullDeck: true,
     promise:
       'Ideas tested as working software, not mockups.',
     framing: [
@@ -371,7 +357,6 @@ const THEMES: Theme[] = [
         ],
       },
     ] }],
-    related: ['refinery', 'figma-buddy'],
   },
   {
     id: 'growth',
@@ -464,7 +449,6 @@ const THEMES: Theme[] = [
         ],
       },
     ],
-    related: ['browser-extension'],
   },
 ]
 
@@ -662,7 +646,7 @@ function buildRailGroups(theme: Theme): { title?: string; nodes: RailNode[] }[] 
  * One theme, presented as a modal over the overview grid. Structure:
  * header (eyebrow, title, close), an anchored pill nav, one section per
  * sample inside an inner scroller (data-lenis-prevent so wheel events stay
- * local), a "Go deeper" section when case studies exist, and a footer with
+ * local), and a footer with
  * prev/next theme so a reviewer can flow through all five without closing.
  */
 function ThemeModal({
@@ -677,10 +661,6 @@ function ThemeModal({
   const panelRef = useRef<HTMLDivElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
   const closeRef = useRef<HTMLButtonElement>(null)
-
-  const links = theme.related
-    .map(relatedLink)
-    .filter((l): l is { title: string; href: string } => l !== null)
 
   /* Anchored-list rail: grouped entries ("Latest" / "Others"), each either a
      single frame or a parent item broken into its own sub-frames. Clicking
@@ -736,15 +716,20 @@ function ThemeModal({
     const key = node.leaf?.id ?? `${theme.id}-${slug(node.label)}`
     return key === selectedKey
   })
-  const deeperSelected = selectedKey === `${theme.id}-deeper`
 
   /* Leaf and parent nodes both render as a deck: a leaf is simply a
      one-sub-item deck, so the breadcrumb and snap behaviour are identical
      either way. */
-  const selectedLeaves: RailLeaf[] = selectedEntry
+  const fullDeck = theme.fullDeck === true
+  /* Every leaf in the theme, in rail order: the whole story as one deck. */
+  const allLeaves: RailLeaf[] = railGroups.flatMap((g) =>
+    g.nodes.flatMap((n) => n.children ?? (n.leaf ? [n.leaf] : []))
+  )
+  const railLeaves: RailLeaf[] = selectedEntry
     ? selectedEntry.node.children ??
       (selectedEntry.node.leaf ? [selectedEntry.node.leaf] : [])
     : []
+  const selectedLeaves = fullDeck ? allLeaves : railLeaves
   const deckFrames = buildDeck(selectedLeaves)
 
   const focusDetail = () => {
@@ -825,7 +810,7 @@ function ThemeModal({
   useEffect(() => {
     const id = pendingScrollId.current
     if (!id) {
-      /* No anchor (a leaf, or Go deeper): send the deck back to slide one.
+      /* No anchor (a leaf selection): send the deck back to slide one.
          behavior 'instant' aborts a smooth scroll still running from a
          previous selection, which would otherwise keep animating over the
          swapped-in deck and leave it a few px off the first slide. The
@@ -965,7 +950,8 @@ function ThemeModal({
             a rail entry SELECTS it; the right pane shows only that node's own
             content, each with its own scroll area (see-and-swap, not one
             shared page scroll). */}
-        <div className="cs-tmodal-body">
+        <div className={`cs-tmodal-body${fullDeck ? ' is-full' : ''}`}>
+          {!fullDeck && (
           <nav ref={railRef} className="cs-tmodal-rail" aria-label="Sections in this theme">
             {railGroups.map((group, gi) => (
               <div key={group.title ?? gi} className="cs-tmodal-rail-group">
@@ -1009,54 +995,45 @@ function ThemeModal({
                 )}
               </div>
             ))}
-            {links.length > 0 && (
-              <div className="cs-tmodal-rail-group">
-                <button
-                  type="button"
-                  className={`cs-tmodal-rail-item${deeperSelected ? ' is-active' : ''}`}
-                  onClick={() => selectLeaf(`${theme.id}-deeper`)}
-                >
-                  Go deeper
-                </button>
-              </div>
-            )}
           </nav>
+          )}
 
           <div ref={scrollRef} className="cs-tmodal-scroll" data-lenis-prevent>
-            {deeperSelected ? (
-              <div className="cs-tlinks">
-                <span className="cs-tlinks-label">Go deeper</span>
-                {links.map((link) => (
-                  <a key={link.href} href={link.href} className="cs-tlink">
-                    {link.title}
-                    <span aria-hidden="true"> →</span>
-                  </a>
-                ))}
+            {fullDeck ? (
+              /* No rail and no crumb: every slide carries its own title, so
+                 the deck is the whole interface. */
+              <div
+                ref={parentScrollRef}
+                className="cs-tmodal-parent-scroll"
+                data-lenis-prevent
+                onScroll={handleParentScroll}
+              >
+                <Deck frames={deckFrames} />
               </div>
             ) : (
               selectedEntry && (
-                <>
-                  {/* One line above the deck: just the parent. The rail's
-                      highlight is the single "where am I" indicator (it
-                      tracks per-slide via the scrollspy), and each slide
-                      carries its own baked-in title, so naming the sub-item
-                      here again would state it in three places. */}
-                  <h3
-                    className={`cs-tmodal-crumb cs-tmodal-detail-title${deckScrolled ? ' is-scrolled' : ''}`}
-                    tabIndex={-1}
-                  >
-                    <span className="cs-tmodal-crumb-parent">
-                      {selectedEntry.node.label}
-                    </span>
-                  </h3>
-                  <div
-                    ref={parentScrollRef}
-                    className="cs-tmodal-parent-scroll"
-                    data-lenis-prevent
-                    onScroll={handleParentScroll}
-                  >
-                    <Deck frames={deckFrames} />
-                  </div>
+              <>
+                {/* One line above the deck: just the parent. The rail's
+                    highlight is the single "where am I" indicator (it
+                    tracks per-slide via the scrollspy), and each slide
+                    carries its own baked-in title, so naming the sub-item
+                    here again would state it in three places. */}
+                <h3
+                  className={`cs-tmodal-crumb cs-tmodal-detail-title${deckScrolled ? ' is-scrolled' : ''}`}
+                  tabIndex={-1}
+                >
+                  <span className="cs-tmodal-crumb-parent">
+                    {selectedEntry.node.label}
+                  </span>
+                </h3>
+                <div
+                  ref={parentScrollRef}
+                  className="cs-tmodal-parent-scroll"
+                  data-lenis-prevent
+                  onScroll={handleParentScroll}
+                >
+                  <Deck frames={deckFrames} />
+                </div>
                 </>
               )
             )}
