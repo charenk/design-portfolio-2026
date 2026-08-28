@@ -211,29 +211,68 @@ const THEMES: Theme[] = [
             label: 'CyberQP AI Terminal',
             subItems: [
               {
+                label: 'Overview',
+                desc: 'The terminal as it stands: one command bar, scoped to an organization.',
+                images: [
+                  {
+                    src: '/bluej/t2-term-1-overview.png',
+                    alt: 'Project one, the all-new CyberQP AI terminal: a dark product shell where the terminal takes a run mode and an organization scope above a prompt line, with sample commands for getting all accounts, showing stale users, and listing active JIT accounts',
+                  },
+                ],
+              },
+              {
                 label: 'Context',
-                desc: 'Placeholder: context for the CyberQP AI Terminal. Content coming.',
+                desc: 'Where the terminal sat in the platform strategy, what I led, and who I led it with.',
+                images: [
+                  {
+                    src: '/bluej/t2-term-2-context.png',
+                    alt: 'Context: the AI terminal was part of CyberQP\u2019s new Panthera platform, a strategic evolution of the legacy product; I led discovery, design, and iteration for the terminal, focused on trust and scalability while translating findings from engineering proofs of concept, and led prompt use-case discovery sessions, working with the AI Lab team alongside the CEO, engineering, head of product, and customer success',
+                  },
+                ],
               },
               {
-                label: 'Framing',
-                desc: 'Placeholder: how the problem was framed. Content coming.',
+                label: 'Working artifacts',
+                desc: 'The components I own for AI and user interaction, and how I prepare prompt use cases.',
+                images: [
+                  {
+                    src: '/bluej/t2-term-3-components.png',
+                    alt: 'Behind the scenes: selected components I contributed to and now manage for AI and user interactions, including the command bar and its run-or-automate mode menu, plan-footer buttons through running and executed states, a solution card shell, an approval confirmation form, and a reasoning timeline',
+                  },
+                  {
+                    src: '/bluej/t2-term-4-usecases.png',
+                    alt: 'Behind the scenes: how I prepare use-case documents, showing a dashboard and reporting compound-prompts table for the AI terminal that pairs each module and intent with the user prompt and the text or table output it should return',
+                  },
+                ],
               },
               {
-                label: 'Working with AI Lab',
-                desc: 'Placeholder: collaborating with the AI Labs team. Content coming.',
+                label: 'Interaction model',
+                desc: 'The prompt composition loop: what the input teaches before anything is sent.',
+                images: [
+                  {
+                    src: '/bluej/t2-term-5-interaction.png',
+                    alt: 'Interaction model for the command input area: a prompt composition loop where first paint suggests what fits with a rotating placeholder, a bare @ reveals identities, devices, and organizations to teach the whole ontology before the user commits, and three or more characters switch to live records from connected directories',
+                  },
+                ],
               },
               {
-                label: 'AI terminal design explorations',
-                desc: 'Placeholder: design exploration artifacts for the terminal. Content coming.',
-                wide: true,
-              },
-              {
-                label: 'Iterations',
-                desc: 'Placeholder: how the design iterated across releases. Content coming.',
+                label: 'Evolution of experience',
+                desc: 'What the proof of concept did not cover, and what design and product added.',
+                images: [
+                  {
+                    src: '/bluej/t2-term-6-evolution.png',
+                    alt: 'Evolution of the experience: the terminal beside a comparison of the proof of concept against the design and product evolution, which added AI onboarding, an intuitive input interaction model that removes the need to remember trigger keys, and dynamic starter prompts',
+                  },
+                ],
               },
               {
                 label: 'Learnings',
-                desc: 'Placeholder: what came out of shipping the terminal. Content coming.',
+                desc: 'What moved onboarding success, and what is still open.',
+                images: [
+                  {
+                    src: '/bluej/t2-term-7-learnings.png',
+                    alt: 'Learnings: users arrive with a borrowed mental model and read the terminal behaving unlike their last tool as the product failing; setting capability expectations up front moved onboarding success more than any interface change; and keeping those expectations honest as the model improves is still open',
+                  },
+                ],
               },
             ],
           },
