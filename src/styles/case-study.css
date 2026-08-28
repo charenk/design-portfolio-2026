@@ -1559,7 +1559,7 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
   color: var(--cs-ink-faint);
 }
 
-/* --------------------------------------------------- theme pages (/bluej) */
+/* --------------------------------------------------- theme pages (/bluej-custom-pitch) */
 /* A targeted "breadth" page: an overview grid of taped theme cards up top,
    then one anchored section per theme with a visual gallery. */
 
@@ -1732,7 +1732,7 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
   cursor: pointer;
 }
 
-/* ------------------------------------------------- theme modal (/bluej) */
+/* ------------------------------------------------- theme modal (/bluej-custom-pitch) */
 /* One theme per modal: header, anchored pill nav, a sample section per
    taped frame inside an inner scroller, prev/next theme in the footer. */
 

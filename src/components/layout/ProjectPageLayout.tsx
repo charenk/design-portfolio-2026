@@ -7,7 +7,7 @@ import { Navbar } from '@/components/layout/Navbar'
 import { markViewed } from '@/lib/viewedTracker'
 import { gsap, useGSAP, ScrollTrigger, FULL_MOTION, REDUCED_MOTION } from '@/lib/motion/gsap'
 
-const TRACKED_SLUGS = new Set(['ai-pam', 'browser-extension', 'figma-buddy', 'workato', 'copilot', 'blackberry', 'refinery', 'bluej'])
+const TRACKED_SLUGS = new Set(['ai-pam', 'browser-extension', 'figma-buddy', 'workato', 'copilot', 'blackberry', 'refinery', 'bluej-custom-pitch'])
 
 type HeroMedia =
   | { type: 'video'; youtubeId: string; thumbnailAlt: string }
