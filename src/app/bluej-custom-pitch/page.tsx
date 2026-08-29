@@ -231,6 +231,16 @@ const THEMES: Theme[] = [
                 ],
               },
               {
+                label: 'Interaction model',
+                desc: 'The prompt composition loop: what the input teaches before anything is sent.',
+                images: [
+                  {
+                    src: '/bluej/t2-term-5-interaction.png',
+                    alt: 'Interaction model for the command input area: a prompt composition loop where first paint suggests what fits with a rotating placeholder, a bare @ reveals identities, devices, and organizations to teach the whole ontology before the user commits, and three or more characters switch to live records from connected directories',
+                  },
+                ],
+              },
+              {
                 label: 'Working artifacts',
                 desc: 'The components I own for AI and user interaction, and how I prepare prompt use cases.',
                 images: [
@@ -241,16 +251,6 @@ const THEMES: Theme[] = [
                   {
                     src: '/bluej/t2-term-4-usecases.png',
                     alt: 'Behind the scenes: how I prepare use-case documents, showing a dashboard and reporting compound-prompts table for the AI terminal that pairs each module and intent with the user prompt and the text or table output it should return',
-                  },
-                ],
-              },
-              {
-                label: 'Interaction model',
-                desc: 'The prompt composition loop: what the input teaches before anything is sent.',
-                images: [
-                  {
-                    src: '/bluej/t2-term-5-interaction.png',
-                    alt: 'Interaction model for the command input area: a prompt composition loop where first paint suggests what fits with a rotating placeholder, a bare @ reveals identities, devices, and organizations to teach the whole ontology before the user commits, and three or more characters switch to live records from connected directories',
                   },
                 ],
               },
