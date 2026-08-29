@@ -513,7 +513,133 @@ const THEMES: Theme[] = [
   },
 ]
 
+/* ------------------------------------------------------------------------- */
+/* PROTOTYPE(gallery): stand-in items reusing theme slides so the UX can be
+   judged. The real gallery holds work that is NOT in the themes; swap these
+   for curated images and captions before this ships anywhere.              */
+/* ------------------------------------------------------------------------- */
+
+interface GalleryItem {
+  /** 640w grid thumb in /public/bluej/thumbs. */
+  thumb: string
+  /** Full-size image for the lightbox. */
+  src: string
+  caption: string
+}
+
+const GALLERY: GalleryItem[] = [
+  { thumb: '/bluej/thumbs/ds-tablecard-2.jpg', src: '/bluej/ds-tablecard-2.png', caption: 'TableCard on the identities screen' },
+  { thumb: '/bluej/thumbs/t2-term-1-overview.jpg', src: '/bluej/t2-term-1-overview.png', caption: 'CyberQP AI Terminal' },
+  { thumb: '/bluej/thumbs/ds-org-list-2.jpg', src: '/bluej/ds-org-list-2.png', caption: 'Organization matching, new platform' },
+  { thumb: '/bluej/thumbs/cf-skills-1.jpg', src: '/bluej/cf-skills-1.png', caption: 'Custom skills for solo design leadership' },
+  { thumb: '/bluej/thumbs/ga-new-context.jpg', src: '/bluej/ga-new-context.png', caption: 'Onboarding setup guide, state mapping' },
+  { thumb: '/bluej/thumbs/ds-hopper-1.jpg', src: '/bluej/ds-hopper-1.png', caption: 'Hopper Design System' },
+  { thumb: '/bluej/thumbs/t2-term-5-interaction.jpg', src: '/bluej/t2-term-5-interaction.png', caption: 'Prompt composition interaction loop' },
+  { thumb: '/bluej/thumbs/ds-drift-3.jpg', src: '/bluej/ds-drift-3.png', caption: 'Button drift, before and after' },
+  { thumb: '/bluej/thumbs/cf-process-1.jpg', src: '/bluej/cf-process-1.png', caption: 'Agentic design process' },
+  { thumb: '/bluej/thumbs/ga-legacy-outcome.jpg', src: '/bluej/ga-legacy-outcome.png', caption: 'Onboarding guide in the legacy product' },
+  { thumb: '/bluej/thumbs/ds-intro-3.jpg', src: '/bluej/ds-intro-3.png', caption: 'Legacy to new platform direction' },
+  { thumb: '/bluej/thumbs/ga-new-measuring.jpg', src: '/bluej/ga-new-measuring.png', caption: 'Measuring the onboarding panel' },
+]
+
+/**
+ * Full-screen viewer for one gallery item: large contained image, caption,
+ * prev/next with arrow keys, Escape closes. Deliberately simpler than the
+ * theme decks; a gallery is browsing, not a guided story.
+ */
+function GalleryLightbox({
+  index,
+  onNavigate,
+  onClose,
+}: {
+  index: number
+  onNavigate: (next: number) => void
+  onClose: () => void
+}) {
+  const item = GALLERY[index]
+  const closeRef = useRef<HTMLButtonElement>(null)
+  const prev = index > 0 ? index - 1 : null
+  const next = index < GALLERY.length - 1 ? index + 1 : null
+
+  useEffect(() => {
+    closeRef.current?.focus()
+  }, [])
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+      if (e.key === 'ArrowLeft' && index > 0) onNavigate(index - 1)
+      if (e.key === 'ArrowRight' && index < GALLERY.length - 1) onNavigate(index + 1)
+    }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [index, onNavigate, onClose])
+
+  return (
+    <motion.div
+      className="cs-tmodal-overlay"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+    >
+      <button
+        type="button"
+        className="cs-tmodal-backdrop"
+        aria-label="Close gallery"
+        onClick={onClose}
+      />
+      <motion.div
+        role="dialog"
+        aria-modal="true"
+        aria-label={item.caption}
+        className="cs-glight"
+        initial={{ opacity: 0, y: 14, scale: 0.985 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 10, scale: 0.99 }}
+        transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <header className="cs-glight-bar">
+          <span className="cs-glight-count">
+            {index + 1} / {GALLERY.length}
+          </span>
+          <button
+            ref={closeRef}
+            type="button"
+            className="cs-tmodal-close"
+            aria-label="Close"
+            onClick={onClose}
+          >
+            ×
+          </button>
+        </header>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img key={item.src} src={item.src} alt={item.caption} className="cs-glight-img" />
+        <footer className="cs-glight-bar">
+          <button
+            type="button"
+            className="cs-glight-step"
+            disabled={prev === null}
+            onClick={() => prev !== null && onNavigate(prev)}
+          >
+            <span aria-hidden="true">← </span>Prev
+          </button>
+          <p className="cs-glight-caption">{item.caption}</p>
+          <button
+            type="button"
+            className="cs-glight-step"
+            disabled={next === null}
+            onClick={() => next !== null && onNavigate(next)}
+          >
+            Next<span aria-hidden="true"> →</span>
+          </button>
+        </footer>
+      </motion.div>
+    </motion.div>
+  )
+}
 /* Tilt alternates across a theme's samples so frames feel hand-placed. */
+
 function slotTilt(i: number): string {
   return i % 2 === 0 ? 'cs-tilt-l' : 'cs-tilt-r'
 }
@@ -1153,7 +1279,9 @@ export default function BlueJPage() {
 
   /* One body scroll lock for the whole modal experience, held across
      prev/next theme hops. */
-  const modalOpen = openId !== null
+  const [galleryIndex, setGalleryIndex] = useState<number | null>(null)
+
+  const modalOpen = openId !== null || galleryIndex !== null
   useEffect(() => {
     if (!modalOpen) return
     const prevOverflow = document.body.style.overflow
@@ -1247,6 +1375,46 @@ export default function BlueJPage() {
             theme={openTheme}
             onClose={closeModal}
             onNavigate={openModal}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* PROTOTYPE(gallery): archive layer below the themes. Stand-in images
+          until the real not-in-a-theme work is curated. */}
+      <section className="cs-glr-section">
+        <p className="cs-glr-eyebrow">More work</p>
+        <p className="cs-glr-lede">
+          Deliverables and explorations beyond the five themes. Tap any tile
+          to view it large.
+        </p>
+        <div className="cs-glr">
+          {GALLERY.map((item, i) => (
+            <button
+              key={item.src}
+              type="button"
+              className="cs-glr-tile"
+              data-gtile={i}
+              onClick={() => setGalleryIndex(i)}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={item.thumb} alt={item.caption} loading="lazy" />
+              <span className="cs-glr-cap">{item.caption}</span>
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <AnimatePresence>
+        {galleryIndex !== null && (
+          <GalleryLightbox
+            index={galleryIndex}
+            onNavigate={setGalleryIndex}
+            onClose={() => {
+              document
+                .querySelector<HTMLElement>(`[data-gtile="${galleryIndex}"]`)
+                ?.focus()
+              setGalleryIndex(null)
+            }}
           />
         )}
       </AnimatePresence>
