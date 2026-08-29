@@ -2387,14 +2387,13 @@ html[data-mode='read'] .cs-page .cs-tmodal-section-title {
 }
 
 .cs-page .cs-glr-tile {
+  position: relative;
   border: none;
   background: transparent;
   padding: 0;
   text-align: left;
   cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  display: block;
 }
 
 .cs-page .cs-glr-tile img {
@@ -2417,14 +2416,48 @@ html[data-mode='read'] .cs-page .cs-tmodal-section-title {
   outline-offset: 3px;
 }
 
+/* Caption is a hover/focus overlay: the grid stays purely visual until a
+   tile is pointed at. Touch screens skip it; the lightbox names the item. */
 .cs-page .cs-glr-cap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 26px 12px 10px;
+  border-radius: 0 0 10px 10px;
+  background: linear-gradient(transparent, rgba(34, 31, 26, 0.72));
   font-family: var(--cs-sans);
   font-size: 12px;
   line-height: 1.4;
-  color: var(--cs-ink-soft);
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+  pointer-events: none;
 }
 
-.cs-page .cs-glr-tile:hover .cs-glr-cap {
+@media (hover: hover) {
+  .cs-page .cs-glr-tile:hover .cs-glr-cap,
+  .cs-page .cs-glr-tile:focus-visible .cs-glr-cap {
+    opacity: 1;
+  }
+}
+
+.cs-page .cs-glr-toggle {
+  display: block;
+  margin: 24px auto 0;
+  border: 1px solid var(--cs-line);
+  border-radius: 999px;
+  background: transparent;
+  padding: 9px 20px;
+  font-family: var(--cs-sans);
+  font-size: 13px;
+  color: var(--cs-ink-soft);
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.cs-page .cs-glr-toggle:hover {
+  border-color: var(--cs-magenta);
   color: var(--cs-magenta);
 }
 
@@ -2462,12 +2495,25 @@ html[data-mode='read'] .cs-page .cs-tmodal-section-title {
   border-radius: 10px;
 }
 
+.cs-page .cs-glight-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: center;
+}
+
 .cs-page .cs-glight-caption {
   font-family: var(--cs-serif);
   font-size: 15px;
   color: var(--cs-ink);
-  text-align: center;
-  min-width: 0;
+}
+
+.cs-page .cs-glight-note {
+  font-family: var(--cs-sans);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--cs-ink-soft);
 }
 
 .cs-page .cs-glight-step {

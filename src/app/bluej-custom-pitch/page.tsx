@@ -525,11 +525,17 @@ interface GalleryItem {
   /** Full-size image for the lightbox. */
   src: string
   caption: string
+  /** One sentence of context, lightbox only. Written lazily; items
+      without one just show the caption. */
+  note?: string
 }
 
+/* Tiles shown before "Show all": one desktop row. */
+const GALLERY_PREVIEW_COUNT = 4
+
 const GALLERY: GalleryItem[] = [
-  { thumb: '/bluej/thumbs/ds-tablecard-2.jpg', src: '/bluej/ds-tablecard-2.png', caption: 'TableCard on the identities screen' },
-  { thumb: '/bluej/thumbs/t2-term-1-overview.jpg', src: '/bluej/t2-term-1-overview.png', caption: 'CyberQP AI Terminal' },
+  { thumb: '/bluej/thumbs/ds-tablecard-2.jpg', src: '/bluej/ds-tablecard-2.png', caption: 'TableCard on the identities screen', note: 'One enclosing surface for tabs, table, and pagination, replacing three unbounded components.' },
+  { thumb: '/bluej/thumbs/t2-term-1-overview.jpg', src: '/bluej/t2-term-1-overview.png', caption: 'CyberQP AI Terminal', note: 'Led discovery, design, and iteration for the terminal on the new Panthera platform.' },
   { thumb: '/bluej/thumbs/ds-org-list-2.jpg', src: '/bluej/ds-org-list-2.png', caption: 'Organization matching, new platform' },
   { thumb: '/bluej/thumbs/cf-skills-1.jpg', src: '/bluej/cf-skills-1.png', caption: 'Custom skills for solo design leadership' },
   { thumb: '/bluej/thumbs/ga-new-context.jpg', src: '/bluej/ga-new-context.png', caption: 'Onboarding setup guide, state mapping' },
@@ -624,7 +630,10 @@ function GalleryLightbox({
           >
             <span aria-hidden="true">← </span>Prev
           </button>
-          <p className="cs-glight-caption">{item.caption}</p>
+          <span className="cs-glight-text">
+            <p className="cs-glight-caption">{item.caption}</p>
+            {item.note && <p className="cs-glight-note">{item.note}</p>}
+          </span>
           <button
             type="button"
             className="cs-glight-step"
@@ -1280,6 +1289,7 @@ export default function BlueJPage() {
   /* One body scroll lock for the whole modal experience, held across
      prev/next theme hops. */
   const [galleryIndex, setGalleryIndex] = useState<number | null>(null)
+  const [galleryExpanded, setGalleryExpanded] = useState(false)
 
   const modalOpen = openId !== null || galleryIndex !== null
   useEffect(() => {
@@ -1384,11 +1394,11 @@ export default function BlueJPage() {
       <section className="cs-glr-section">
         <p className="cs-glr-eyebrow">More work</p>
         <p className="cs-glr-lede">
-          Deliverables and explorations beyond the five themes. Tap any tile
-          to view it large.
+          Working artifacts and shipped screens beyond the five themes. Tap
+          any tile for the story behind it.
         </p>
         <div className="cs-glr">
-          {GALLERY.map((item, i) => (
+          {(galleryExpanded ? GALLERY : GALLERY.slice(0, GALLERY_PREVIEW_COUNT)).map((item, i) => (
             <button
               key={item.src}
               type="button"
@@ -1402,6 +1412,18 @@ export default function BlueJPage() {
             </button>
           ))}
         </div>
+        {GALLERY.length > GALLERY_PREVIEW_COUNT && (
+          <button
+            type="button"
+            className="cs-glr-toggle"
+            onClick={() => setGalleryExpanded((v) => !v)}
+          >
+            {galleryExpanded
+              ? 'Show less'
+              : `Show all ${GALLERY.length}`}
+            <span aria-hidden="true">{galleryExpanded ? ' ↑' : ' ↓'}</span>
+          </button>
+        )}
       </section>
 
       <AnimatePresence>
