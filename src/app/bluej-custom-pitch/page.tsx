@@ -57,6 +57,12 @@ interface Theme {
   /** Short description under the modal title. Keep tight: visuals lead. */
   framing: string[]
   groups: ThemeGroup[]
+  /** Slide peeks on the overview card (640w jpgs in /public/bluej/thumbs).
+      Decorative: the card's text already names the theme, so these render
+      with empty alt. Three read well on the featured card, one elsewhere.
+      A thumb may borrow from another theme's deck while this theme's own
+      slides are pending (03 borrows the terminal's interaction model). */
+  cardThumbs?: string[]
   /** Render every slide as one full-width deck with no rail. For a theme
       that reads as a single continuous story rather than a set of separate
       samples, the rail is navigation nobody needs. */
@@ -72,6 +78,11 @@ const THEMES: Theme[] = [
       'Turning drifting UI into a system teams actually use.',
     framing: [
       'Improving product cohesion by addressing design drift, and governing a design system that helps developers ship faster while maintaining quality.',
+    ],
+    cardThumbs: [
+      '/bluej/thumbs/ds-intro-1.jpg',
+      '/bluej/thumbs/ds-tablecard-2.jpg',
+      '/bluej/thumbs/ds-hopper-1.jpg',
     ],
     groups: [
       {
@@ -201,6 +212,9 @@ const THEMES: Theme[] = [
       'From fuzzy problem to shipped product.',
     framing: [
       'Recent projects where I led the design and helped shape the work alongside product and engineering teams.',
+    ],
+    cardThumbs: [
+      '/bluej/thumbs/t2-term-1-overview.jpg',
     ],
     groups: [
       {
@@ -336,6 +350,9 @@ const THEMES: Theme[] = [
       // TODO(content): sharpen the agentic-design positioning for Blue J's tax/legal AI context.
       'Designing AI that experts trust with consequential work: read-only defaults, confirmation gates at the right trust moments, and systems that stop rather than guess.',
     ],
+    cardThumbs: [
+      '/bluej/thumbs/t2-term-5-interaction.jpg',
+    ],
     groups: [{ items: [
       {
         label: 'The AI terminal & four trust gates',
@@ -361,6 +378,9 @@ const THEMES: Theme[] = [
       'Ideas tested as working software, not mockups.',
     framing: [
       'Overview of setup, process, and custom skills.',
+    ],
+    cardThumbs: [
+      '/bluej/thumbs/cf-skills-1.jpg',
     ],
     groups: [{ items: [
       {
@@ -404,6 +424,9 @@ const THEMES: Theme[] = [
       'Getting features discovered and used after launch.',
     framing: [
       'Moving a sales-led product toward product-led growth: onboarding, activation, and the telemetry to tell whether it worked.',
+    ],
+    cardThumbs: [
+      '/bluej/thumbs/ga-new-context.jpg',
     ],
     groups: [
       {
@@ -1202,6 +1225,14 @@ export default function BlueJPage() {
             <p className="cs-tcard-num">{theme.num}</p>
             <h3 className="cs-tcard-title">{theme.title}</h3>
             <p className="cs-tcard-promise">{theme.promise}</p>
+            {theme.cardThumbs && (
+              <span className="cs-tcard-thumbs" aria-hidden="true">
+                {theme.cardThumbs.map((src) => (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img key={src} src={src} alt="" loading="lazy" />
+                ))}
+              </span>
+            )}
             <span className="cs-tcard-arrow" aria-hidden="true">
               →
             </span>

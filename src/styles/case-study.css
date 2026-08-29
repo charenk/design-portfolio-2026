@@ -1648,6 +1648,42 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
   color: var(--cs-ink-soft);
 }
 
+/* Slide peeks on the theme cards: the grid signals "full of shipped work"
+   on first paint. Row height is fixed so cards in a row stay level; crop
+   anchors top-left, where slides carry their titles. */
+.cs-page .cs-tcard-thumbs {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.cs-page .cs-tcard-thumbs img {
+  flex: 1;
+  min-width: 0;
+  height: 96px;
+  object-fit: cover;
+  object-position: top left;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(34, 31, 26, 0.1);
+}
+
+.cs-page .cs-tcard-featured .cs-tcard-thumbs img {
+  height: 118px;
+}
+
+/* Narrow screens: three side-by-side thumbs would crop to portrait
+   slivers, so show two shorter ones instead. */
+@media (max-width: 479px) {
+  .cs-page .cs-tcard-thumbs img,
+  .cs-page .cs-tcard-featured .cs-tcard-thumbs img {
+    height: 84px;
+  }
+
+  .cs-page .cs-tcard-featured .cs-tcard-thumbs img:nth-child(n + 3) {
+    display: none;
+  }
+}
+
 .cs-page .cs-tcard-arrow {
   margin-top: auto;
   padding-top: 8px;
