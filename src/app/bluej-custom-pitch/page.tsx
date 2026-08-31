@@ -88,89 +88,131 @@ const THEMES: Theme[] = [
         items: [
           {
             label: 'Design system at CyberQP',
-            desc: 'Three projects in one deck: the TableCard component, front-end drift, and the organization list.',
-            images: [
+            subItems: [
               {
-                src: '/bluej/ds-intro-1.png',
-                alt: 'Selected work samples: scaling the list-item component with annotated org states, the TableCard component on the identities table, and addressing front-end agent drift',
+                label: 'Intro',
+                desc: 'The story in one pass: selected samples, the agentic framework, and the platform outcome.',
+                images: [
+                  {
+                    src: '/bluej/ds-intro-1.png',
+                    alt: 'Selected work samples: scaling the list-item component with annotated org states, the TableCard component on the identities table, and addressing front-end agent drift',
+                  },
+                  {
+                    src: '/bluej/ds-intro-2.png',
+                    alt: 'Design System 2.0, the new agentic design system framework: discovery, prioritize and decide, build and test with Claude, measure and monitor',
+                  },
+                  {
+                    src: '/bluej/ds-intro-3.png',
+                    alt: 'Outcome, the biggest UX win: from the legacy product to the new platform design direction, leading the platform redesign alongside design system enhancements',
+                  },
+                ],
               },
               {
-                src: '/bluej/ds-intro-2.png',
-                alt: 'Design System 2.0, the new agentic design system framework: discovery, prioritize and decide, build and test with Claude, measure and monitor',
+                label: 'Adding TableCard component',
+                desc: 'One enclosing surface for tabs, table, and pagination, before and after.',
+                images: [
+                  {
+                    src: '/bluej/ds-tablecard-1.png',
+                    alt: 'Work sample 1, before TableCard and refined guidelines: the identities screen with tabs, table, and footer pagination marked one, two, and three as three unbounded components',
+                  },
+                  {
+                    src: '/bluej/ds-tablecard-2.png',
+                    alt: 'After the TableCard definition: the same identities table with tabs, rows, and pagination bound inside one enclosed surface',
+                  },
+                  {
+                    src: '/bluej/ds-tablecard-3.png',
+                    alt: 'Behind the scenes working artifact: canvas annotations on pagination height, page-selector state, and border-radius inconsistencies, captioned about iterating with engineering in the loop on high-impact components',
+                  },
+                  {
+                    src: '/bluej/ds-tablecard-4.png',
+                    alt: 'Final output: the new TableCard configuration in Storybook with header slot, untabbed, footer slot, and page pattern variants, added alongside a decision log and product context',
+                  },
+                ],
               },
               {
-                src: '/bluej/ds-intro-3.png',
-                alt: 'Outcome, the biggest UX win: from the legacy product to the new platform design direction, leading the platform redesign alongside design system enhancements',
+                label: 'Addressing frontend drift',
+                desc: 'Catching drift in an audit, fixing it before it shipped, then closing the gap in the guidelines.',
+                images: [
+                  {
+                    src: '/bluej/ds-drift-1.png',
+                    alt: 'Work sample 2, UI defects in dark mode found during audit: the Policies screen where the primary button and menu use gray.900 fills on a near-identical dark canvas, so the container barely separates from the page',
+                  },
+                  {
+                    src: '/bluej/ds-drift-2.png',
+                    alt: 'Discovery of drift before the solution hit production: punch item P-030 for the button system with its acceptance criteria, picked from the agent-maintained punch list, severity confirmed in a local audit, then fixed',
+                  },
+                  {
+                    src: '/bluej/ds-drift-3.png',
+                    alt: 'Before and after the fix, up close: the Policy and Action controls with near-invisible fills, beside the same controls today with a clear primary button',
+                  },
+                  {
+                    src: '/bluej/ds-drift-4.png',
+                    alt: 'Updated and reviewed button guidelines, decision log, and theme file so the system will not reproduce the issue: Button variants documented in Storybook across solid, outline, destructive, destructive outline, and ghost',
+                  },
+                ],
               },
               {
-                src: '/bluej/ds-tablecard-1.png',
-                alt: 'Work sample 1, before TableCard and refined guidelines: the identities screen with tabs, table, and footer pagination marked one, two, and three as three unbounded components',
-              },
-              {
-                src: '/bluej/ds-tablecard-2.png',
-                alt: 'After the TableCard definition: the same identities table with tabs, rows, and pagination bound inside one enclosed surface',
-              },
-              {
-                src: '/bluej/ds-tablecard-3.png',
-                alt: 'Behind the scenes working artifact: canvas annotations on pagination height, page-selector state, and border-radius inconsistencies, captioned about iterating with engineering in the loop on high-impact components',
-              },
-              {
-                src: '/bluej/ds-tablecard-4.png',
-                alt: 'Final output: the new TableCard configuration in Storybook with header slot, untabbed, footer slot, and page pattern variants, added alongside a decision log and product context',
-              },
-              {
-                src: '/bluej/ds-drift-1.png',
-                alt: 'Work sample 2, UI defects in dark mode found during audit: the Policies screen where the primary button and menu use gray.900 fills on a near-identical dark canvas, so the container barely separates from the page',
-              },
-              {
-                src: '/bluej/ds-drift-2.png',
-                alt: 'Discovery of drift before the solution hit production: punch item P-030 for the button system with its acceptance criteria, picked from the agent-maintained punch list, severity confirmed in a local audit, then fixed',
-              },
-              {
-                src: '/bluej/ds-drift-3.png',
-                alt: 'Before and after the fix, up close: the Policy and Action controls with near-invisible fills, beside the same controls today with a clear primary button',
-              },
-              {
-                src: '/bluej/ds-drift-4.png',
-                alt: 'Updated and reviewed button guidelines, decision log, and theme file so the system will not reproduce the issue: Button variants documented in Storybook across solid, outline, destructive, destructive outline, and ghost',
-              },
-              {
-                src: '/bluej/ds-org-list-1.png',
-                alt: 'Work sample 3, enhancing the menu list item component for organizations: source-side and CyberQP-side org states covering flat orgs, typed orgs, parent-child nesting, selection checkboxes, and marked-to-create badges for both the agent\u2019s action and the user\u2019s',
-              },
-              {
-                src: '/bluej/ds-org-list-2.png',
-                alt: 'Outcome: the updated organization matching experience in the new platform, with source titles matched against CyberQP organizations and unmatched rows called out, beside the legacy organization table it replaced',
+                label: 'Simplifying organization list',
+                desc: 'Enhancing the menu list item component so organization sync reads on both sides.',
+                images: [
+                  {
+                    src: '/bluej/ds-org-list-1.png',
+                    alt: 'Work sample 3, enhancing the menu list item component for organizations: source-side and CyberQP-side org states covering flat orgs, typed orgs, parent-child nesting, selection checkboxes, and marked-to-create badges for both the agent\u2019s action and the user\u2019s',
+                  },
+                  {
+                    src: '/bluej/ds-org-list-2.png',
+                    alt: 'Outcome: the updated organization matching experience in the new platform, with source titles matched against CyberQP organizations and unmatched rows called out, beside the legacy organization table it replaced',
+                  },
+                ],
               },
             ],
           },
-        ],
-      },
-      {
-        items: [
           {
             label: 'Hopper Design System',
-            desc: 'Leading the ShareGate platforms onto Workleap\u2019s shared design system, from context and role to the artifacts that drove adoption.',
-            images: [
+            subItems: [
               {
-                src: '/bluej/ds-hopper-1.png',
-                alt: 'Hopper, the Workleap and ShareGate design system at hopper.workleap.design: accessible, international, TypeScript based, with dark mode, plus colors, text styles, and a react-aria component suite',
+                label: 'Overview',
+                desc: 'The system itself, shared across ShareGate and Workleap.',
+                images: [
+                  {
+                    src: '/bluej/ds-hopper-1.png',
+                    alt: 'Hopper, the Workleap and ShareGate design system at hopper.workleap.design: accessible, international, TypeScript based, with dark mode, plus colors, text styles, and a react-aria component suite',
+                  },
+                ],
               },
               {
-                src: '/bluej/ds-hopper-2.png',
-                alt: 'Context: HR tech and IT products evolved independently, so two UI systems had to be maintained, patterns drifted for years, and teams duplicated effort; the shift was a strategy to integrate the products with a clear ROI in saved engineering and design cycles',
+                label: 'Context',
+                desc: 'Two UI systems maintained in parallel, and the strategy that ended that.',
+                images: [
+                  {
+                    src: '/bluej/ds-hopper-2.png',
+                    alt: 'Context: HR tech and IT products evolved independently, so two UI systems had to be maintained, patterns drifted for years, and teams duplicated effort; the shift was a strategy to integrate the products with a clear ROI in saved engineering and design cycles',
+                  },
+                ],
               },
               {
-                src: '/bluej/ds-hopper-3.png',
-                alt: 'My role: led the design system transition on ShareGate platforms, auditing products for the design system\u2019s discovery, designing and managing the platform\u2019s UI states, then ensuring adoption and building new patterns during design review',
+                label: 'My role',
+                desc: 'Leading the transition, and advocating adoption through design review.',
+                images: [
+                  {
+                    src: '/bluej/ds-hopper-3.png',
+                    alt: 'My role: led the design system transition on ShareGate platforms, auditing products for the design system\u2019s discovery, designing and managing the platform\u2019s UI states, then ensuring adoption and building new patterns during design review',
+                  },
+                ],
               },
               {
-                src: '/bluej/ds-hopper-4.png',
-                alt: 'Behind the scenes: an async voting workshop on Hopper design patterns, where teams spent five votes each across pattern cards to prioritize documentation, producing a ranked list',
-              },
-              {
-                src: '/bluej/ds-hopper-5.png',
-                alt: 'Behind the scenes: component documentation for the Button group, with design requirements, guidelines, a completion checklist, light and dark theme variants, and a changelog entry',
+                label: 'Working artifacts',
+                desc: 'The async pattern-voting workshop, and component documentation.',
+                images: [
+                  {
+                    src: '/bluej/ds-hopper-4.png',
+                    alt: 'Behind the scenes: an async voting workshop on Hopper design patterns, where teams spent five votes each across pattern cards to prioritize documentation, producing a ranked list',
+                  },
+                  {
+                    src: '/bluej/ds-hopper-5.png',
+                    alt: 'Behind the scenes: component documentation for the Button group, with design requirements, guidelines, a completion checklist, light and dark theme variants, and a changelog entry',
+                  },
+                ],
               },
             ],
           },
