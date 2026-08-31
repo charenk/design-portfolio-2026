@@ -25,7 +25,11 @@ export function LockForm({ returnUrl }: { returnUrl: string }) {
         // replace, not push, so the lock page is overwritten in history.
         // Pressing back from the case study now goes to wherever the user
         // came from before the lock (typically the home page).
-        router.replace(result.redirectTo)
+        // The fragment never reaches the server, but the browser carries it
+        // through the gate redirect onto THIS page's URL; re-attach it so
+        // deep links (#privileged-identities, #g-cyberqp-connectors) survive
+        // a first-time visitor's password stop.
+        router.replace(result.redirectTo + window.location.hash)
       }
     })
   }
