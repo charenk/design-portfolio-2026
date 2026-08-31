@@ -1988,7 +1988,7 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
   color: var(--cs-ink);
   /* The unfilled remainder of the track. Without it a 25% fill reads as a
      stray dash rather than "one of four". */
-  border-left-color: rgba(171, 7, 130, 0.22);
+  border-left-color: rgba(171, 7, 130, 0.3);
 }
 
 
@@ -2239,7 +2239,7 @@ html[data-mode='read'] .cs-page .cs-tmodal-frame {
 
   .cs-page .cs-tmodal-rail-item-sub.is-active {
     border-left-color: transparent;
-    border-bottom-color: rgba(171, 7, 130, 0.22);
+    border-bottom-color: rgba(171, 7, 130, 0.3);
   }
 
   /* Groups flow inline on the horizontal strip. */
