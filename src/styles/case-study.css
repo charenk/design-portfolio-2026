@@ -1950,6 +1950,18 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
   color: var(--cs-ink);
 }
 
+/* Expectation-setting note under the rail: quiet, one read, no competition
+   with the nav above it. */
+.cs-page .cs-tmodal-rail-note {
+  margin-top: 20px;
+  padding: 0 10px;
+  font-family: var(--cs-sans);
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: var(--cs-ink-faint);
+  max-width: 220px;
+}
+
 /* The left bar doubles as a progress indicator: it fills downward as the
    reader moves through that sub-item's slides. A border can't be partially
    filled, so it's a scaled pseudo-element driven by --rail-progress, which
@@ -2242,6 +2254,11 @@ html[data-mode='read'] .cs-page .cs-tmodal-frame {
     border-bottom-color: rgba(171, 7, 130, 0.3);
   }
 
+  /* The horizontal strip has no room for prose. */
+  .cs-page .cs-tmodal-rail-note {
+    display: none;
+  }
+
   /* Groups flow inline on the horizontal strip. */
   .cs-page .cs-tmodal-rail-group {
     flex-direction: row;
@@ -2438,13 +2455,31 @@ html[data-mode='read'] .cs-page .cs-tmodal-section-title {
   padding: 6px 4px;
 }
 
-/* Title + context bar at the top: left-aligned with the image edge, sans
-   throughout (the lightbox reads as UI, not editorial). */
+/* Title + context bar at the top: back button, then the text block,
+   left-aligned with the image edge, sans throughout (the lightbox reads
+   as UI, not editorial). */
 .cs-page .cs-glight-head {
   justify-content: flex-start;
+  align-items: flex-start;
+  gap: 14px;
   min-height: 30px;
   padding-left: 0;
   padding-right: 0;
+}
+
+/* The shared back pill carries modal-header margins; neutralize them so it
+   sits on the bar's own grid. */
+.cs-page .cs-glight-back {
+  margin: 0 0 0 -10px;
+  flex-shrink: 0;
+}
+
+/* Title with the slide counter seated beside it. */
+.cs-page .cs-glight-titlerow {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
 }
 
 .cs-page .cs-glight-count {
