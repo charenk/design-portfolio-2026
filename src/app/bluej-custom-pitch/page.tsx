@@ -772,14 +772,22 @@ function gallerystep(sel: GallerySel, dir: 1 | -1): GallerySel | null {
  * chain onward, pausing on the next group's cover so the handover is
  * announced rather than silent.
  */
+/* Display names for series ids, used on the cover's collection index. */
+const SERIES_LABELS: Record<string, string> = {
+  cyberqp: 'CyberQP',
+}
+
 function GalleryLightbox({
   group,
   image,
+  viewed,
   onNavigate,
   onClose,
 }: {
   group: number
   image: number
+  /** Group indices whose slides were opened this visit ("Viewed" badges). */
+  viewed: number[]
   onNavigate: (next: GallerySel) => void
   onClose: () => void
 }) {
@@ -871,17 +879,55 @@ function GalleryLightbox({
           /* eslint-disable-next-line @next/next/no-img-element */
           <img key={slide.src} src={slide.src} alt={slide.alt} className="cs-glight-img" />
         ) : (
-          /* Cover: a mini overview of the group the chain just reached. */
+          /* Cover: announces the group the chain just reached, then indexes
+             the whole collection so a skimmer can jump anywhere while the
+             front-to-back reader just keeps hitting Next. Groups already
+             opened this visit carry a Viewed badge. */
           <div key={`cover-${group}`} className="cs-glight-cover">
             <span className="cs-tape" aria-hidden />
             <p className="cs-glight-cover-eyebrow">Up next</p>
             <h3 className="cs-glight-cover-title">{item.caption}</h3>
             {item.note && <p className="cs-glight-cover-note">{item.note}</p>}
-            <p className="cs-glight-cover-count">
-              {item.images.length === 1
-                ? '1 slide'
-                : `${item.images.length} slides`}
-            </p>
+            {seriesItems.length > 1 && (
+              <div className="cs-glight-hub">
+                <p className="cs-glight-hub-label">
+                  All {SERIES_LABELS[item.series!] ?? item.series} projects
+                </p>
+                <div className="cs-glight-hub-grid">
+                  {seriesItems.map((g) => {
+                    const gi = GALLERY.indexOf(g)
+                    const isNext = gi === group
+                    return (
+                      <button
+                        key={g.id}
+                        type="button"
+                        className={`cs-glight-hub-card${isNext ? ' is-next' : ''}`}
+                        onClick={() => onNavigate({ group: gi, image: 0 })}
+                      >
+                        <span className="cs-glight-hub-thumb">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={g.thumb} alt="" loading="lazy" />
+                          {isNext ? (
+                            <span className="cs-glight-hub-badge is-next">
+                              Up next
+                            </span>
+                          ) : (
+                            viewed.includes(gi) && (
+                              <span className="cs-glight-hub-badge">Viewed</span>
+                            )
+                          )}
+                        </span>
+                        <span className="cs-glight-hub-title">{g.caption}</span>
+                        <span className="cs-glight-hub-meta">
+                          {g.images.length}
+                          {g.images.length === 1 ? ' slide' : ' slides'}
+                        </span>
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
           </div>
         )}
         <footer className="cs-glight-bar">
@@ -1548,6 +1594,17 @@ export default function BlueJPage() {
      prev/next theme hops. */
   const [gallerySel, setGallerySel] = useState<{ group: number; image: number } | null>(null)
   const [galleryExpanded, setGalleryExpanded] = useState(false)
+  /* Groups whose SLIDES were opened this visit (covers don't count), for
+     the collection index's Viewed badges. Deliberately in-memory only: the
+     site avoids persistence, and a shared link should always start clean. */
+  const [viewedGroups, setViewedGroups] = useState<Set<number>>(new Set())
+  useEffect(() => {
+    if (gallerySel && gallerySel.image >= 0) {
+      setViewedGroups((prev) =>
+        prev.has(gallerySel.group) ? prev : new Set(prev).add(gallerySel.group)
+      )
+    }
+  }, [gallerySel])
 
   /* The URL hash mirrors whichever overlay is open, so both stay shareable:
      #design-systems opens that theme, #g-cyberqp-connectors opens that
@@ -1723,6 +1780,7 @@ export default function BlueJPage() {
           <GalleryLightbox
             group={gallerySel.group}
             image={gallerySel.image}
+            viewed={[...viewedGroups]}
             onNavigate={openGallery}
             onClose={() => {
               /* The series chain may have walked past the preview row;
