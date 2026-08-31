@@ -77,7 +77,7 @@ const THEMES: Theme[] = [
     promise:
       'Turning drifting UI into a system teams actually use.',
     framing: [
-      'Improving product cohesion by addressing design drift, and governing a design system that helps developers ship faster while maintaining quality.',
+      'A system built and governed at CyberQP with an agentic workflow, and the ShareGate platforms moved onto Workleap\u2019s shared system.',
     ],
     cardThumbs: [
       '/bluej/thumbs/ds-intro-1.jpg',
@@ -188,7 +188,7 @@ const THEMES: Theme[] = [
     promise:
       'From fuzzy problem to shipped product.',
     framing: [
-      'Recent projects where I led the design and helped shape the work alongside product and engineering teams.',
+      'Privileged-identity discovery at CyberQP, a Copilot readiness assessment at ShareGate, and security attack visualization at BlackBerry, each led alongside product and engineering.',
     ],
     groups: [
       {
@@ -252,8 +252,7 @@ const THEMES: Theme[] = [
     promise:
       'AI that experts can trust with real work.',
     framing: [
-      // TODO(content): sharpen the agentic-design positioning for Blue J's tax/legal AI context.
-      'Designing AI that experts trust with consequential work: read-only defaults, confirmation gates at the right trust moments, and systems that stop rather than guess.',
+      'The CyberQP AI terminal beyond its proof of concept: the prompt composition model behind the command bar, and the components I own for AI and user interaction.',
     ],
     cardThumbs: [
       '/bluej/thumbs/t2-term-1-overview.jpg',
