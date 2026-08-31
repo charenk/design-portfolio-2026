@@ -225,18 +225,20 @@ const THEMES: Theme[] = [
     ],
   },
   {
-    id: 'zero-to-one',
+    /* A single case study, not a theme: the one deep 0-to-1 story on the
+       page. The Copilot tenant assessment and Blackberry attack matrix it
+       used to bundle moved out (Blackberry lives in the gallery). */
+    id: 'privileged-identities',
     num: '02',
-    title: '0-1 and scale-up projects',
+    title: 'Discovery of privileged identities',
     promise:
-      'From fuzzy problem to shipped product.',
+      'Enabling admins to discover and remediate identity risks.',
     framing: [
-      'Privileged-identity discovery, a Copilot readiness assessment, and attack visualization.',
+      'A 0-to-1 case study: from fuzzy problem to shipped product.',
     ],
     groups: [
       {
         items: [
-          // TODO(content): Charen will share the CyberQP AI Terminal story in a follow-up prompt.
           // TODO(content): Charen will share the privileged-identity discovery story in a follow-up prompt.
           {
             label: 'Discovery of privileged identities',
@@ -267,20 +269,6 @@ const THEMES: Theme[] = [
                 desc: 'Placeholder: how it landed. Content coming.',
               },
             ],
-          },
-        ],
-      },
-      {
-        items: [
-          {
-            label: 'Copilot tenant assessment (Sharegate)',
-            desc: 'Copilot tenant assessment: gap-led framing that tells M365 tenants whether they are safe to switch on Copilot.',
-            wide: true,
-          },
-          {
-            label: 'Visualize security attack matrix (Blackberry)',
-            desc: 'Placeholder: the security attack matrix visualization. Content coming.',
-            wide: true,
           },
         ],
       },
@@ -521,58 +509,224 @@ const THEMES: Theme[] = [
 ]
 
 /* ------------------------------------------------------------------------- */
-/* PROTOTYPE(gallery): stand-in items reusing theme slides so the UX can be
-   judged. The real gallery holds work that is NOT in the themes; swap these
-   for curated images and captions before this ships anywhere.              */
+/* Gallery: shipped work that is NOT in the five themes, grouped by project
+   or product area. A group with several images plays them in sequence in
+   the lightbox; its tile carries a count chip and a stacked-paper edge so
+   the depth reads before anyone clicks.                                    */
 /* ------------------------------------------------------------------------- */
 
 interface GalleryItem {
-  /** 640w grid thumb in /public/bluej/thumbs. */
+  /** 640w grid thumb in /public/bluej/thumbs (the group's first image). */
   thumb: string
-  /** Full-size image for the lightbox. */
-  src: string
   caption: string
   /** One sentence of context, lightbox only. Written lazily; items
       without one just show the caption. */
   note?: string
+  /** The group's slides, in the order the lightbox plays them. */
+  images: { src: string; alt: string }[]
+  /** Groups sharing a series id are chained in the lightbox: past the last
+      slide of one, Next lands on a mini overview of the series' next group
+      (its cover), then its slides. Grid position doesn't matter; the chain
+      follows GALLERY order and skips groups outside the series. */
+  series?: string
 }
 
 /* Tiles shown before "Show all": one desktop row. */
 const GALLERY_PREVIEW_COUNT = 4
 
 const GALLERY: GalleryItem[] = [
-  { thumb: '/bluej/thumbs/ds-tablecard-2.jpg', src: '/bluej/ds-tablecard-2.png', caption: 'TableCard on the identities screen', note: 'One enclosing surface for tabs, table, and pagination, replacing three unbounded components.' },
-  { thumb: '/bluej/thumbs/t2-term-1-overview.jpg', src: '/bluej/t2-term-1-overview.png', caption: 'CyberQP AI Terminal', note: 'Led discovery, design, and iteration for the terminal on the new Panthera platform.' },
-  { thumb: '/bluej/thumbs/ds-org-list-2.jpg', src: '/bluej/ds-org-list-2.png', caption: 'Organization matching, new platform' },
-  { thumb: '/bluej/thumbs/cf-skills-1.jpg', src: '/bluej/cf-skills-1.png', caption: 'Custom skills for solo design leadership' },
-  { thumb: '/bluej/thumbs/ga-new-context.jpg', src: '/bluej/ga-new-context.png', caption: 'Onboarding setup guide, state mapping' },
-  { thumb: '/bluej/thumbs/ds-hopper-1.jpg', src: '/bluej/ds-hopper-1.png', caption: 'Hopper Design System' },
-  { thumb: '/bluej/thumbs/t2-term-5-interaction.jpg', src: '/bluej/t2-term-5-interaction.png', caption: 'Prompt composition interaction loop' },
-  { thumb: '/bluej/thumbs/ds-drift-3.jpg', src: '/bluej/ds-drift-3.png', caption: 'Button drift, before and after' },
-  { thumb: '/bluej/thumbs/cf-process-1.jpg', src: '/bluej/cf-process-1.png', caption: 'Agentic design process' },
-  { thumb: '/bluej/thumbs/ga-legacy-outcome.jpg', src: '/bluej/ga-legacy-outcome.png', caption: 'Onboarding guide in the legacy product' },
-  { thumb: '/bluej/thumbs/ds-intro-3.jpg', src: '/bluej/ds-intro-3.png', caption: 'Legacy to new platform direction' },
-  { thumb: '/bluej/thumbs/ga-new-measuring.jpg', src: '/bluej/ga-new-measuring.png', caption: 'Measuring the onboarding panel' },
+  {
+    thumb: '/bluej/thumbs/qp-mobile-1.jpg',
+    series: 'cyberqp',
+    caption: 'CyberQP mobile app',
+    note: 'Just-in-time accounts on the go: activate, inspect, and approve privileged access from a phone.',
+    images: [
+      {
+        src: '/bluej/qp-mobile-1.png',
+        alt: 'CyberQP mobile app: the just-in-time accounts list filtered to ten active accounts, an account detail with username, current password, a counting-down OTP, expiration, reason, and policy, quick actions to extend time, view authentication history, end session, or delete, and an approval request with reason, request details, a duration picker, and deny or approve',
+      },
+    ],
+  },
+  {
+    thumb: '/bluej/thumbs/qp-ext-1.jpg',
+    series: 'cyberqp',
+    caption: 'CyberQP browser extension',
+    note: 'Activating a just-in-time account without leaving the browser.',
+    images: [
+      {
+        src: '/bluej/qp-ext-1.png',
+        alt: 'CyberQP browser extension: the activate JIT account form with organization, an EverythingInScope policy bundling all directory types, account type options for local, Active Directory, Entra ID, and Google, a device picker, and duration, beside an activated account detail showing standard mode and its activation time',
+      },
+    ],
+  },
+  {
+    thumb: '/bluej/thumbs/dtrax-2.jpg',
+    caption: 'dTrax AI contract review (Deloitte)',
+    note: 'NLP-assisted due diligence for legal contracts: topic models applied at scale, with reviewer actions feeding back into training.',
+    images: [
+      {
+        src: '/bluej/dtrax-2.png',
+        alt: 'dTrax admin persona: the all-files view where trained topic models are applied to a thousand contracts with smart categories and completeness check, annotated with the super user access level, train topics available only to admins who annotate and review NLP extraction, and the completeness check that flags contracts with missing pages needing user intervention',
+      },
+      {
+        src: '/bluej/dtrax-1.png',
+        alt: 'dTrax reviewer persona: a facilities agreement open beside its extracted text segments, where maturity clause and indemnity extractions carry confidence scores and reject or accept CTAs that validate the extraction and feed back into training the topic models',
+      },
+    ],
+  },
+  {
+    thumb: '/bluej/thumbs/bb-3.jpg',
+    caption: 'BlackBerry: Gateway and malware investigation',
+    note: 'Secure cloud access clients for desktop, and the Optics console where analysts walk an attack timeline.',
+    images: [
+      {
+        src: '/bluej/bb-3.png',
+        alt: 'BlackBerry Gateway secure cloud access on macOS and Windows: work mode enabled with a disable control, time connected, upload and download volume, and a live throughput graph',
+      },
+      {
+        src: '/bluej/bb-1.png',
+        alt: 'Carbanak malware investigation, incident details: a hundred alerts listed with severity badges, MITRE technique references, status, device, and user, under counts for active alerts, artifacts impacted, devices at risk, and users vulnerable, with tabs for events, devices, and users and a generate report action',
+      },
+      {
+        src: '/bluej/bb-2.png',
+        alt: 'Carbanak malware investigation, alert timeline: wscript.exe decoding content, transmitting data over HTTPS, and downloading a quarantined file, with the investigation report dialog exporting query results and a detailed audit log',
+      },
+    ],
+  },
+  {
+    thumb: '/bluej/thumbs/qp-connectors-1.jpg',
+    series: 'cyberqp',
+    caption: 'CyberQP connectors',
+    note: 'One home for PSA, RMM, cloud directory, and endpoint integrations, each with a guided setup.',
+    images: [
+      {
+        src: '/bluej/qp-connectors-1.png',
+        alt: 'CyberQP connectors settings: ConnectWise PSA for ticket automation, NinjaOne RMM for org sync, cloud directory connectors for Microsoft Cloud, Microsoft Partner Center GDAP, Microsoft GCC High, and Google, and the Panthera endpoint client download for managing local admin accounts',
+      },
+      {
+        src: '/bluej/qp-connectors-2.png',
+        alt: 'Microsoft Cloud connector setup: a three-step flow of connection, zero-knowledge Azure function setup, and review, with organization choice and sign-in enabling Entra ID sync plus optional Azure and Intune discovery',
+      },
+    ],
+  },
+  {
+    thumb: '/bluej/thumbs/qp-billing-1.jpg',
+    series: 'cyberqp',
+    caption: 'License and billing',
+    note: 'Freemium licensing for technicians and devices: read is free, licenses gate actions that change things.',
+    images: [
+      {
+        src: '/bluej/qp-billing-1.png',
+        alt: 'CyberQP license and billing: a paid technician subscription, the callout that discovery, inventory, audit, and reports stay free and only change-making actions need licenses, license management for technician and device tiers with available, assigned, and requested counts, identity governance usage, and the next billing snapshot',
+      },
+      {
+        src: '/bluej/qp-billing-2.png',
+        alt: 'License requests: pending, approved, and denied tabs where technicians who hit a license-gated action ask for one, each request carrying who requested it, the license type, target, organization, triggering action, reason, and submission time',
+      },
+    ],
+  },
+  {
+    thumb: '/bluej/thumbs/qp-users-1.jpg',
+    series: 'cyberqp',
+    caption: 'User and access management',
+    note: 'Technicians, security groups, and composable roles with granular permissions.',
+    images: [
+      {
+        src: '/bluej/qp-users-1.png',
+        alt: 'CyberQP user and access management: the technicians table with role, status, last activity, security groups, SSO and MFA status, SCIM-provisioned users badged inline, bulk selection with actions, and tabs for security groups and roles',
+      },
+      {
+        src: '/bluej/qp-users-2.png',
+        alt: 'Create role: a modal over the roles tab where built-in owner, administrator, technician, and read-only roles sit beside custom ones, composing a role from searchable permission groups for user management and devices with per-group select-all',
+      },
+    ],
+  },
+  {
+    thumb: '/bluej/thumbs/qp-events-1.jpg',
+    series: 'cyberqp',
+    caption: 'Event logs',
+    note: 'Every vault, identity, and policy event, filterable and expandable to full detail.',
+    images: [
+      {
+        src: '/bluej/qp-events-1.png',
+        alt: 'CyberQP event logs: system events across vault credentials, policy, identity, and templates over the last seven days, filtered by organization and searchable, with an expanded credential-viewed event exposing category, type, organization, outcome, folder, and client IP',
+      },
+    ],
+  },
 ]
 
+/** Lightbox position: image -1 is the group's COVER, a mini overview card
+    shown when the series chain hands over from one group to the next. */
+interface GallerySel {
+  group: number
+  image: number
+}
+
+/* The series neighbor in GALLERY order, skipping groups outside the series. */
+function seriesNeighbor(group: number, dir: 1 | -1): number | null {
+  const series = GALLERY[group].series
+  if (!series) return null
+  for (let j = group + dir; j >= 0 && j < GALLERY.length; j += dir) {
+    if (GALLERY[j].series === series) return j
+  }
+  return null
+}
+
+/* Where Next/Prev leads from a position, chaining series groups through
+   their covers: ... last slide -> next group's cover -> its slide 1 ...
+   Standalone groups still dead-end at their edges. */
+function gallerystep(sel: GallerySel, dir: 1 | -1): GallerySel | null {
+  const { group, image } = sel
+  const last = GALLERY[group].images.length - 1
+  if (dir === 1) {
+    if (image < last) return { group, image: image + 1 }
+    const next = seriesNeighbor(group, 1)
+    return next !== null ? { group: next, image: -1 } : null
+  }
+  if (image === -1 || image === 0) {
+    /* Off the front of the slides: the cover first, then the previous
+       series group's last slide. */
+    if (image === 0 && GALLERY[group].series) return { group, image: -1 }
+    const prev = seriesNeighbor(group, -1)
+    return prev !== null
+      ? { group: prev, image: GALLERY[prev].images.length - 1 }
+      : null
+  }
+  return { group, image: image - 1 }
+}
+
 /**
- * Full-screen viewer for one gallery item: large contained image, caption,
- * prev/next with arrow keys, Escape closes. Deliberately simpler than the
- * theme decks; a gallery is browsing, not a guided story.
+ * Full-screen viewer for one gallery GROUP: large contained image, caption,
+ * prev/next with arrow keys stepping through the group's own slides, Escape
+ * closes. Standalone groups end where the project does; groups in a series
+ * chain onward, pausing on the next group's cover so the handover is
+ * announced rather than silent.
  */
 function GalleryLightbox({
-  index,
+  group,
+  image,
   onNavigate,
   onClose,
 }: {
-  index: number
-  onNavigate: (next: number) => void
+  group: number
+  image: number
+  onNavigate: (next: GallerySel) => void
   onClose: () => void
 }) {
-  const item = GALLERY[index]
+  const item = GALLERY[group]
+  const onCover = image === -1
+  const slide = onCover ? null : item.images[image]
   const closeRef = useRef<HTMLButtonElement>(null)
-  const prev = index > 0 ? index - 1 : null
-  const next = index < GALLERY.length - 1 ? index + 1 : null
+  const prev = gallerystep({ group, image }, -1)
+  const next = gallerystep({ group, image }, 1)
+  /* Crossing into another group gets a labelled button; staying inside the
+     deck keeps the plain step. */
+  const prevLabel = prev && prev.group !== group ? 'Prev project' : 'Prev'
+  const nextLabel = next && next.group !== group ? 'Next project' : 'Next'
+  const seriesItems = item.series
+    ? GALLERY.filter((g) => g.series === item.series)
+    : []
+  const seriesPos = seriesItems.indexOf(item)
 
   useEffect(() => {
     closeRef.current?.focus()
@@ -581,12 +735,14 @@ function GalleryLightbox({
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
-      if (e.key === 'ArrowLeft' && index > 0) onNavigate(index - 1)
-      if (e.key === 'ArrowRight' && index < GALLERY.length - 1) onNavigate(index + 1)
+      if (e.key === 'ArrowLeft' && prev) onNavigate(prev)
+      if (e.key === 'ArrowRight' && next) onNavigate(next)
     }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
-  }, [index, onNavigate, onClose])
+    /* prev/next are fresh objects each render; position is the real dep. */
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [group, image, onNavigate, onClose])
 
   return (
     <motion.div
@@ -612,13 +768,33 @@ function GalleryLightbox({
         exit={{ opacity: 0, y: 10, scale: 0.99 }}
         transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
       >
-        <header className="cs-glight-bar">
-          <span className="cs-glight-count">
-            {index + 1} / {GALLERY.length}
-          </span>
+        {/* Title and context lead from the top; the cover card already
+            states both, so it keeps the header empty. */}
+        <header className="cs-glight-bar cs-glight-head">
+          {!onCover && (
+            <span className="cs-glight-text">
+              <p className="cs-glight-caption">{item.caption}</p>
+              {item.note && <p className="cs-glight-note">{item.note}</p>}
+            </span>
+          )}
         </header>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img key={item.src} src={item.src} alt={item.caption} className="cs-glight-img" />
+        {slide ? (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img key={slide.src} src={slide.src} alt={slide.alt} className="cs-glight-img" />
+        ) : (
+          /* Cover: a mini overview of the group the chain just reached. */
+          <div key={`cover-${group}`} className="cs-glight-cover">
+            <span className="cs-tape" aria-hidden />
+            <p className="cs-glight-cover-eyebrow">Up next</p>
+            <h3 className="cs-glight-cover-title">{item.caption}</h3>
+            {item.note && <p className="cs-glight-cover-note">{item.note}</p>}
+            <p className="cs-glight-cover-count">
+              {item.images.length === 1
+                ? '1 slide'
+                : `${item.images.length} slides`}
+            </p>
+          </div>
+        )}
         <footer className="cs-glight-bar">
           <button
             type="button"
@@ -626,11 +802,15 @@ function GalleryLightbox({
             disabled={prev === null}
             onClick={() => prev !== null && onNavigate(prev)}
           >
-            <span aria-hidden="true">← </span>Prev
+            <span aria-hidden="true">← </span>
+            {prevLabel}
           </button>
-          <span className="cs-glight-text">
-            <p className="cs-glight-caption">{item.caption}</p>
-            {item.note && <p className="cs-glight-note">{item.note}</p>}
+          <span className="cs-glight-count">
+            {onCover
+              ? seriesPos >= 0
+                ? `Project ${seriesPos + 1} of ${seriesItems.length}`
+                : ''
+              : `${image + 1} / ${item.images.length}`}
           </span>
           <button
             type="button"
@@ -638,7 +818,8 @@ function GalleryLightbox({
             disabled={next === null}
             onClick={() => next !== null && onNavigate(next)}
           >
-            Next<span aria-hidden="true"> →</span>
+            {nextLabel}
+            <span aria-hidden="true"> →</span>
           </button>
         </footer>
       </motion.div>
@@ -1284,10 +1465,10 @@ export default function BlueJPage() {
 
   /* One body scroll lock for the whole modal experience, held across
      prev/next theme hops. */
-  const [galleryIndex, setGalleryIndex] = useState<number | null>(null)
+  const [gallerySel, setGallerySel] = useState<{ group: number; image: number } | null>(null)
   const [galleryExpanded, setGalleryExpanded] = useState(false)
 
-  const modalOpen = openId !== null || galleryIndex !== null
+  const modalOpen = openId !== null || gallerySel !== null
   useEffect(() => {
     if (!modalOpen) return
     const prevOverflow = document.body.style.overflow
@@ -1390,8 +1571,7 @@ export default function BlueJPage() {
         )}
       </AnimatePresence>
 
-      {/* PROTOTYPE(gallery): archive layer below the themes. Stand-in images
-          until the real not-in-a-theme work is curated. */}
+      {/* Archive layer below the themes: shipped work grouped by project. */}
       <section className="cs-glr-section">
         <p className="cs-glr-eyebrow">More work</p>
         <p className="cs-glr-lede">
@@ -1400,14 +1580,22 @@ export default function BlueJPage() {
         <div className="cs-glr">
           {(galleryExpanded ? GALLERY : GALLERY.slice(0, GALLERY_PREVIEW_COUNT)).map((item, i) => (
             <button
-              key={item.src}
+              key={item.thumb}
               type="button"
-              className="cs-glr-tile"
+              className={`cs-glr-tile${item.images.length > 1 ? ' is-stack' : ''}`}
               data-gtile={i}
-              onClick={() => setGalleryIndex(i)}
+              onClick={() => setGallerySel({ group: i, image: 0 })}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={item.thumb} alt={item.caption} loading="lazy" />
+              {item.images.length > 1 && (
+                <>
+                  <span className="cs-glr-count" aria-hidden="true">
+                    {item.images.length}
+                  </span>
+                  <span className="cs-sr-only">, {item.images.length} slides</span>
+                </>
+              )}
               <span className="cs-glr-cap">{item.caption}</span>
             </button>
           ))}
@@ -1427,15 +1615,23 @@ export default function BlueJPage() {
       </section>
 
       <AnimatePresence>
-        {galleryIndex !== null && (
+        {gallerySel !== null && (
           <GalleryLightbox
-            index={galleryIndex}
-            onNavigate={setGalleryIndex}
+            group={gallerySel.group}
+            image={gallerySel.image}
+            onNavigate={setGallerySel}
             onClose={() => {
-              document
-                .querySelector<HTMLElement>(`[data-gtile="${galleryIndex}"]`)
-                ?.focus()
-              setGalleryIndex(null)
+              /* The series chain may have walked past the preview row;
+                 expand so the tile focus returns to actually exists. */
+              if (gallerySel.group >= GALLERY_PREVIEW_COUNT) {
+                setGalleryExpanded(true)
+              }
+              setGallerySel(null)
+              requestAnimationFrame(() => {
+                document
+                  .querySelector<HTMLElement>(`[data-gtile="${gallerySel.group}"]`)
+                  ?.focus({ preventScroll: true })
+              })
             }}
           />
         )}
