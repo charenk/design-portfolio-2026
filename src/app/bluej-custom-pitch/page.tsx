@@ -57,6 +57,12 @@ interface Theme {
   /** Short description under the modal title. Keep tight: visuals lead. */
   framing: string[]
   groups: ThemeGroup[]
+  /** Slide peeks on the overview card (640w jpgs in /public/bluej/thumbs).
+      Decorative: the card's text already names the theme, so these render
+      with empty alt. Three read well on the featured card, one elsewhere.
+      A thumb may borrow from another theme's deck while this theme's own
+      slides are pending (03 borrows the terminal's interaction model). */
+  cardThumbs?: string[]
   /** Render every slide as one full-width deck with no rail. For a theme
       that reads as a single continuous story rather than a set of separate
       samples, the rail is navigation nobody needs. */
@@ -73,95 +79,77 @@ const THEMES: Theme[] = [
     framing: [
       'Improving product cohesion by addressing design drift, and governing a design system that helps developers ship faster while maintaining quality.',
     ],
+    cardThumbs: [
+      '/bluej/thumbs/ds-intro-1.jpg',
+      '/bluej/thumbs/ds-tablecard-2.jpg',
+      '/bluej/thumbs/ds-hopper-1.jpg',
+    ],
     groups: [
       {
-        title: 'Latest',
+        title: 'Most recent',
         items: [
           {
             label: 'Design system at CyberQP',
-            subItems: [
+            desc: 'Three projects in one deck: the TableCard component, front-end drift, and the organization list.',
+            images: [
               {
-                label: 'Intro',
-                desc: 'The CyberQP design-system story: selected samples, the agentic framework, and the platform outcome.',
-                images: [
-                  {
-                    src: '/bluej/ds-intro-1.png',
-                    alt: 'Selected work samples: scaling the list-item component with annotated org states, the TableCard component on the identities table, and addressing front-end agent drift',
-                  },
-                  {
-                    src: '/bluej/ds-intro-2.png',
-                    alt: 'Design System 2.0, the new agentic design system framework: discovery, prioritize and decide, build and test with Claude, measure and monitor',
-                  },
-                  {
-                    src: '/bluej/ds-intro-3.png',
-                    alt: 'Outcome, the biggest UX win: from the legacy product to the new platform design direction, leading the platform redesign alongside design system enhancements',
-                  },
-                ],
+                src: '/bluej/ds-intro-1.png',
+                alt: 'Selected work samples: scaling the list-item component with annotated org states, the TableCard component on the identities table, and addressing front-end agent drift',
               },
               {
-                label: 'Adding TableCard component',
-                desc: 'One enclosing surface for tabs, table, and pagination: the before and after, the working artifact, and what shipped to Storybook.',
-                images: [
-                  {
-                    src: '/bluej/ds-tablecard-1.png',
-                    alt: 'Work sample 1, before TableCard and refined guidelines: the identities screen with tabs, table, and footer pagination marked one, two, and three as three unbounded components',
-                  },
-                  {
-                    src: '/bluej/ds-tablecard-2.png',
-                    alt: 'After the TableCard definition: the same identities table with tabs, rows, and pagination bound inside one enclosed surface',
-                  },
-                  {
-                    src: '/bluej/ds-tablecard-3.png',
-                    alt: 'Behind the scenes working artifact: canvas annotations on pagination height, page-selector state, and border-radius inconsistencies, captioned about iterating with engineering in the loop on high-impact components',
-                  },
-                  {
-                    src: '/bluej/ds-tablecard-4.png',
-                    alt: 'Final output: the new TableCard configuration in Storybook with header slot, untabbed, footer slot, and page pattern variants, added alongside a decision log and product context',
-                  },
-                ],
+                src: '/bluej/ds-intro-2.png',
+                alt: 'Design System 2.0, the new agentic design system framework: discovery, prioritize and decide, build and test with Claude, measure and monitor',
               },
               {
-                label: 'Addressing frontend drift',
-                desc: 'Catching drift in an audit, fixing it before it shipped, then closing the gap in the guidelines.',
-                images: [
-                  {
-                    src: '/bluej/ds-drift-1.png',
-                    alt: 'Work sample 2, UI defects in dark mode found during audit: the Policies screen where the primary button and menu use gray.900 fills on a near-identical dark canvas, so the container barely separates from the page',
-                  },
-                  {
-                    src: '/bluej/ds-drift-2.png',
-                    alt: 'Discovery of drift before the solution hit production: punch item P-030 for the button system with its acceptance criteria, picked from the agent-maintained punch list, severity confirmed in a local audit, then fixed',
-                  },
-                  {
-                    src: '/bluej/ds-drift-3.png',
-                    alt: 'Before and after the fix, up close: the Policy and Action controls with near-invisible fills, beside the same controls today with a clear primary button',
-                  },
-                  {
-                    src: '/bluej/ds-drift-4.png',
-                    alt: 'Updated and reviewed button guidelines, decision log, and theme file so the system will not reproduce the issue: Button variants documented in Storybook across solid, outline, destructive, destructive outline, and ghost',
-                  },
-                ],
+                src: '/bluej/ds-intro-3.png',
+                alt: 'Outcome, the biggest UX win: from the legacy product to the new platform design direction, leading the platform redesign alongside design system enhancements',
               },
               {
-                label: 'Simplifying organization list',
-                desc: 'Enhancing the menu list item component so organization sync reads clearly on both sides.',
-                images: [
-                  {
-                    src: '/bluej/ds-org-list-1.png',
-                    alt: 'Work sample 3, enhancing the menu list item component for organizations: source-side and CyberQP-side org states covering flat orgs, typed orgs, parent-child nesting, selection checkboxes, and marked-to-create badges for both the agent\u2019s action and the user\u2019s',
-                  },
-                  {
-                    src: '/bluej/ds-org-list-2.png',
-                    alt: 'Outcome: the updated organization matching experience in the new platform, with source titles matched against CyberQP organizations and unmatched rows called out, beside the legacy organization table it replaced',
-                  },
-                ],
+                src: '/bluej/ds-tablecard-1.png',
+                alt: 'Work sample 1, before TableCard and refined guidelines: the identities screen with tabs, table, and footer pagination marked one, two, and three as three unbounded components',
+              },
+              {
+                src: '/bluej/ds-tablecard-2.png',
+                alt: 'After the TableCard definition: the same identities table with tabs, rows, and pagination bound inside one enclosed surface',
+              },
+              {
+                src: '/bluej/ds-tablecard-3.png',
+                alt: 'Behind the scenes working artifact: canvas annotations on pagination height, page-selector state, and border-radius inconsistencies, captioned about iterating with engineering in the loop on high-impact components',
+              },
+              {
+                src: '/bluej/ds-tablecard-4.png',
+                alt: 'Final output: the new TableCard configuration in Storybook with header slot, untabbed, footer slot, and page pattern variants, added alongside a decision log and product context',
+              },
+              {
+                src: '/bluej/ds-drift-1.png',
+                alt: 'Work sample 2, UI defects in dark mode found during audit: the Policies screen where the primary button and menu use gray.900 fills on a near-identical dark canvas, so the container barely separates from the page',
+              },
+              {
+                src: '/bluej/ds-drift-2.png',
+                alt: 'Discovery of drift before the solution hit production: punch item P-030 for the button system with its acceptance criteria, picked from the agent-maintained punch list, severity confirmed in a local audit, then fixed',
+              },
+              {
+                src: '/bluej/ds-drift-3.png',
+                alt: 'Before and after the fix, up close: the Policy and Action controls with near-invisible fills, beside the same controls today with a clear primary button',
+              },
+              {
+                src: '/bluej/ds-drift-4.png',
+                alt: 'Updated and reviewed button guidelines, decision log, and theme file so the system will not reproduce the issue: Button variants documented in Storybook across solid, outline, destructive, destructive outline, and ghost',
+              },
+              {
+                src: '/bluej/ds-org-list-1.png',
+                alt: 'Work sample 3, enhancing the menu list item component for organizations: source-side and CyberQP-side org states covering flat orgs, typed orgs, parent-child nesting, selection checkboxes, and marked-to-create badges for both the agent\u2019s action and the user\u2019s',
+              },
+              {
+                src: '/bluej/ds-org-list-2.png',
+                alt: 'Outcome: the updated organization matching experience in the new platform, with source titles matched against CyberQP organizations and unmatched rows called out, beside the legacy organization table it replaced',
               },
             ],
           },
         ],
       },
       {
-        title: 'Previous',
+        title: 'Others',
         items: [
           {
             label: 'Hopper Design System',
@@ -207,36 +195,6 @@ const THEMES: Theme[] = [
         title: 'Latest',
         items: [
           // TODO(content): Charen will share the CyberQP AI Terminal story in a follow-up prompt.
-          {
-            label: 'CyberQP AI Terminal',
-            subItems: [
-              {
-                label: 'Context',
-                desc: 'Placeholder: context for the CyberQP AI Terminal. Content coming.',
-              },
-              {
-                label: 'Framing',
-                desc: 'Placeholder: how the problem was framed. Content coming.',
-              },
-              {
-                label: 'Working with AI Lab',
-                desc: 'Placeholder: collaborating with the AI Labs team. Content coming.',
-              },
-              {
-                label: 'AI terminal design explorations',
-                desc: 'Placeholder: design exploration artifacts for the terminal. Content coming.',
-                wide: true,
-              },
-              {
-                label: 'Iterations',
-                desc: 'Placeholder: how the design iterated across releases. Content coming.',
-              },
-              {
-                label: 'Learnings',
-                desc: 'Placeholder: what came out of shipping the terminal. Content coming.',
-              },
-            ],
-          },
           // TODO(content): Charen will share the privileged-identity discovery story in a follow-up prompt.
           {
             label: 'Discovery of privileged identities',
@@ -297,20 +255,79 @@ const THEMES: Theme[] = [
       // TODO(content): sharpen the agentic-design positioning for Blue J's tax/legal AI context.
       'Designing AI that experts trust with consequential work: read-only defaults, confirmation gates at the right trust moments, and systems that stop rather than guess.',
     ],
+    cardThumbs: [
+      '/bluej/thumbs/t2-term-1-overview.jpg',
+    ],
     groups: [{ items: [
-      {
-        label: 'The AI terminal & four trust gates',
-        desc: 'AI-PAM terminal flow: intent confirmation, policy authorization, query plan review, workflow approval.',
-        wide: true,
-      },
-      {
-        label: 'Multi-agent orchestration',
-        desc: 'The Refinery: eight coordinated agents, an orchestrator, and a morning brief, captured in the system diagram and dashboard.',
-      },
-      {
-        label: 'Failure & disambiguation patterns',
-        desc: 'What happens when confidence is low or a connector dies: stop, name it, offer a recoverable path.',
-      },
+          {
+            label: 'CyberQP AI Terminal',
+            subItems: [
+              {
+                label: 'Overview',
+                desc: 'The terminal as it stands: one command bar, scoped to an organization.',
+                images: [
+                  {
+                    src: '/bluej/t2-term-1-overview.png',
+                    alt: 'Project one, the all-new CyberQP AI terminal: a dark product shell where the terminal takes a run mode and an organization scope above a prompt line, with sample commands for getting all accounts, showing stale users, and listing active JIT accounts',
+                  },
+                ],
+              },
+              {
+                label: 'Context',
+                desc: 'Where the terminal sat in the platform strategy, what I led, and who I led it with.',
+                images: [
+                  {
+                    src: '/bluej/t2-term-2-context.png',
+                    alt: 'Context: the AI terminal was part of CyberQP\u2019s new Panthera platform, a strategic evolution of the legacy product; I led discovery, design, and iteration for the terminal, focused on trust and scalability while translating findings from engineering proofs of concept, and led prompt use-case discovery sessions, working with the AI Lab team alongside the CEO, engineering, head of product, and customer success',
+                  },
+                ],
+              },
+              {
+                label: 'Evolution of experience',
+                desc: 'What the proof of concept did not cover, and what design and product added.',
+                images: [
+                  {
+                    src: '/bluej/t2-term-6-evolution.png',
+                    alt: 'Evolution of the experience: the terminal beside a comparison of the proof of concept against the design and product evolution, which added AI onboarding, an intuitive input interaction model that removes the need to remember trigger keys, and dynamic starter prompts',
+                  },
+                ],
+              },
+              {
+                label: 'Interaction model',
+                desc: 'The prompt composition loop: what the input teaches before anything is sent.',
+                images: [
+                  {
+                    src: '/bluej/t2-term-5-interaction.png',
+                    alt: 'Interaction model for the command input area: a prompt composition loop where first paint suggests what fits with a rotating placeholder, a bare @ reveals identities, devices, and organizations to teach the whole ontology before the user commits, and three or more characters switch to live records from connected directories',
+                  },
+                ],
+              },
+              {
+                label: 'Working artifacts',
+                desc: 'The components I own for AI and user interaction, and how I prepare prompt use cases.',
+                images: [
+                  {
+                    src: '/bluej/t2-term-3-components.png',
+                    alt: 'Behind the scenes: selected components I contributed to and now manage for AI and user interactions, including the command bar and its run-or-automate mode menu, plan-footer buttons through running and executed states, a solution card shell, an approval confirmation form, and a reasoning timeline',
+                  },
+                  {
+                    src: '/bluej/t2-term-4-usecases.png',
+                    alt: 'Behind the scenes: how I prepare use-case documents, showing a dashboard and reporting compound-prompts table for the AI terminal that pairs each module and intent with the user prompt and the text or table output it should return',
+                  },
+                ],
+              },
+              {
+                label: 'Learnings',
+                desc: 'What moved onboarding success, and what is still open.',
+                images: [
+                  {
+                    src: '/bluej/t2-term-7-learnings.png',
+                    alt: 'Learnings: users arrive with a borrowed mental model and read the terminal behaving unlike their last tool as the product failing; setting capability expectations up front moved onboarding success more than any interface change; and keeping those expectations honest as the model improves is still open',
+                  },
+                ],
+              },
+            ],
+          },
     ] }],
   },
   {
@@ -319,9 +336,12 @@ const THEMES: Theme[] = [
     title: 'Code-first design',
     fullDeck: true,
     promise:
-      'Ideas tested as working software, not mockups.',
+      'Agentic design setup, skills and process.',
     framing: [
-      'Overview of setup, process, and custom skills.',
+      'From handing off Figma files to shipping front-end code in production, and the setup, skills, and process that made it repeatable.',
+    ],
+    cardThumbs: [
+      '/bluej/thumbs/cf-skills-1.jpg',
     ],
     groups: [{ items: [
       {
@@ -365,6 +385,9 @@ const THEMES: Theme[] = [
       'Getting features discovered and used after launch.',
     framing: [
       'Moving a sales-led product toward product-led growth: onboarding, activation, and the telemetry to tell whether it worked.',
+    ],
+    cardThumbs: [
+      '/bluej/thumbs/ga-new-context.jpg',
     ],
     groups: [
       {
@@ -451,7 +474,142 @@ const THEMES: Theme[] = [
   },
 ]
 
+/* ------------------------------------------------------------------------- */
+/* PROTOTYPE(gallery): stand-in items reusing theme slides so the UX can be
+   judged. The real gallery holds work that is NOT in the themes; swap these
+   for curated images and captions before this ships anywhere.              */
+/* ------------------------------------------------------------------------- */
+
+interface GalleryItem {
+  /** 640w grid thumb in /public/bluej/thumbs. */
+  thumb: string
+  /** Full-size image for the lightbox. */
+  src: string
+  caption: string
+  /** One sentence of context, lightbox only. Written lazily; items
+      without one just show the caption. */
+  note?: string
+}
+
+/* Tiles shown before "Show all": one desktop row. */
+const GALLERY_PREVIEW_COUNT = 4
+
+const GALLERY: GalleryItem[] = [
+  { thumb: '/bluej/thumbs/ds-tablecard-2.jpg', src: '/bluej/ds-tablecard-2.png', caption: 'TableCard on the identities screen', note: 'One enclosing surface for tabs, table, and pagination, replacing three unbounded components.' },
+  { thumb: '/bluej/thumbs/t2-term-1-overview.jpg', src: '/bluej/t2-term-1-overview.png', caption: 'CyberQP AI Terminal', note: 'Led discovery, design, and iteration for the terminal on the new Panthera platform.' },
+  { thumb: '/bluej/thumbs/ds-org-list-2.jpg', src: '/bluej/ds-org-list-2.png', caption: 'Organization matching, new platform' },
+  { thumb: '/bluej/thumbs/cf-skills-1.jpg', src: '/bluej/cf-skills-1.png', caption: 'Custom skills for solo design leadership' },
+  { thumb: '/bluej/thumbs/ga-new-context.jpg', src: '/bluej/ga-new-context.png', caption: 'Onboarding setup guide, state mapping' },
+  { thumb: '/bluej/thumbs/ds-hopper-1.jpg', src: '/bluej/ds-hopper-1.png', caption: 'Hopper Design System' },
+  { thumb: '/bluej/thumbs/t2-term-5-interaction.jpg', src: '/bluej/t2-term-5-interaction.png', caption: 'Prompt composition interaction loop' },
+  { thumb: '/bluej/thumbs/ds-drift-3.jpg', src: '/bluej/ds-drift-3.png', caption: 'Button drift, before and after' },
+  { thumb: '/bluej/thumbs/cf-process-1.jpg', src: '/bluej/cf-process-1.png', caption: 'Agentic design process' },
+  { thumb: '/bluej/thumbs/ga-legacy-outcome.jpg', src: '/bluej/ga-legacy-outcome.png', caption: 'Onboarding guide in the legacy product' },
+  { thumb: '/bluej/thumbs/ds-intro-3.jpg', src: '/bluej/ds-intro-3.png', caption: 'Legacy to new platform direction' },
+  { thumb: '/bluej/thumbs/ga-new-measuring.jpg', src: '/bluej/ga-new-measuring.png', caption: 'Measuring the onboarding panel' },
+]
+
+/**
+ * Full-screen viewer for one gallery item: large contained image, caption,
+ * prev/next with arrow keys, Escape closes. Deliberately simpler than the
+ * theme decks; a gallery is browsing, not a guided story.
+ */
+function GalleryLightbox({
+  index,
+  onNavigate,
+  onClose,
+}: {
+  index: number
+  onNavigate: (next: number) => void
+  onClose: () => void
+}) {
+  const item = GALLERY[index]
+  const closeRef = useRef<HTMLButtonElement>(null)
+  const prev = index > 0 ? index - 1 : null
+  const next = index < GALLERY.length - 1 ? index + 1 : null
+
+  useEffect(() => {
+    closeRef.current?.focus()
+  }, [])
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+      if (e.key === 'ArrowLeft' && index > 0) onNavigate(index - 1)
+      if (e.key === 'ArrowRight' && index < GALLERY.length - 1) onNavigate(index + 1)
+    }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [index, onNavigate, onClose])
+
+  return (
+    <motion.div
+      className="cs-tmodal-overlay"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+    >
+      <button
+        type="button"
+        className="cs-tmodal-backdrop"
+        aria-label="Close gallery"
+        onClick={onClose}
+      />
+      <motion.div
+        role="dialog"
+        aria-modal="true"
+        aria-label={item.caption}
+        className="cs-glight"
+        initial={{ opacity: 0, y: 14, scale: 0.985 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 10, scale: 0.99 }}
+        transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <header className="cs-glight-bar">
+          <span className="cs-glight-count">
+            {index + 1} / {GALLERY.length}
+          </span>
+          <button
+            ref={closeRef}
+            type="button"
+            className="cs-tmodal-close"
+            aria-label="Close"
+            onClick={onClose}
+          >
+            ×
+          </button>
+        </header>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img key={item.src} src={item.src} alt={item.caption} className="cs-glight-img" />
+        <footer className="cs-glight-bar">
+          <button
+            type="button"
+            className="cs-glight-step"
+            disabled={prev === null}
+            onClick={() => prev !== null && onNavigate(prev)}
+          >
+            <span aria-hidden="true">← </span>Prev
+          </button>
+          <span className="cs-glight-text">
+            <p className="cs-glight-caption">{item.caption}</p>
+            {item.note && <p className="cs-glight-note">{item.note}</p>}
+          </span>
+          <button
+            type="button"
+            className="cs-glight-step"
+            disabled={next === null}
+            onClick={() => next !== null && onNavigate(next)}
+          >
+            Next<span aria-hidden="true"> →</span>
+          </button>
+        </footer>
+      </motion.div>
+    </motion.div>
+  )
+}
 /* Tilt alternates across a theme's samples so frames feel hand-placed. */
+
 function slotTilt(i: number): string {
   return i % 2 === 0 ? 'cs-tilt-l' : 'cs-tilt-r'
 }
@@ -1091,7 +1249,10 @@ export default function BlueJPage() {
 
   /* One body scroll lock for the whole modal experience, held across
      prev/next theme hops. */
-  const modalOpen = openId !== null
+  const [galleryIndex, setGalleryIndex] = useState<number | null>(null)
+  const [galleryExpanded, setGalleryExpanded] = useState(false)
+
+  const modalOpen = openId !== null || galleryIndex !== null
   useEffect(() => {
     if (!modalOpen) return
     const prevOverflow = document.body.style.overflow
@@ -1163,6 +1324,14 @@ export default function BlueJPage() {
             <p className="cs-tcard-num">{theme.num}</p>
             <h3 className="cs-tcard-title">{theme.title}</h3>
             <p className="cs-tcard-promise">{theme.promise}</p>
+            {theme.cardThumbs && (
+              <span className="cs-tcard-thumbs" aria-hidden="true">
+                {theme.cardThumbs.map((src) => (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img key={src} src={src} alt="" loading="lazy" />
+                ))}
+              </span>
+            )}
             <span className="cs-tcard-arrow" aria-hidden="true">
               →
             </span>
@@ -1177,6 +1346,58 @@ export default function BlueJPage() {
             theme={openTheme}
             onClose={closeModal}
             onNavigate={openModal}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* PROTOTYPE(gallery): archive layer below the themes. Stand-in images
+          until the real not-in-a-theme work is curated. */}
+      <section className="cs-glr-section">
+        <p className="cs-glr-eyebrow">More work</p>
+        <p className="cs-glr-lede">
+          Working artifacts and shipped screens beyond the five themes. Tap
+          any tile for the story behind it.
+        </p>
+        <div className="cs-glr">
+          {(galleryExpanded ? GALLERY : GALLERY.slice(0, GALLERY_PREVIEW_COUNT)).map((item, i) => (
+            <button
+              key={item.src}
+              type="button"
+              className="cs-glr-tile"
+              data-gtile={i}
+              onClick={() => setGalleryIndex(i)}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={item.thumb} alt={item.caption} loading="lazy" />
+              <span className="cs-glr-cap">{item.caption}</span>
+            </button>
+          ))}
+        </div>
+        {GALLERY.length > GALLERY_PREVIEW_COUNT && (
+          <button
+            type="button"
+            className="cs-glr-toggle"
+            onClick={() => setGalleryExpanded((v) => !v)}
+          >
+            {galleryExpanded
+              ? 'Show less'
+              : `Show all ${GALLERY.length}`}
+            <span aria-hidden="true">{galleryExpanded ? ' ↑' : ' ↓'}</span>
+          </button>
+        )}
+      </section>
+
+      <AnimatePresence>
+        {galleryIndex !== null && (
+          <GalleryLightbox
+            index={galleryIndex}
+            onNavigate={setGalleryIndex}
+            onClose={() => {
+              document
+                .querySelector<HTMLElement>(`[data-gtile="${galleryIndex}"]`)
+                ?.focus()
+              setGalleryIndex(null)
+            }}
           />
         )}
       </AnimatePresence>

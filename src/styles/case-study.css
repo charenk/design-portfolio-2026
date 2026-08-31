@@ -1648,6 +1648,42 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
   color: var(--cs-ink-soft);
 }
 
+/* Slide peeks on the theme cards: the grid signals "full of shipped work"
+   on first paint. Row height is fixed so cards in a row stay level; crop
+   anchors top-left, where slides carry their titles. */
+.cs-page .cs-tcard-thumbs {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.cs-page .cs-tcard-thumbs img {
+  flex: 1;
+  min-width: 0;
+  height: 96px;
+  object-fit: cover;
+  object-position: top left;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(34, 31, 26, 0.1);
+}
+
+.cs-page .cs-tcard-featured .cs-tcard-thumbs img {
+  height: 118px;
+}
+
+/* Narrow screens: three side-by-side thumbs would crop to portrait
+   slivers, so show two shorter ones instead. */
+@media (max-width: 479px) {
+  .cs-page .cs-tcard-thumbs img,
+  .cs-page .cs-tcard-featured .cs-tcard-thumbs img {
+    height: 84px;
+  }
+
+  .cs-page .cs-tcard-featured .cs-tcard-thumbs img:nth-child(n + 3) {
+    display: none;
+  }
+}
+
 .cs-page .cs-tcard-arrow {
   margin-top: auto;
   padding-top: 8px;
@@ -2316,4 +2352,189 @@ html[data-mode='read'] .cs-page .cs-tmodal-section-title {
   text-transform: uppercase;
   rotate: 0deg;
   color: var(--cs-ink);
+}
+
+/* ------------------------------------------------ gallery (/bluej, prototype) */
+/* Archive layer below the themes: captioned tiles into a simple lightbox. */
+
+.cs-page .cs-glr-section {
+  margin-top: 72px;
+}
+
+.cs-page .cs-glr-eyebrow {
+  font-family: var(--cs-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cs-ink-faint);
+  margin-bottom: 10px;
+}
+
+.cs-page .cs-glr-lede {
+  font-family: var(--cs-sans);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--cs-ink-soft);
+  max-width: 560px;
+  margin-bottom: 24px;
+}
+
+.cs-page .cs-glr {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 18px 14px;
+}
+
+.cs-page .cs-glr-tile {
+  position: relative;
+  border: none;
+  background: transparent;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  display: block;
+}
+
+.cs-page .cs-glr-tile img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: top left;
+  border-radius: 10px;
+  box-shadow: 0 1px 2px rgba(34, 31, 26, 0.1);
+  transition: translate 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cs-page .cs-glr-tile:hover img {
+  translate: 0 -3px;
+  box-shadow: 0 4px 10px rgba(34, 31, 26, 0.12), 0 16px 32px rgba(34, 31, 26, 0.16);
+}
+
+.cs-page .cs-glr-tile:focus-visible img {
+  outline: 2px solid var(--cs-magenta);
+  outline-offset: 3px;
+}
+
+/* Caption is a hover/focus overlay: the grid stays purely visual until a
+   tile is pointed at. Touch screens skip it; the lightbox names the item. */
+.cs-page .cs-glr-cap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 26px 12px 10px;
+  border-radius: 0 0 10px 10px;
+  background: linear-gradient(transparent, rgba(34, 31, 26, 0.72));
+  font-family: var(--cs-sans);
+  font-size: 12px;
+  line-height: 1.4;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .cs-page .cs-glr-tile:hover .cs-glr-cap,
+  .cs-page .cs-glr-tile:focus-visible .cs-glr-cap {
+    opacity: 1;
+  }
+}
+
+.cs-page .cs-glr-toggle {
+  display: block;
+  margin: 24px auto 0;
+  border: 1px solid var(--cs-line);
+  border-radius: 999px;
+  background: transparent;
+  padding: 9px 20px;
+  font-family: var(--cs-sans);
+  font-size: 13px;
+  color: var(--cs-ink-soft);
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.cs-page .cs-glr-toggle:hover {
+  border-color: var(--cs-magenta);
+  color: var(--cs-magenta);
+}
+
+/* Lightbox: image first, one bar above and below. */
+.cs-page .cs-glight {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(1240px, 100%);
+  max-height: 100%;
+  background: var(--cs-surface);
+  border-radius: 16px;
+  box-shadow: var(--cs-shadow-lift);
+  padding: 10px 18px 14px;
+}
+
+.cs-page .cs-glight-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 6px 4px;
+}
+
+.cs-page .cs-glight-count {
+  font-family: var(--cs-sans);
+  font-size: 12px;
+  color: var(--cs-ink-faint);
+}
+
+.cs-page .cs-glight-img {
+  min-height: 0;
+  width: 100%;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.cs-page .cs-glight-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: center;
+}
+
+.cs-page .cs-glight-caption {
+  font-family: var(--cs-serif);
+  font-size: 15px;
+  color: var(--cs-ink);
+}
+
+.cs-page .cs-glight-note {
+  font-family: var(--cs-sans);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--cs-ink-soft);
+}
+
+.cs-page .cs-glight-step {
+  flex-shrink: 0;
+  border: 1px solid var(--cs-line);
+  border-radius: 999px;
+  background: transparent;
+  padding: 7px 16px;
+  font-family: var(--cs-sans);
+  font-size: 13px;
+  color: var(--cs-ink-soft);
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.cs-page .cs-glight-step:hover:not(:disabled) {
+  border-color: var(--cs-magenta);
+  color: var(--cs-magenta);
+}
+
+.cs-page .cs-glight-step:disabled {
+  opacity: 0.35;
+  cursor: default;
 }
