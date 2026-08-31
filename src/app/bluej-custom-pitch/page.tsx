@@ -387,7 +387,7 @@ const THEMES: Theme[] = [
       {
         items: [
           {
-            label: 'CyberQP new platform',
+            label: 'CyberQP Panthera platform',
             subItems: [
               {
                 label: 'Context',
