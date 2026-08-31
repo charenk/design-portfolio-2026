@@ -1839,11 +1839,12 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
   font-weight: 600;
   color: var(--cs-ink);
   cursor: pointer;
+  background: rgba(34, 31, 26, 0.05);
   transition: background 0.2s ease, color 0.2s ease;
 }
 
 .cs-page .cs-tmodal-back:hover {
-  background: rgba(34, 31, 26, 0.06);
+  background: rgba(34, 31, 26, 0.11);
   color: var(--cs-magenta);
 }
 
@@ -1880,11 +1881,11 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
   border: none;
   border-radius: 8px;
   background: transparent;
-  padding: 9px 10px;
+  padding: 5px 10px;
   text-align: left;
   font-family: var(--cs-sans);
-  font-size: 12.5px;
-  line-height: 1.4;
+  font-size: 12px;
+  line-height: 1.35;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

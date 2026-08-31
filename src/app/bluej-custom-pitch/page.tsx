@@ -812,6 +812,11 @@ function ThemeModal({
      any rail entry SELECTS it: the right pane shows only that node's own
      content, in its own scroll area, rather than one shared page scroll. */
   const railGroups = buildRailGroups(theme)
+  /* One top-level node means its label just restates the theme, so the
+     children stand in as the nav. Two or more and the label is load-bearing. */
+  const soleParent =
+    railGroups.reduce((n, g) => n + g.nodes.length, 0) === 1 &&
+    !!railGroups[0]?.nodes[0]?.children
   const flatNodes = railGroups.flatMap((g) => g.nodes.map((n) => ({ group: g, node: n })))
   const firstEntry = flatNodes[0]
   const firstKey = firstEntry
@@ -1098,14 +1103,19 @@ function ThemeModal({
               <div key={gi} className="cs-tmodal-rail-group">
                 {group.nodes.map((node) =>
                   node.children ? (
-                    <div key={node.label} className="cs-tmodal-rail-parent">
-                      <button
-                        type="button"
-                        className={`cs-tmodal-rail-parent-label${selectedKey === `${theme.id}-${slug(node.label)}` ? ' is-active' : ''}`}
-                        onClick={() => selectParent(node.label, node.children![0]?.id)}
-                      >
-                        {node.label}
-                      </button>
+                    <div
+                      key={node.label}
+                      className={`cs-tmodal-rail-parent${soleParent ? ' is-headless' : ''}`}
+                    >
+                      {!soleParent && (
+                        <button
+                          type="button"
+                          className={`cs-tmodal-rail-parent-label${selectedKey === `${theme.id}-${slug(node.label)}` ? ' is-active' : ''}`}
+                          onClick={() => selectParent(node.label, node.children![0]?.id)}
+                        >
+                          {node.label}
+                        </button>
+                      )}
                       {node.children.map((child) => (
                         <button
                           key={child.id}
