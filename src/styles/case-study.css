@@ -2327,6 +2327,51 @@ html[data-mode='read'] .cs-page .cs-tmodal-section-title {
   outline-offset: 3px;
 }
 
+/* Multi-image groups: a second sheet peeks out from behind the thumb, and a
+   count chip names how many slides it hides, so depth reads before anyone
+   clicks. Single-image tiles get neither. */
+.cs-page .cs-glr-tile.is-stack::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  translate: 5px -5px;
+  rotate: 1.4deg;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid var(--cs-line);
+  box-shadow: 0 1px 2px rgba(34, 31, 26, 0.08);
+}
+
+.cs-page .cs-glr-count {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(34, 31, 26, 0.78);
+  color: #fff;
+  font-family: var(--cs-sans);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* Stacked-squares glyph, drawn rather than a unicode gamble. */
+.cs-page .cs-glr-count::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 2px;
+  box-shadow: 2px -2px 0 -0.5px rgba(255, 255, 255, 0.55);
+  translate: -1px 1px;
+}
+
 /* Caption is a hover/focus overlay: the grid stays purely visual until a
    tile is pointed at. Touch screens skip it; the lightbox names the item. */
 .cs-page .cs-glr-cap {
@@ -2393,6 +2438,15 @@ html[data-mode='read'] .cs-page .cs-tmodal-section-title {
   padding: 6px 4px;
 }
 
+/* Title + context bar at the top: left-aligned with the image edge, sans
+   throughout (the lightbox reads as UI, not editorial). */
+.cs-page .cs-glight-head {
+  justify-content: flex-start;
+  min-height: 30px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
 .cs-page .cs-glight-count {
   font-family: var(--cs-sans);
   font-size: 12px;
@@ -2406,23 +2460,82 @@ html[data-mode='read'] .cs-page .cs-tmodal-section-title {
   border-radius: 10px;
 }
 
+/* Series cover: the mini overview card the chain pauses on between two
+   groups. Takes the image's slot; a taped sheet centered on the surface. */
+.cs-page .cs-glight-cover {
+  position: relative;
+  min-height: min(52vh, 460px);
+  margin: 8px auto;
+  width: min(560px, 92%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 10px;
+  text-align: left;
+  padding: 36px 40px;
+  background: var(--cs-paper);
+  border: 1px solid var(--cs-line);
+  border-radius: 12px;
+  rotate: -0.5deg;
+  box-shadow: 0 2px 6px rgba(34, 31, 26, 0.08), 0 14px 28px rgba(34, 31, 26, 0.1);
+}
+
+.cs-page .cs-glight-cover-eyebrow {
+  font-family: var(--cs-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cs-magenta);
+}
+
+.cs-page .cs-glight-cover-title {
+  font-family: var(--cs-sans);
+  font-size: clamp(20px, 2.6vw, 26px);
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--cs-ink);
+}
+
+.cs-page .cs-glight-cover-note {
+  font-family: var(--cs-sans);
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--cs-ink-soft);
+  max-width: 400px;
+}
+
+.cs-page .cs-glight-cover-count {
+  margin-top: 6px;
+  font-family: var(--cs-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--cs-ink-faint);
+  border: 1px solid var(--cs-line);
+  border-radius: 999px;
+  padding: 4px 12px;
+}
+
 .cs-page .cs-glight-text {
   min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 2px;
-  text-align: center;
+  text-align: left;
 }
 
 .cs-page .cs-glight-caption {
-  font-family: var(--cs-serif);
-  font-size: 15px;
+  font-family: var(--cs-sans);
+  font-size: 14px;
+  font-weight: 600;
   color: var(--cs-ink);
 }
 
 .cs-page .cs-glight-note {
   font-family: var(--cs-sans);
-  font-size: 12.5px;
+  font-size: 13.5px;
   line-height: 1.5;
   color: var(--cs-ink-soft);
 }
