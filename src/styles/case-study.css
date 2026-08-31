@@ -1827,30 +1827,24 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
 
 .cs-page .cs-tmodal-back {
   display: inline-flex;
-  align-items: baseline;
-  gap: 12px;
-  margin-bottom: 10px;
-  padding: 0;
+  align-items: center;
+  gap: 8px;
+  margin: -6px 0 12px -10px;
+  padding: 7px 14px 7px 10px;
   border: none;
+  border-radius: 999px;
   background: transparent;
   font-family: var(--cs-sans);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--cs-ink-soft);
+  color: var(--cs-ink);
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
 .cs-page .cs-tmodal-back:hover {
+  background: rgba(34, 31, 26, 0.06);
   color: var(--cs-magenta);
-}
-
-.cs-page .cs-tmodal-back-pos {
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  color: var(--cs-ink-faint);
 }
 
 /* Short description under the modal title. Sans for small-size readability. */
@@ -1909,7 +1903,6 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
   font-weight: 600;
 }
 
-/* Grouped rail: a small-caps label above each cluster of items. */
 .cs-page .cs-tmodal-rail-group {
   display: flex;
   flex-direction: column;
@@ -1997,20 +1990,7 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
   border-left-color: rgba(171, 7, 130, 0.22);
 }
 
-.cs-page .cs-tmodal-rail-group + .cs-tmodal-rail-group {
-  margin-top: 20px;
-}
 
-.cs-page .cs-tmodal-rail-label {
-  padding: 0 12px;
-  margin-bottom: 2px;
-  font-family: var(--cs-sans);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--cs-ink-faint);
-}
 
 /* Detail pane: a flex column so a selected parent's title stays pinned
    while only its own sub-item box (below) scrolls. For a leaf/Go-deeper
@@ -2269,16 +2249,7 @@ html[data-mode='read'] .cs-page .cs-tmodal-frame {
     gap: 6px;
   }
 
-  .cs-page .cs-tmodal-rail-group + .cs-tmodal-rail-group {
-    margin-top: 0;
-    margin-left: 14px;
-  }
 
-  .cs-page .cs-tmodal-rail-label {
-    margin-bottom: 0;
-    padding: 0 4px 0 0;
-    white-space: nowrap;
-  }
 }
 
 /* Read mode: the modal title tracks the read serif treatment, and the

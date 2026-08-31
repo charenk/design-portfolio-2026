@@ -43,7 +43,6 @@ interface ThemeItem {
     sections in the modal's anchored list and content pane; a group with no
     title renders its items ungrouped. */
 interface ThemeGroup {
-  title?: string
   items: ThemeItem[]
 }
 
@@ -86,7 +85,6 @@ const THEMES: Theme[] = [
     ],
     groups: [
       {
-        title: 'Most recent',
         items: [
           {
             label: 'Design system at CyberQP',
@@ -149,7 +147,6 @@ const THEMES: Theme[] = [
         ],
       },
       {
-        title: 'Others',
         items: [
           {
             label: 'Hopper Design System',
@@ -192,7 +189,6 @@ const THEMES: Theme[] = [
     ],
     groups: [
       {
-        title: 'Latest',
         items: [
           // TODO(content): Charen will share the CyberQP AI Terminal story in a follow-up prompt.
           // TODO(content): Charen will share the privileged-identity discovery story in a follow-up prompt.
@@ -229,7 +225,6 @@ const THEMES: Theme[] = [
         ],
       },
       {
-        title: 'Others',
         items: [
           {
             label: 'Copilot tenant assessment (Sharegate)',
@@ -390,7 +385,6 @@ const THEMES: Theme[] = [
     ],
     groups: [
       {
-        title: 'Latest',
         items: [
           {
             label: 'CyberQP new platform',
@@ -430,7 +424,6 @@ const THEMES: Theme[] = [
         ],
       },
       {
-        title: 'Previous',
         items: [
           {
             label: 'CyberQP legacy',
@@ -755,10 +748,9 @@ function Deck({ frames }: { frames: DeckFrame[] }) {
 /* Builds the rail's group/item/subItem tree once per theme, assigning each
    leaf a stable slugged anchor id and a running tilt index (so alternating
    tilt continues across items and groups, not just within one). */
-function buildRailGroups(theme: Theme): { title?: string; nodes: RailNode[] }[] {
+function buildRailGroups(theme: Theme): { nodes: RailNode[] }[] {
   let tiltIndex = 0
   return theme.groups.map((group) => ({
-    title: group.title,
     nodes: group.items.map((item): RailNode => {
       if (item.subItems) {
         return {
@@ -1074,10 +1066,7 @@ function ThemeModal({
               className="cs-tmodal-back"
               onClick={onClose}
             >
-              <span aria-hidden="true">← </span>Back
-              <span className="cs-tmodal-back-pos">
-                Theme {theme.num} / 05
-              </span>
+              <span aria-hidden="true">←</span> Back
             </button>
             <h2 id={`${theme.id}-modal-title`} className="cs-tmodal-title">
               {theme.title}
@@ -1098,10 +1087,7 @@ function ThemeModal({
           {!fullDeck && (
           <nav ref={railRef} className="cs-tmodal-rail" aria-label="Sections in this theme">
             {railGroups.map((group, gi) => (
-              <div key={group.title ?? gi} className="cs-tmodal-rail-group">
-                {group.title && (
-                  <p className="cs-tmodal-rail-label">{group.title}</p>
-                )}
+              <div key={gi} className="cs-tmodal-rail-group">
                 {group.nodes.map((node) =>
                   node.children ? (
                     <div key={node.label} className="cs-tmodal-rail-parent">
