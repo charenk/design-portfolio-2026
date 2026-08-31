@@ -108,29 +108,33 @@ const THEMES: Theme[] = [
                 ],
               },
               {
-                label: 'Adding TableCard component',
-                desc: 'One enclosing surface for tabs, table, and pagination, before and after.',
+                label: 'Work sample 1',
+                desc: 'One enclosing surface for tabs, table, and pagination, from the drift through to the docs the agent reads.',
                 images: [
                   {
                     src: '/bluej/ds-tablecard-1.png',
-                    alt: 'Work sample 1, before TableCard and refined guidelines: the identities screen with tabs, table, and footer pagination marked one, two, and three as three unbounded components',
+                    alt: 'Work sample 1, before TableCard and refined guidelines: the CyberQP identities screen with three problems marked, tabs floating without a visual or semantic bond to the rows below, a table left without surface treatment as the design language moved toward intentional backgrounds and enclosure, and footer pagination controls standing apart, unbound to any container',
                   },
                   {
                     src: '/bluej/ds-tablecard-2.png',
-                    alt: 'After the TableCard definition: the same identities table with tabs, rows, and pagination bound inside one enclosed surface',
+                    alt: 'TableCard, a surface component that bounds a filterable table alongside its tabs, footer, and supporting UI into one enclosed context: after the definition, the same identities table has its three disconnected pieces unified under one intentional surface, with consistent edge treatment and semantic hierarchy',
                   },
                   {
                     src: '/bluej/ds-tablecard-3.png',
-                    alt: 'Behind the scenes working artifact: canvas annotations on pagination height, page-selector state, and border-radius inconsistencies, captioned about iterating with engineering in the loop on high-impact components',
+                    alt: 'Behind the scenes working artifact: annotations over the identities table calling out the height of the pagination section, a height mismatch between the row-count and page-count components, an active page state wrongly borrowing the primary button treatment, and inconsistent border radius and background on the row selector, beside a TablePagination component screenshot, captioned about iteratively building, testing, and annotating alongside engineering so the feedback loop runs live rather than after implementation',
                   },
                   {
                     src: '/bluej/ds-tablecard-4.png',
-                    alt: 'Final output: the new TableCard configuration in Storybook with header slot, untabbed, footer slot, and page pattern variants, added alongside a decision log and product context',
+                    alt: 'Final output: TableCard documented in Storybook with all variants, header and footer slot options, and a decision log so the team can build against it without opening Figma, showing the docs page for the TableCard component with its D-028 decision reference beside the untabbed, header slot, footer slot, and page pattern stories',
+                  },
+                  {
+                    src: '/bluej/ds-tablecard-5.png',
+                    alt: 'Improving the frontend developer agent: component guidelines, the decision log, and product context feed into frontend-developer.md, live files a frontend developer subagent consumes so every component the agent touches inherits the system\u2019s rules automatically',
                   },
                 ],
               },
               {
-                label: 'Addressing frontend drift',
+                label: 'Work sample 2',
                 desc: 'Catching drift in an audit, fixing it before it shipped, then closing the gap in the guidelines.',
                 images: [
                   {
@@ -152,7 +156,7 @@ const THEMES: Theme[] = [
                 ],
               },
               {
-                label: 'Simplifying organization list',
+                label: 'Work sample 3',
                 desc: 'Enhancing the menu list item component so organization sync reads on both sides.',
                 images: [
                   {
@@ -795,11 +799,50 @@ function Deck({ frames }: { frames: DeckFrame[] }) {
   )
 }
 
+function itemSlot(item: ThemeItem): ThemeSlot {
+  return {
+    label: item.label,
+    desc: item.desc ?? '',
+    wide: item.wide,
+    images: item.images,
+  }
+}
+
+/* A theme whose items are ALL leaves reads as one continuous set of samples
+   rather than separate stories, so it collapses into a single headless
+   parent and its items become that parent's children. That puts them in ONE
+   deck the reader can scroll end to end, with the rail tracking position.
+   Left as separate leaves they'd each be their own deck, and a leaf holding
+   a single slide makes a pane that cannot scroll at all. */
+function isFlatLeafTheme(theme: Theme): boolean {
+  const items = theme.groups.flatMap((group) => group.items)
+  return items.length > 1 && items.every((item) => !item.subItems)
+}
+
 /* Builds the rail's group/item/subItem tree once per theme, assigning each
    leaf a stable slugged anchor id and a running tilt index (so alternating
    tilt continues across items and groups, not just within one). */
 function buildRailGroups(theme: Theme): { nodes: RailNode[] }[] {
   let tiltIndex = 0
+  if (isFlatLeafTheme(theme)) {
+    return [
+      {
+        nodes: [
+          {
+            label: theme.title,
+            children: theme.groups
+              .flatMap((group) => group.items)
+              .map((item) => ({
+                id: `${theme.id}-${slug(item.label)}`,
+                label: item.label,
+                slot: itemSlot(item),
+                tilt: tiltIndex++,
+              })),
+          },
+        ],
+      },
+    ]
+  }
   return theme.groups.map((group) => ({
     nodes: group.items.map((item): RailNode => {
       if (item.subItems) {
@@ -818,12 +861,7 @@ function buildRailGroups(theme: Theme): { nodes: RailNode[] }[] {
         leaf: {
           id: `${theme.id}-${slug(item.label)}`,
           label: item.label,
-          slot: {
-            label: item.label,
-            desc: item.desc ?? '',
-            wide: item.wide,
-            images: item.images,
-          },
+          slot: itemSlot(item),
           tilt: tiltIndex++,
         },
       }
@@ -928,7 +966,11 @@ function ThemeModal({
     requestAnimationFrame(() => {
       scrollRef.current
         ?.querySelector<HTMLElement>('.cs-tmodal-detail-title')
-        ?.focus()
+        /* preventScroll is load-bearing: on a real click, focus sits on the
+           rail button, so focusing the deck box is a genuine focus change and
+           Chrome's scroll-on-focus would cancel the deck's smooth scroll the
+           frame after it starts. */
+        ?.focus({ preventScroll: true })
     })
   }
 
@@ -1037,7 +1079,7 @@ function ThemeModal({
      component: per-modal cleanup would race when hopping prev/next themes,
      since the exiting modal unmounts after the next one mounts. */
   useEffect(() => {
-    closeRef.current?.focus()
+    closeRef.current?.focus({ preventScroll: true })
 
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
