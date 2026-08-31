@@ -79,7 +79,9 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   // /refinery and /figma-buddy are deliberately absent; both are public
-  // experiments. Everything else that isn't the home page is gated, including
-  // the company-targeted pages (/workato, /bluej-custom-pitch).
-  matcher: ['/', '/portfolio', '/workato', '/bluej-custom-pitch', '/ai-pam', '/browser-extension', '/copilot', '/blackberry', '/admin/:path*'],
+  // experiments. /bluej-custom-pitch is also ungated: it is unlisted and
+  // noindex, so the URL itself is the gate, and the company reviewing it
+  // should hit zero friction. Everything else that isn't the home page is
+  // gated, including /workato.
+  matcher: ['/', '/portfolio', '/workato', '/ai-pam', '/browser-extension', '/copilot', '/blackberry', '/admin/:path*'],
 }
