@@ -236,37 +236,96 @@ const THEMES: Theme[] = [
     framing: [
       'A 0-to-1 case study: from fuzzy problem to shipped product.',
     ],
+    cardThumbs: [
+      '/bluej/thumbs/pi-ship-discovery.jpg',
+    ],
     groups: [
       {
         items: [
-          // TODO(content): Charen will share the privileged-identity discovery story in a follow-up prompt.
           {
             label: 'Discovery of privileged identities',
             subItems: [
               {
-                label: 'Context',
-                desc: 'Placeholder: context for privileged-identity discovery. Content coming.',
+                label: 'Problem',
+                desc: 'Privileged identities are the primary attack path, and partners had no native way to build that inventory.',
+                images: [
+                  {
+                    src: '/bluej/pi-problem.png',
+                    alt: 'Problem: privileged identities are the primary attack path in MSP environments; governing who has access to what starts with knowing every privileged identity across every source, and partners had no native way to build that inventory. Why now: partners were discovering privileged identities through workarounds, exporting from the events telemetry page into external tools, and continuous discovery sessions showed partners begin org and vault setup right after discovery, making discovery the front door to remediation rather than a standalone feature',
+                  },
+                ],
               },
               {
-                label: 'Why now',
-                desc: 'Placeholder: why this problem mattered at this moment. Content coming.',
-              },
-              {
-                label: 'Working with SMEs',
-                desc: 'Placeholder: collaborating with subject-matter experts. Content coming.',
+                label: 'Research and framing',
+                desc: 'Discovery sessions, SME privilege-model mapping, and partner advisory feedback shaped the direction.',
+                images: [
+                  {
+                    src: '/bluej/pi-research.png',
+                    alt: 'Three inputs shaped the direction: continuous discovery sessions and partner calls surfaced the export workaround and the pattern of setup beginning right after discovery; privilege models were mapped with internal security SMEs across Entra ID, Active Directory, Google, and local sources, since each source names roles and risk differently; and early design vision, drawer, and remediation flows were tested against partner advisory feedback, each iteration narrowing what a technician needs before acting',
+                  },
+                ],
               },
               {
                 label: 'Design explorations',
-                desc: 'Placeholder: design exploration artifacts. Content coming.',
-                wide: true,
+                desc: 'One drawer contract, pressure-tested across human, workspace, and cloud identities.',
+                images: [
+                  {
+                    src: '/bluej/pi-explorations.png',
+                    alt: 'Design exploration canvas for the identity drawer: the discovered-identities screen with an open drawer and its action menu, beside variant boards for Microsoft Cloud Entra ID human identities and Google Cloud workspace identities, annotated that Entra ID and Google model privilege differently, so one drawer contract had to hold its shape while the content flexed, pressure-tested across human, workspace, and cloud identities',
+                  },
+                ],
               },
               {
-                label: 'Drawer component definition',
-                desc: 'Placeholder: defining the drawer component. Content coming.',
+                label: 'What shipped',
+                desc: 'The discovery module, remediation flows with high-trust communication, and a drawer shared with the vault.',
+                images: [
+                  {
+                    src: '/bluej/pi-ship-discovery.png',
+                    alt: 'What shipped, the discovery module: discovered identities tabbed by privileged human, privileged non-human, standard, and standard non-human, filtered per organization beside the zero-knowledge vault folder tree, with the identity drawer open on an account showing overview, roles, groups, and activity plus move to folder, mark as reviewed, and action controls',
+                  },
+                  {
+                    src: '/bluej/pi-ship-remediation.png',
+                    alt: 'What shipped, remediation action flows with high-trust communication: archive identity with an explicit opt-in to permanently delete from source, disable account spelling out that sign-in is blocked, sessions are revoked, and the record is preserved, remove from security groups warning that memberships are removed in the source system with all-groups or individual selection, and move to folder with root, global, and local options plus a no-manageable-password state',
+                  },
+                  {
+                    src: '/bluej/pi-ship-drawer.png',
+                    alt: 'What shipped, scalable drawer and details presentation between discovery and vault modules: the same identity drawer contract rendered for a discovered identity with move to folder and mark as reviewed, and for a vaulted privileged account with change password, share, and a zero-knowledge vault card exposing copyable account name, password, and email',
+                  },
+                ],
               },
               {
-                label: 'Outcome',
-                desc: 'Placeholder: how it landed. Content coming.',
+                label: 'Component standardization',
+                desc: 'Behind the scenes: specs to shipped component, from label-value pairs to drawer variants in Storybook.',
+                images: [
+                  {
+                    src: '/bluej/pi-spec-1.png',
+                    alt: 'Component standardization, part one: specs defining label and value pairs with regular text, status dot, and badge treatments, ON and OFF badges, two-line labels, and subsection titles; a copying pattern where technical values show a subtle copy icon with hover and clipboard feedback; and display rules for roles, security groups, and activity, with one roles tab per identity, accordion subsections per role type, risk badges with tooltips, eligible and active states, via-security-group attribution, and expiry lines',
+                  },
+                  {
+                    src: '/bluej/pi-spec-2.png',
+                    alt: 'Component standardization, part two: the drawer top section split into classifier and actions zones with tabs below, a flexible subtitle slot for text, badges, and icons, four action-row variants from a single dropdown to two buttons plus a more menu with consistent outlined styling rules, and the shipped SideDrawer in Storybook with docs and stories for closed, open, wide tier, and tabs-with-actions states',
+                  },
+                ],
+              },
+              {
+                label: 'Reporting',
+                desc: 'The discovery-to-remediation funnel, measured.',
+                images: [
+                  {
+                    src: '/bluej/pi-ship-reporting.png',
+                    alt: 'What shipped, the reporting experience showcasing the discovery-to-remediation funnel: identities discovered, remediated, and vaulted, identity composition across privileged and standard, human and non-human, identities by source and by highest privilege, a remediation-by-source matrix of disabled, deleted, privilege removed, and password rotated, plus an AI agents overview with agents discovered, by privilege, and remediated by action',
+                  },
+                ],
+              },
+              {
+                label: 'Learnings',
+                desc: 'Discovery traction closed deals; remediation sits behind licensing and is gradually picking up.',
+                images: [
+                  {
+                    src: '/bluej/pi-learnings.png',
+                    alt: 'Outcome, learnings and next step: discovery value got high traction and helped close deals and acquire new logos, with a strategy of offering discovery as a free trial while remediation actions are feature-gated under licensing, leading to higher discovery adoption while paywalled remediation gradually picks up; next, AI agents are discovered as non-human identities today and remediation patterns for agents are the next design problem',
+                  },
+                ],
               },
             ],
           },
@@ -516,6 +575,9 @@ const THEMES: Theme[] = [
 /* ------------------------------------------------------------------------- */
 
 interface GalleryItem {
+  /** Anchor id: the lightbox mirrors the open group into the URL hash as
+      #g-<id>, so any group (and the series position) is shareable. */
+  id: string
   /** 640w grid thumb in /public/bluej/thumbs (the group's first image). */
   thumb: string
   caption: string
@@ -536,6 +598,7 @@ const GALLERY_PREVIEW_COUNT = 4
 
 const GALLERY: GalleryItem[] = [
   {
+    id: 'cyberqp-mobile-app',
     thumb: '/bluej/thumbs/qp-mobile-1.jpg',
     series: 'cyberqp',
     caption: 'CyberQP mobile app',
@@ -548,6 +611,7 @@ const GALLERY: GalleryItem[] = [
     ],
   },
   {
+    id: 'cyberqp-browser-extension',
     thumb: '/bluej/thumbs/qp-ext-1.jpg',
     series: 'cyberqp',
     caption: 'CyberQP browser extension',
@@ -560,6 +624,7 @@ const GALLERY: GalleryItem[] = [
     ],
   },
   {
+    id: 'dtrax-contract-review',
     thumb: '/bluej/thumbs/dtrax-2.jpg',
     caption: 'dTrax AI contract review (Deloitte)',
     note: 'NLP-assisted due diligence for legal contracts: topic models applied at scale, with reviewer actions feeding back into training.',
@@ -575,6 +640,7 @@ const GALLERY: GalleryItem[] = [
     ],
   },
   {
+    id: 'blackberry',
     thumb: '/bluej/thumbs/bb-3.jpg',
     caption: 'BlackBerry: Gateway and malware investigation',
     note: 'Secure cloud access clients for desktop, and the Optics console where analysts walk an attack timeline.',
@@ -594,6 +660,7 @@ const GALLERY: GalleryItem[] = [
     ],
   },
   {
+    id: 'cyberqp-connectors',
     thumb: '/bluej/thumbs/qp-connectors-1.jpg',
     series: 'cyberqp',
     caption: 'CyberQP connectors',
@@ -610,6 +677,7 @@ const GALLERY: GalleryItem[] = [
     ],
   },
   {
+    id: 'cyberqp-licensing',
     thumb: '/bluej/thumbs/qp-billing-1.jpg',
     series: 'cyberqp',
     caption: 'License and billing',
@@ -626,6 +694,7 @@ const GALLERY: GalleryItem[] = [
     ],
   },
   {
+    id: 'cyberqp-user-management',
     thumb: '/bluej/thumbs/qp-users-1.jpg',
     series: 'cyberqp',
     caption: 'User and access management',
@@ -642,6 +711,7 @@ const GALLERY: GalleryItem[] = [
     ],
   },
   {
+    id: 'cyberqp-event-logs',
     thumb: '/bluej/thumbs/qp-events-1.jpg',
     series: 'cyberqp',
     caption: 'Event logs',
@@ -768,15 +838,34 @@ function GalleryLightbox({
         exit={{ opacity: 0, y: 10, scale: 0.99 }}
         transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
       >
-        {/* Title and context lead from the top; the cover card already
-            states both, so it keeps the header empty. */}
+        {/* Title and context lead from the top, with the slide counter
+            seated beside the title (matching the theme modal's back-led
+            header). The cover card states its own title, so there the
+            header carries only Back and the series position. */}
         <header className="cs-glight-bar cs-glight-head">
-          {!onCover && (
-            <span className="cs-glight-text">
-              <p className="cs-glight-caption">{item.caption}</p>
-              {item.note && <p className="cs-glight-note">{item.note}</p>}
+          <button
+            ref={closeRef}
+            type="button"
+            className="cs-tmodal-back cs-glight-back"
+            onClick={onClose}
+          >
+            <span aria-hidden="true">←</span> Back
+          </button>
+          <span className="cs-glight-text">
+            <span className="cs-glight-titlerow">
+              {!onCover && <p className="cs-glight-caption">{item.caption}</p>}
+              <span className="cs-glight-count">
+                {onCover
+                  ? seriesPos >= 0
+                    ? `Project ${seriesPos + 1} of ${seriesItems.length}`
+                    : ''
+                  : `${image + 1} / ${item.images.length}`}
+              </span>
             </span>
-          )}
+            {!onCover && item.note && (
+              <p className="cs-glight-note">{item.note}</p>
+            )}
+          </span>
         </header>
         {slide ? (
           /* eslint-disable-next-line @next/next/no-img-element */
@@ -805,13 +894,6 @@ function GalleryLightbox({
             <span aria-hidden="true">← </span>
             {prevLabel}
           </button>
-          <span className="cs-glight-count">
-            {onCover
-              ? seriesPos >= 0
-                ? `Project ${seriesPos + 1} of ${seriesItems.length}`
-                : ''
-              : `${image + 1} / ${item.images.length}`}
-          </span>
           <button
             type="button"
             className="cs-glight-step"
@@ -1408,6 +1490,12 @@ function ThemeModal({
                 )}
               </div>
             ))}
+            {/* Expectation-setter: these decks are deliberately high level.
+                Lives under the rail so it reads once, not per slide. */}
+            <p className="cs-tmodal-rail-note">
+              Decks offer a high-level view of the project. Rationales,
+              tradeoffs, and process, happy to discuss in detail over a chat.
+            </p>
           </nav>
           )}
 
@@ -1456,17 +1544,33 @@ export default function BlueJPage() {
   const [openId, setOpenId] = useState<string | null>(null)
   const openTheme = THEMES.find((t) => t.id === openId) ?? null
 
-  /* The URL hash mirrors the open modal so theme links stay shareable:
-     /bluej-custom-pitch#design-systems opens that theme directly. */
-  useEffect(() => {
-    const fromHash = window.location.hash.slice(1)
-    if (THEMES.some((t) => t.id === fromHash)) setOpenId(fromHash)
-  }, [])
-
   /* One body scroll lock for the whole modal experience, held across
      prev/next theme hops. */
   const [gallerySel, setGallerySel] = useState<{ group: number; image: number } | null>(null)
   const [galleryExpanded, setGalleryExpanded] = useState(false)
+
+  /* The URL hash mirrors whichever overlay is open, so both stay shareable:
+     #design-systems opens that theme, #g-cyberqp-connectors opens that
+     gallery group (g- prefixed to keep the namespaces apart). */
+  useEffect(() => {
+    const fromHash = window.location.hash.slice(1)
+    if (THEMES.some((t) => t.id === fromHash)) {
+      setOpenId(fromHash)
+      return
+    }
+    if (fromHash.startsWith('g-')) {
+      const group = GALLERY.findIndex((g) => g.id === fromHash.slice(2))
+      if (group !== -1) {
+        if (group >= GALLERY_PREVIEW_COUNT) setGalleryExpanded(true)
+        setGallerySel({ group, image: 0 })
+      }
+    }
+  }, [])
+
+  const openGallery = useCallback((sel: { group: number; image: number }) => {
+    setGallerySel(sel)
+    window.history.replaceState(null, '', `#g-${GALLERY[sel.group].id}`)
+  }, [])
 
   const modalOpen = openId !== null || gallerySel !== null
   useEffect(() => {
@@ -1584,7 +1688,7 @@ export default function BlueJPage() {
               type="button"
               className={`cs-glr-tile${item.images.length > 1 ? ' is-stack' : ''}`}
               data-gtile={i}
-              onClick={() => setGallerySel({ group: i, image: 0 })}
+              onClick={() => openGallery({ group: i, image: 0 })}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={item.thumb} alt={item.caption} loading="lazy" />
@@ -1619,7 +1723,7 @@ export default function BlueJPage() {
           <GalleryLightbox
             group={gallerySel.group}
             image={gallerySel.image}
-            onNavigate={setGallerySel}
+            onNavigate={openGallery}
             onClose={() => {
               /* The series chain may have walked past the preview row;
                  expand so the tile focus returns to actually exists. */
@@ -1627,6 +1731,11 @@ export default function BlueJPage() {
                 setGalleryExpanded(true)
               }
               setGallerySel(null)
+              window.history.replaceState(
+                null,
+                '',
+                window.location.pathname + window.location.search
+              )
               requestAnimationFrame(() => {
                 document
                   .querySelector<HTMLElement>(`[data-gtile="${gallerySel.group}"]`)
