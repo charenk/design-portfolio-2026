@@ -283,6 +283,16 @@ const THEMES: Theme[] = [
                 ],
               },
               {
+                label: 'Evolution of experience',
+                desc: 'What the proof of concept did not cover, and what design and product added.',
+                images: [
+                  {
+                    src: '/bluej/t2-term-6-evolution.png',
+                    alt: 'Evolution of the experience: the terminal beside a comparison of the proof of concept against the design and product evolution, which added AI onboarding, an intuitive input interaction model that removes the need to remember trigger keys, and dynamic starter prompts',
+                  },
+                ],
+              },
+              {
                 label: 'Interaction model',
                 desc: 'The prompt composition loop: what the input teaches before anything is sent.',
                 images: [
@@ -303,16 +313,6 @@ const THEMES: Theme[] = [
                   {
                     src: '/bluej/t2-term-4-usecases.png',
                     alt: 'Behind the scenes: how I prepare use-case documents, showing a dashboard and reporting compound-prompts table for the AI terminal that pairs each module and intent with the user prompt and the text or table output it should return',
-                  },
-                ],
-              },
-              {
-                label: 'Evolution of experience',
-                desc: 'What the proof of concept did not cover, and what design and product added.',
-                images: [
-                  {
-                    src: '/bluej/t2-term-6-evolution.png',
-                    alt: 'Evolution of the experience: the terminal beside a comparison of the proof of concept against the design and product evolution, which added AI onboarding, an intuitive input interaction model that removes the need to remember trigger keys, and dynamic starter prompts',
                   },
                 ],
               },
