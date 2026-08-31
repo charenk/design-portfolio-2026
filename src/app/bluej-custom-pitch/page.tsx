@@ -328,7 +328,6 @@ const THEMES: Theme[] = [
     id: 'code-first',
     num: '04',
     title: 'Code-first design',
-    fullDeck: true,
     promise:
       'Agentic design setup, skills and process.',
     framing: [
@@ -339,7 +338,8 @@ const THEMES: Theme[] = [
     ],
     groups: [{ items: [
       {
-        label: 'Overview and setup',
+        label: 'Overview: Contribution graph',
+        desc: 'A year of shipping, split between personal explorations and production work.',
         images: [
           {
             src: '/bluej/cf-overview-1.png',
@@ -348,12 +348,19 @@ const THEMES: Theme[] = [
         ],
       },
       {
-        label: 'Process',
+        label: 'Agentic design process',
+        desc: 'Intake, generate, review, hand off: the gates I keep and the ones I let the agent run.',
         images: [
           {
             src: '/bluej/cf-process-1.png',
             alt: 'The agentic design process: an intake gate naming the need and the failure signal from product priorities, unmet needs, Slack, Pendo, and telemetry, then the agent generates volume using org-level and project skills in design mode, then a review gate judging with intent, handing off to engineering and shipping, with customers, subject-matter experts, and signals feeding revisions before ship',
           },
+        ],
+      },
+      {
+        label: 'Setup',
+        desc: 'The day-to-day cycle: one command to a design branch, a sandbox, and a PR that ships.',
+        images: [
           {
             src: '/bluej/cf-process-2.png',
             alt: 'How I contribute to the front-end code of the production app: the Panthera UI design workflow documented in WORKFLOW.md, a day-to-day cycle from one start command to a design branch and sandbox, working in the browser on mocked product pages, committing feature files while sandbox files stay local, then opening a PR that merges to main and deploys to QA',
@@ -361,7 +368,8 @@ const THEMES: Theme[] = [
         ],
       },
       {
-        label: 'Custom skills',
+        label: 'Skills',
+        desc: 'Custom skills that let one designer hold several projects at once.',
         images: [
           {
             src: '/bluej/cf-skills-1.png',
