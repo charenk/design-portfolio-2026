@@ -1839,11 +1839,12 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
   font-weight: 600;
   color: var(--cs-ink);
   cursor: pointer;
+  background: rgba(34, 31, 26, 0.05);
   transition: background 0.2s ease, color 0.2s ease;
 }
 
 .cs-page .cs-tmodal-back:hover {
-  background: rgba(34, 31, 26, 0.06);
+  background: rgba(34, 31, 26, 0.11);
   color: var(--cs-magenta);
 }
 
@@ -1880,11 +1881,11 @@ html[data-mode='read'] .site-footer .site-footer-word + .site-footer-word::befor
   border: none;
   border-radius: 8px;
   background: transparent;
-  padding: 9px 10px;
+  padding: 5px 10px;
   text-align: left;
   font-family: var(--cs-sans);
-  font-size: 12.5px;
-  line-height: 1.4;
+  font-size: 12px;
+  line-height: 1.35;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2447,4 +2448,39 @@ html[data-mode='read'] .cs-page .cs-tmodal-section-title {
 .cs-page .cs-glight-step:disabled {
   opacity: 0.35;
   cursor: default;
+}
+
+/* Drawn underline: sweeps in once on load so the theme count registers
+   before the eye reaches the grid. Reduced motion gets the line, not the
+   sweep. */
+.cs-page .cs-underline-draw {
+  position: relative;
+  white-space: nowrap;
+}
+
+.cs-page .cs-underline-draw::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--cs-magenta);
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: cs-underline-draw 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.55s forwards;
+}
+
+@keyframes cs-underline-draw {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-page .cs-underline-draw::after {
+    animation: none;
+    transform: scaleX(1);
+  }
 }
