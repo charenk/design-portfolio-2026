@@ -77,7 +77,7 @@ const THEMES: Theme[] = [
     promise:
       'Turning drifting UI into a system teams actually use.',
     framing: [
-      'A system built and governed at CyberQP with an agentic workflow, and the ShareGate platforms moved onto Workleap\u2019s shared system.',
+      'Governing a system at CyberQP, and ShareGate\u2019s move onto Hopper.',
     ],
     cardThumbs: [
       '/bluej/thumbs/ds-intro-1.jpg',
@@ -188,7 +188,7 @@ const THEMES: Theme[] = [
     promise:
       'From fuzzy problem to shipped product.',
     framing: [
-      'Privileged-identity discovery at CyberQP, a Copilot readiness assessment at ShareGate, and security attack visualization at BlackBerry, each led alongside product and engineering.',
+      'Privileged-identity discovery, a Copilot readiness assessment, and attack visualization.',
     ],
     groups: [
       {
@@ -252,7 +252,7 @@ const THEMES: Theme[] = [
     promise:
       'AI that experts can trust with real work.',
     framing: [
-      'The CyberQP AI terminal beyond its proof of concept: the prompt composition model behind the command bar, and the components I own for AI and user interaction.',
+      'The AI terminal past its proof of concept, and its interaction model.',
     ],
     cardThumbs: [
       '/bluej/thumbs/t2-term-1-overview.jpg',
@@ -337,7 +337,7 @@ const THEMES: Theme[] = [
     promise:
       'Agentic design setup, skills and process.',
     framing: [
-      'From handing off Figma files to shipping front-end code in production, and the setup, skills, and process that made it repeatable.',
+      'From Figma handoffs to shipping front-end code in production.',
     ],
     cardThumbs: [
       '/bluej/thumbs/cf-skills-1.jpg',
@@ -383,7 +383,7 @@ const THEMES: Theme[] = [
     promise:
       'Getting features discovered and used after launch.',
     framing: [
-      'Moving a sales-led product toward product-led growth: onboarding, activation, and the telemetry to tell whether it worked.',
+      'Moving a sales-led product toward product-led growth, and measuring it.',
     ],
     cardThumbs: [
       '/bluej/thumbs/ga-new-context.jpg',
@@ -569,15 +569,6 @@ function GalleryLightbox({
           <span className="cs-glight-count">
             {index + 1} / {GALLERY.length}
           </span>
-          <button
-            ref={closeRef}
-            type="button"
-            className="cs-tmodal-close"
-            aria-label="Close"
-            onClick={onClose}
-          >
-            ×
-          </button>
         </header>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img key={item.src} src={item.src} alt={item.caption} className="cs-glight-img" />
@@ -808,11 +799,9 @@ function buildRailGroups(theme: Theme): { title?: string; nodes: RailNode[] }[] 
 function ThemeModal({
   theme,
   onClose,
-  onNavigate,
 }: {
   theme: Theme
   onClose: () => void
-  onNavigate: (id: string) => void
 }) {
   const panelRef = useRef<HTMLDivElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -996,10 +985,6 @@ function ThemeModal({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scrollTick])
 
-  const themeIndex = THEMES.findIndex((t) => t.id === theme.id)
-  const prevTheme = THEMES[themeIndex - 1] ?? null
-  const nextTheme = THEMES[themeIndex + 1] ?? null
-
   /* Escape closes; focus starts on the close button and Tab stays inside
      the panel (a light focus trap). The body scroll lock lives in the page
      component: per-modal cleanup would race when hopping prev/next themes,
@@ -1081,7 +1066,19 @@ function ThemeModal({
 
         <header className="cs-tmodal-header">
           <div>
-            <p className="cs-eyebrow">Theme {theme.num} / 05</p>
+            {/* Back, not close: this reads as a drill-down from the theme
+                grid, so one exit labelled for where it returns to. */}
+            <button
+              ref={closeRef}
+              type="button"
+              className="cs-tmodal-back"
+              onClick={onClose}
+            >
+              <span aria-hidden="true">← </span>Back
+              <span className="cs-tmodal-back-pos">
+                Theme {theme.num} / 05
+              </span>
+            </button>
             <h2 id={`${theme.id}-modal-title`} className="cs-tmodal-title">
               {theme.title}
             </h2>
@@ -1091,15 +1088,6 @@ function ThemeModal({
               ))}
             </div>
           </div>
-          <button
-            ref={closeRef}
-            type="button"
-            className="cs-tmodal-close"
-            aria-label="Close"
-            onClick={onClose}
-          >
-            ×
-          </button>
         </header>
 
         {/* Two panes: anchored list on the left, detail on the right. Clicking
@@ -1169,22 +1157,16 @@ function ThemeModal({
             ) : (
               selectedEntry && (
               <>
-                {/* One line above the deck: just the parent. The rail's
-                    highlight is the single "where am I" indicator (it
-                    tracks per-slide via the scrollspy), and each slide
-                    carries its own baked-in title, so naming the sub-item
-                    here again would state it in three places. */}
-                <h3
-                  className={`cs-tmodal-crumb cs-tmodal-detail-title${deckScrolled ? ' is-scrolled' : ''}`}
-                  tabIndex={-1}
-                >
-                  <span className="cs-tmodal-crumb-parent">
-                    {selectedEntry.node.label}
-                  </span>
-                </h3>
+                {/* No title above the deck: the rail already highlights this
+                    item, and each slide carries its own baked-in title, so
+                    a heading here would state it a third time. The scroller
+                    takes over as focus target and carries the scrolled
+                    shadow that the heading used to. */}
                 <div
                   ref={parentScrollRef}
-                  className="cs-tmodal-parent-scroll"
+                  className={`cs-tmodal-parent-scroll cs-tmodal-detail-title${deckScrolled ? ' is-scrolled' : ''}`}
+                  tabIndex={-1}
+                  aria-label={selectedEntry.node.label}
                   data-lenis-prevent
                   onScroll={handleParentScroll}
                 >
@@ -1196,40 +1178,6 @@ function ThemeModal({
           </div>
         </div>
 
-        <footer className="cs-tmodal-footer">
-          {prevTheme ? (
-            <button
-              type="button"
-              className="cs-tmodal-step cs-tmodal-step-prev"
-              onClick={() => onNavigate(prevTheme.id)}
-            >
-              <span className="cs-tmodal-step-label">
-                <span aria-hidden="true">← </span>Previous
-              </span>
-              <span className="cs-tmodal-step-title">
-                {prevTheme.num} {prevTheme.title}
-              </span>
-            </button>
-          ) : (
-            <span />
-          )}
-          {nextTheme ? (
-            <button
-              type="button"
-              className="cs-tmodal-step cs-tmodal-step-next"
-              onClick={() => onNavigate(nextTheme.id)}
-            >
-              <span className="cs-tmodal-step-label">
-                Next<span aria-hidden="true"> →</span>
-              </span>
-              <span className="cs-tmodal-step-title">
-                {nextTheme.num} {nextTheme.title}
-              </span>
-            </button>
-          ) : (
-            <span />
-          )}
-        </footer>
       </motion.div>
     </motion.div>
   )
@@ -1344,7 +1292,6 @@ export default function BlueJPage() {
             key={openTheme.id}
             theme={openTheme}
             onClose={closeModal}
-            onNavigate={openModal}
           />
         )}
       </AnimatePresence>
