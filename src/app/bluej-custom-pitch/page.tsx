@@ -1291,13 +1291,19 @@ export default function BlueJPage() {
          routing off to the rest of the portfolio. */
       hideBottomNav
     >
-      {/* Intro note: the hello lives in the page title; this stays short. */}
+      {/* Intro note: the hello lives in the page title; this stays short.
+          "five curated themes" gets a drawn underline so the count registers
+          before the grid does. */}
       <section className="mb-[64px]">
         <div className="cs-body max-w-[760px]">
           <p>
-            Here are curated themes presenting my work across the product and
-            design function. Looking forward to going deeper on any of these
-            when we meet virtually. Thanks for looking.
+            Here are{' '}
+            <span className="cs-underline-draw">five curated themes</span>{' '}
+            presenting my work across product, design, and engineering.
+          </p>
+          <p>
+            Looking forward to a deep dive into any of these over a chat.
+            Thank you for looking.
           </p>
         </div>
       </section>

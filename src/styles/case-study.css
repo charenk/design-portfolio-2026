@@ -2449,3 +2449,38 @@ html[data-mode='read'] .cs-page .cs-tmodal-section-title {
   opacity: 0.35;
   cursor: default;
 }
+
+/* Drawn underline: sweeps in once on load so the theme count registers
+   before the eye reaches the grid. Reduced motion gets the line, not the
+   sweep. */
+.cs-page .cs-underline-draw {
+  position: relative;
+  white-space: nowrap;
+}
+
+.cs-page .cs-underline-draw::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--cs-magenta);
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: cs-underline-draw 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.55s forwards;
+}
+
+@keyframes cs-underline-draw {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-page .cs-underline-draw::after {
+    animation: none;
+    transform: scaleX(1);
+  }
+}
