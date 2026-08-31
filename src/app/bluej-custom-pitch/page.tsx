@@ -1395,8 +1395,7 @@ export default function BlueJPage() {
       <section className="cs-glr-section">
         <p className="cs-glr-eyebrow">More work</p>
         <p className="cs-glr-lede">
-          Working artifacts and shipped screens beyond the five themes. Tap
-          any tile for the story behind it.
+          A collection of select shipped product experiences.
         </p>
         <div className="cs-glr">
           {(galleryExpanded ? GALLERY : GALLERY.slice(0, GALLERY_PREVIEW_COUNT)).map((item, i) => (
