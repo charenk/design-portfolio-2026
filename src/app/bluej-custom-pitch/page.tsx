@@ -336,9 +336,9 @@ const THEMES: Theme[] = [
     title: 'Code-first design',
     fullDeck: true,
     promise:
-      'Ideas tested as working software, not mockups.',
+      'Agentic design setup, skills and process.',
     framing: [
-      'Overview of setup, process, and custom skills.',
+      'From handing off Figma files to shipping front-end code in production, and the setup, skills, and process that made it repeatable.',
     ],
     cardThumbs: [
       '/bluej/thumbs/cf-skills-1.jpg',
