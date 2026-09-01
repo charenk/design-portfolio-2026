@@ -70,7 +70,7 @@ interface Theme {
 const THEMES: Theme[] = [
   {
     id: 'design-systems',
-    title: 'Design system stuff',
+    title: 'Design systems',
     promise:
       'Turning drifting UI into a system teams actually use.',
     framing: [
@@ -1589,6 +1589,7 @@ function ThemeModal({
 export function PitchPage({
   title,
   themeOrder,
+  themeTitles,
 }: {
   title: string
   /** Theme ids in display order; unlisted themes follow in data order.
@@ -1596,16 +1597,22 @@ export function PitchPage({
       what its audience cares about (Blue J: design systems; generic:
       the privileged-identities case study). */
   themeOrder?: string[]
+  /** Per-route title overrides by theme id, so one route can speak casually
+      ("Design system stuff") while another stays formal. */
+  themeTitles?: Record<string, string>
 }) {
-  const themes = themeOrder
+  const ordered = themeOrder
     ? [...THEMES].sort((a, b) => {
         const ai = themeOrder.indexOf(a.id)
         const bi = themeOrder.indexOf(b.id)
         return (ai === -1 ? themeOrder.length : ai) - (bi === -1 ? themeOrder.length : bi)
       })
     : THEMES
+  const themes = themeTitles
+    ? ordered.map((t) => (themeTitles[t.id] ? { ...t, title: themeTitles[t.id] } : t))
+    : ordered
   const [openId, setOpenId] = useState<string | null>(null)
-  const openTheme = THEMES.find((t) => t.id === openId) ?? null
+  const openTheme = themes.find((t) => t.id === openId) ?? null
 
   /* One body scroll lock for the whole modal experience, held across
      prev/next theme hops. */
@@ -1625,20 +1632,31 @@ export function PitchPage({
 
   /* The URL hash mirrors whichever overlay is open, so both stay shareable:
      #design-systems opens that theme, #g-cyberqp-connectors opens that
-     gallery group (g- prefixed to keep the namespaces apart). */
+     gallery group (g- prefixed to keep the namespaces apart). Applied on
+     load AND on hashchange, so clicking a second deep link with the page
+     already open (a follow-up email, a live screen share) also lands.
+     Internal navigation writes the hash via replaceState, which never
+     fires hashchange, so this can't loop on itself. */
   useEffect(() => {
-    const fromHash = window.location.hash.slice(1)
-    if (THEMES.some((t) => t.id === fromHash)) {
-      setOpenId(fromHash)
-      return
-    }
-    if (fromHash.startsWith('g-')) {
-      const group = GALLERY.findIndex((g) => g.id === fromHash.slice(2))
-      if (group !== -1) {
-        if (group >= GALLERY_PREVIEW_COUNT) setGalleryExpanded(true)
-        setGallerySel({ group, image: 0 })
+    const applyHash = () => {
+      const fromHash = window.location.hash.slice(1)
+      if (THEMES.some((t) => t.id === fromHash)) {
+        setGallerySel(null)
+        setOpenId(fromHash)
+        return
+      }
+      if (fromHash.startsWith('g-')) {
+        const group = GALLERY.findIndex((g) => g.id === fromHash.slice(2))
+        if (group !== -1) {
+          if (group >= GALLERY_PREVIEW_COUNT) setGalleryExpanded(true)
+          setOpenId(null)
+          setGallerySel({ group, image: 0 })
+        }
       }
     }
+    applyHash()
+    window.addEventListener('hashchange', applyHash)
+    return () => window.removeEventListener('hashchange', applyHash)
   }, [])
 
   const openGallery = useCallback((sel: { group: number; image: number }) => {
