@@ -18,6 +18,8 @@ const MEDIUMS = ['application', 'cold', 'intro', 'bio'] as const
 
 const TARGETS = [
   { label: 'Portfolio (default)', path: '/portfolio' },
+  { label: 'Custom deck (generic pitch)', path: '/custom-deck' },
+  { label: 'Blue J pitch', path: '/bluej-custom-pitch' },
   { label: 'Refinery case study', path: '/refinery' },
   { label: 'AI-PAM case study', path: '/ai-pam' },
   { label: 'Browser Extension case study', path: '/browser-extension' },
@@ -101,11 +103,17 @@ export default function LinkBuilderPage() {
 
   // Short URL: just the org slug. Falls back to user override if they want
   // to disambiguate (e.g. "okta-fall" when applying to the same org twice).
-  // The route handler at src/app/[slug]/route.ts handles cookie planting and
-  // UTM injection, then redirects to /.
+  // The route handlers under src/app/[slug]/ handle cookie planting and UTM
+  // injection, then redirect: bare slug lands on /, and when the custom deck
+  // is the chosen target the short URL gains a /custom-deck suffix that
+  // lands straight on the deck.
   const defaultSlug = useMemo(() => (org ? slugify(org) : ''), [org])
   const shortSlug = slugify(slugOverride) || defaultSlug
-  const shortUrl = useMemo(() => (shortSlug ? `${SITE_ORIGIN}/${shortSlug}` : ''), [shortSlug])
+  const shortUrl = useMemo(() => {
+    if (!shortSlug) return ''
+    const suffix = target === '/custom-deck' ? '/custom-deck' : ''
+    return `${SITE_ORIGIN}/${shortSlug}${suffix}`
+  }, [shortSlug, target])
 
   const ledgerRow = useMemo(() => {
     if (!campaign) return ''
@@ -135,7 +143,7 @@ export default function LinkBuilderPage() {
           Application URL builder
         </h1>
         <p className="font-sans text-[14px] text-[#6b6b6b] mb-10 leading-relaxed">
-          Generate a tracked link for an application or recruiter outreach. <strong>Short URLs</strong> are just the org name (e.g. <code className="text-[12px] bg-white px-1 py-0.5 rounded">charen.online/okta</code>) &mdash; they auto-unlock and land visitors on the home page. <strong>Long URLs</strong> encode source, medium, and date for richer attribution, with an optional silent-access token. Both feed UTM data into Google Analytics and LogRocket.
+          Generate a tracked link for an application or recruiter outreach. <strong>Short URLs</strong> are just the org name (e.g. <code className="text-[12px] bg-white px-1 py-0.5 rounded">charen.online/okta</code>) &mdash; they auto-unlock and land visitors on the home page, or straight on the deck when the custom deck is the target (e.g. <code className="text-[12px] bg-white px-1 py-0.5 rounded">charen.online/google/custom-deck</code>). <strong>Long URLs</strong> encode source, medium, and date for richer attribution, with an optional silent-access token. Both feed UTM data into Google Analytics and LogRocket.
         </p>
 
         <div className="flex flex-col gap-5">
