@@ -49,7 +49,6 @@ interface ThemeGroup {
 interface Theme {
   /** Anchor id. Overview cards jump-link to `#<id>`. */
   id: string
-  num: string
   title: string
   /** One-line promise on the overview card. */
   promise: string
@@ -71,8 +70,7 @@ interface Theme {
 const THEMES: Theme[] = [
   {
     id: 'design-systems',
-    num: '01',
-    title: 'Design systems',
+    title: 'Design system stuff',
     promise:
       'Turning drifting UI into a system teams actually use.',
     framing: [
@@ -229,7 +227,6 @@ const THEMES: Theme[] = [
        page. The Copilot tenant assessment and Blackberry attack matrix it
        used to bundle moved out (Blackberry lives in the gallery). */
     id: 'privileged-identities',
-    num: '02',
     title: 'Discovery of privileged identities',
     promise:
       'Enabling admins to discover and remediate identity risks.',
@@ -335,7 +332,6 @@ const THEMES: Theme[] = [
   },
   {
     id: 'ai-native',
-    num: '03',
     title: 'Designing for AI agents',
     promise:
       'AI that experts can trust with real work.',
@@ -419,7 +415,6 @@ const THEMES: Theme[] = [
   },
   {
     id: 'code-first',
-    num: '04',
     title: 'Code-first design',
     promise:
       'Agentic design setup, skills and process.',
@@ -474,7 +469,6 @@ const THEMES: Theme[] = [
   },
   {
     id: 'growth',
-    num: '05',
     title: 'Growth and activation',
     promise:
       'Getting features discovered and used after launch.',
@@ -1592,7 +1586,24 @@ function ThemeModal({
  * improvements land once; each route is a thin wrapper passing its own
  * greeting (/bluej-custom-pitch, /custom-deck).
  */
-export function PitchPage({ title }: { title: string }) {
+export function PitchPage({
+  title,
+  themeOrder,
+}: {
+  title: string
+  /** Theme ids in display order; unlisted themes follow in data order.
+      Card numbers are computed from position, so each route can lead with
+      what its audience cares about (Blue J: design systems; generic:
+      the privileged-identities case study). */
+  themeOrder?: string[]
+}) {
+  const themes = themeOrder
+    ? [...THEMES].sort((a, b) => {
+        const ai = themeOrder.indexOf(a.id)
+        const bi = themeOrder.indexOf(b.id)
+        return (ai === -1 ? themeOrder.length : ai) - (bi === -1 ? themeOrder.length : bi)
+      })
+    : THEMES
   const [openId, setOpenId] = useState<string | null>(null)
   const openTheme = THEMES.find((t) => t.id === openId) ?? null
 
@@ -1700,7 +1711,7 @@ export function PitchPage({ title }: { title: string }) {
       {/* Overview grid: five taped cards, each opening its theme as a modal.
           Design systems leads and takes the widest card. */}
       <nav className="cs-tgrid mb-[24px]" aria-label="Themes on this page">
-        {THEMES.map((theme, i) => (
+        {themes.map((theme, i) => (
           <button
             key={theme.id}
             type="button"
@@ -1709,7 +1720,7 @@ export function PitchPage({ title }: { title: string }) {
             className={`cs-tcard${i === 0 ? ' cs-tcard-featured' : ''}`}
           >
             <span className="cs-tape" aria-hidden />
-            <p className="cs-tcard-num">{theme.num}</p>
+            <p className="cs-tcard-num">{String(i + 1).padStart(2, '0')}</p>
             <h3 className="cs-tcard-title">{theme.title}</h3>
             <p className="cs-tcard-promise">{theme.promise}</p>
             {theme.cardThumbs && (
