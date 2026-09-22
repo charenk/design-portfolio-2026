@@ -46,4 +46,9 @@ next-env.d.ts
 /primer.md
 /CONTENT_PROMPT.md
 /CONTENT_LOG.md
+# Slide-text proofread notes. Local-only on purpose: the file quotes
+# internal working artifacts, names former colleagues visible in
+# screenshots, and flags a possible client-confidentiality issue. None
+# of that belongs in a public repo.
+/SLIDE-PROOFREAD.md
 /assets/
