@@ -73,7 +73,6 @@ export function middleware(request: NextRequest) {
   // case studies for that visitor) while plain URLs stay zero-friction.
   if (
     pathname === '/' ||
-    pathname === '/bluej-custom-pitch' ||
     pathname === '/custom-deck'
   ) {
     return NextResponse.next()
@@ -96,10 +95,11 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   // /refinery and /figma-buddy are deliberately absent; both are public
-  // experiments. /bluej-custom-pitch and /custom-deck ARE matched but pass
-  // through ungated (see the open-paths branch above): unlisted + noindex,
-  // the URL is the gate, and being in the matcher lets link-builder token
-  // URLs plant their cookies. Everything else that isn't the home page is
-  // gated, including /workato.
-  matcher: ['/', '/portfolio', '/workato', '/bluej-custom-pitch', '/custom-deck', '/ai-pam', '/browser-extension', '/copilot', '/blackberry', '/admin/:path*'],
+  // experiments. /custom-deck IS matched but passes through ungated (see
+  // the open-paths branch above): unlisted + noindex, the URL is the gate,
+  // and being in the matcher lets link-builder token URLs plant their
+  // cookies. Everything else that isn't the home page is gated, including
+  // /workato. /bluej-custom-pitch is gone; next.config redirects it to
+  // /custom-deck before middleware runs, query string intact.
+  matcher: ['/', '/portfolio', '/workato', '/custom-deck', '/ai-pam', '/browser-extension', '/copilot', '/blackberry', '/admin/:path*'],
 }

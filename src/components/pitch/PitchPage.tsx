@@ -74,7 +74,7 @@ const THEMES: Theme[] = [
     promise:
       'Turning drifting UI into a system teams actually use.',
     framing: [
-      'Governing a system at CyberQP, and ShareGate\u2019s move onto Hopper.',
+      'Governing a system at CyberQP and ShareGate\u2019s move onto Hopper.',
     ],
     cardThumbs: [
       '/bluej/thumbs/ds-intro-1.jpg',
@@ -97,11 +97,11 @@ const THEMES: Theme[] = [
                   },
                   {
                     src: '/bluej/ds-intro-2.png',
-                    alt: 'Design System 2.0, the new agentic design system framework: discovery, prioritize and decide, build and test with Claude, measure and monitor',
+                    alt: 'Outcome, the biggest UX win: from the legacy product to the new platform design direction, leading the platform redesign alongside design system enhancements',
                   },
                   {
                     src: '/bluej/ds-intro-3.png',
-                    alt: 'Outcome, the biggest UX win: from the legacy product to the new platform design direction, leading the platform redesign alongside design system enhancements',
+                    alt: 'Design System 2.0, the new agentic design system framework: discovery, prioritize and decide, build and test with Claude, measure and monitor',
                   },
                 ],
               },
@@ -336,14 +336,14 @@ const THEMES: Theme[] = [
     promise:
       'AI that experts can trust with real work.',
     framing: [
-      'The AI terminal past its proof of concept, and its interaction model.',
+      'The AI terminal beyond its proof of concept and its interaction model.',
     ],
     cardThumbs: [
       '/bluej/thumbs/t2-term-1-overview.jpg',
     ],
     groups: [{ items: [
           {
-            label: 'CyberQP AI Terminal',
+            label: 'CyberQP AI terminal',
             subItems: [
               {
                 label: 'Overview',
@@ -366,7 +366,7 @@ const THEMES: Theme[] = [
                 ],
               },
               {
-                label: 'Evolution of experience',
+                label: 'Evolution of the experience',
                 desc: 'What the proof of concept did not cover, and what design and product added.',
                 images: [
                   {
@@ -417,7 +417,7 @@ const THEMES: Theme[] = [
     id: 'code-first',
     title: 'Code-first design',
     promise:
-      'Agentic design setup, skills and process.',
+      'Agentic design setup, skills, and process.',
     framing: [
       'From Figma handoffs to shipping front-end code in production.',
     ],
@@ -473,7 +473,7 @@ const THEMES: Theme[] = [
     promise:
       'Getting features discovered and used after launch.',
     framing: [
-      'Moving a sales-led product toward product-led growth, and measuring it.',
+      'Moving a sales-led product toward product-led growth and measuring it.',
     ],
     cardThumbs: [
       '/bluej/thumbs/ga-new-context.jpg',
@@ -637,7 +637,7 @@ const GALLERY: GalleryItem[] = [
     id: 'blackberry',
     thumb: '/bluej/thumbs/bb-3.jpg',
     caption: 'BlackBerry: Gateway and malware investigation',
-    note: 'Secure cloud access clients for desktop, and the Optics console where analysts walk an attack timeline.',
+    note: 'Secure cloud access clients for desktop and the Optics console where analysts walk an attack timeline.',
     images: [
       {
         src: '/bluej/bb-3.png',
@@ -675,7 +675,7 @@ const GALLERY: GalleryItem[] = [
     thumb: '/bluej/thumbs/qp-billing-1.jpg',
     series: 'cyberqp',
     caption: 'License and billing',
-    note: 'Freemium licensing for technicians and devices: read is free, licenses gate actions that change things.',
+    note: 'Freemium licensing for technicians and devices: read is free, licenses gate the actions that change state.',
     images: [
       {
         src: '/bluej/qp-billing-1.png',
@@ -1533,8 +1533,8 @@ function ThemeModal({
             {/* Expectation-setter: these decks are deliberately high level.
                 Lives under the rail so it reads once, not per slide. */}
             <p className="cs-tmodal-rail-note">
-              Decks offer a high-level view of the project. Rationales,
-              tradeoffs, and process, happy to discuss in detail over a chat.
+              Decks offer a high-level view of each project. Happy to go into
+              rationale, tradeoffs, and process over a chat.
             </p>
           </nav>
           )}
@@ -1584,7 +1584,7 @@ function ThemeModal({
  * The whole pitch experience: theme grid, case-study modals, grouped
  * gallery with the CyberQP series. Shared by every application route so
  * improvements land once; each route is a thin wrapper passing its own
- * greeting (/bluej-custom-pitch, /custom-deck).
+ * greeting (/custom-deck today; add a route per audience as needed).
  */
 export function PitchPage({
   title,
@@ -1594,8 +1594,8 @@ export function PitchPage({
   title: string
   /** Theme ids in display order; unlisted themes follow in data order.
       Card numbers are computed from position, so each route can lead with
-      what its audience cares about (Blue J: design systems; generic:
-      the privileged-identities case study). */
+      what its audience cares about (the generic deck leads with the
+      privileged-identities case study). */
   themeOrder?: string[]
   /** Per-route title overrides by theme id, so one route can speak casually
       ("Design system stuff") while another stays formal. */

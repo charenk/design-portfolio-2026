@@ -19,7 +19,6 @@ const MEDIUMS = ['application', 'cold', 'intro', 'bio'] as const
 const TARGETS = [
   { label: 'Portfolio (default)', path: '/portfolio' },
   { label: 'Custom deck (generic pitch)', path: '/custom-deck' },
-  { label: 'Blue J pitch', path: '/bluej-custom-pitch' },
   { label: 'Refinery case study', path: '/refinery' },
   { label: 'AI-PAM case study', path: '/ai-pam' },
   { label: 'Browser Extension case study', path: '/browser-extension' },
